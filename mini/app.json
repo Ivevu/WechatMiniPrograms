@@ -1,6 +1,14 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/mine/mine",
+    "pages/offlineActivity/offlineActivity",
+    "pages/recruitment/recruitment",
+    "pages/vote/vote",
+    "pages/contribution/contribution",
+    "pages/recDetail/recDetail",
+    "pages/offActDetail/offActDetail",
+    "pages/signUp/signUp",
     "pages/logs/logs"
   ],
   "window": {
