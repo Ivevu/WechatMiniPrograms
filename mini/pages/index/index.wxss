@@ -1,6 +1,116 @@
-swiper swiper-item {
+.topSwiper {
   height: 376rpx;
 }
-swiper swiper-item .slide-image{
+
+.topSwiper swiper-item {
+  height: 376rpx;
+}
+
+.topSwiper swiper-item .slide-image {
   width: 100%;
+  height: 376rpx;
+}
+
+.h1 {
+  font-size: 45rpx;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1);
+  letter-spacing: 1px;
+  padding: 50rpx 0 35rpx 30rpx;
+}
+
+.hotActivity {
+  height: 178rpx;
+}
+
+.hotActivity swiper-item {
+  width: 300rpx !important;
+}
+
+.hotActivity .slide-image {
+  height: 178rpx;
+  width: 270rpx;
+  margin-left: 30rpx;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title .more {
+  padding: 50rpx 30rpx 35rpx 30rpx;
+  font-weight: 500;
+  letter-spacing: 1rpx;
+}
+
+.title .icon {
+  width: 17rpx;
+  height: 27rpx;
+  margin-left: 8rpx;
+}
+
+/* 线下活动 */
+
+.offlineActivity {
+  padding: 0 35rpx;
+}
+
+.offlineActivity .item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 35rpx;
+}
+
+.offlineActivity .item:last-child {
+  margin-bottom: 0;
+}
+
+.offlineActivity .itemImg {
+  width: 234rpx;
+  height: 120rpx;
+}
+
+.offlineActivity .content {
+  padding-left: 30rpx;
+  width: 420rpx;
+}
+
+.offlineActivity .header {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 1);
+  letter-spacing: 2rpx;
+  line-height: 33rpx;
+}
+
+.offlineActivity .date {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: rgba(156, 156, 156, 1);
+  line-height: 28rpx;
+  text-align: right;
+  padding-top: 20rpx;
+}
+
+/* 我要投稿 */
+
+.date.active {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 我要助力 */
+
+.helpList {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.helpItem {
+  width: 330rpx;
+  height: 165rpx;
+  margin-bottom: 35rpx;
 }

@@ -1,8 +1,78 @@
 <!-- 顶层轮播图 -->
-<swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+<swiper class='topSwiper' indicator-dots="{{indicatorDots}}" indicator-color="{{indicatorColor}}" indicator-active-color="{{indicatorActiveColor}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
   <block wx:for="{{imgUrls}}">
     <swiper-item>
-      <image src="{{item}}" class="slide-image" width="355" height="150" />
+      <image src="{{item}}" class="slide-image" />
     </swiper-item>
   </block>
 </swiper>
+<!-- 热门活动 -->
+<block>
+  <view class="h1">热门活动</view>
+  <swiper class='hotActivity' autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{hotActivityList}}">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" />
+      </swiper-item>
+    </block>
+  </swiper>
+</block>
+
+<!-- 线下活动 -->
+<block>
+  <view class='title'>
+    <view class="h1">线下活动</view>
+    <view class="more">
+      <text>更多</text>
+      <image class='icon' src='./assets/rightArrow.png'></image>
+    </view>
+  </view>
+  <view class='offlineActivity'>
+    <block wx:for="{{offlineActivityList}}">
+      <view class='item'>
+        <image src="{{item.img}}" class="itemImg" />
+        <view class='content'>
+          <view class='header'>{{item.header}}</view>
+          <view class='date'>报名截止时间：{{item.date}}</view>
+        </view>
+      </view>
+    </block>
+  </view>
+</block>
+
+<!-- 我要投稿 -->
+<block>
+  <view class='title'>
+    <view class="h1">我要投稿</view>
+    <view class="more">
+      <text>更多</text>
+      <image class='icon' src='./assets/rightArrow.png'></image>
+    </view>
+  </view>
+  <view class='offlineActivity'>
+    <block wx:for="{{recruitmentList}}">
+      <view class='item'>
+        <image src="{{item.img}}" class="itemImg" />
+        <view class='content'>
+          <view class='header'>{{item.header}}</view>
+          <view class='date active'>
+            <text>{{item.date}}</text>
+            <text>已投 {{item.number}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</block>
+
+<!-- 我要投稿 -->
+<block>
+  <view class='title'>
+    <view class="h1">我要助力</view>
+  </view>
+  <view class='offlineActivity helpList'>
+    <block wx:for="{{helpList}}">
+      <image src="{{item.img}}" class="helpItem" />
+    </block>
+  </view>
+</block>
