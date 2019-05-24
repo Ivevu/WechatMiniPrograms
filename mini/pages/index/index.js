@@ -72,7 +72,26 @@ Page({
       },
     ]
   },
-
+  /**
+   * 更多线下活动
+   */
+  toMoreOffAct() {
+    wx.navigateTo({
+      url: `../offlineActivity/offlineActivity`
+    })
+  },
+  tapOffAct(e) {
+    const index = e.currentTarget.dataset.index;
+    console.log(index)
+  },
+  /**
+   * 更多投稿
+   */
+  toMoreRec() {
+    wx.navigateTo({
+      url: `../recruitment/recruitment`
+    })
+  },
   onLoad: function() {
     const length = -(this.data.hotActivityList.length - 2) * 75 + 750
     this.setData({

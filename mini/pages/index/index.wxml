@@ -1,6 +1,6 @@
 <!-- 顶层轮播图 -->
 <swiper class='topSwiper' indicator-dots="{{indicatorDots}}" indicator-color="{{indicatorColor}}" indicator-active-color="{{indicatorActiveColor}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-  <block wx:for="{{imgUrls}}">
+  <block wx:for="{{imgUrls}}" wx:key="index">
     <swiper-item>
       <image src="{{item}}" class="slide-image" />
     </swiper-item>
@@ -10,7 +10,7 @@
 <block>
   <view class="h1">热门活动</view>
   <swiper class='hotActivity' autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-    <block wx:for="{{hotActivityList}}">
+    <block wx:for="{{hotActivityList}}" wx:key="index">
       <swiper-item>
         <image src="{{item}}" class="slide-image" />
       </swiper-item>
@@ -22,14 +22,14 @@
 <block>
   <view class='title'>
     <view class="h1">线下活动</view>
-    <view class="more">
+    <view class="more" bindtap='toMoreOffAct'>
       <text>更多</text>
       <image class='icon' src='./assets/rightArrow.png'></image>
     </view>
   </view>
   <view class='offlineActivity'>
-    <block wx:for="{{offlineActivityList}}">
-      <view class='item'>
+    <block wx:for="{{offlineActivityList}}" wx:key="index">
+      <view class='item' data-index="{{index}}" bindtap='tapOffAct'>
         <image src="{{item.img}}" class="itemImg" />
         <view class='content'>
           <view class='header'>{{item.header}}</view>
@@ -44,13 +44,13 @@
 <block>
   <view class='title'>
     <view class="h1">我要投稿</view>
-    <view class="more">
+    <view class="more" bindtap='toMoreRec'>
       <text>更多</text>
       <image class='icon' src='./assets/rightArrow.png'></image>
     </view>
   </view>
   <view class='offlineActivity'>
-    <block wx:for="{{recruitmentList}}">
+    <block wx:for="{{recruitmentList}}" wx:key="index">
       <view class='item'>
         <image src="{{item.img}}" class="itemImg" />
         <view class='content'>
@@ -71,7 +71,7 @@
     <view class="h1">我要助力</view>
   </view>
   <view class='offlineActivity helpList'>
-    <block wx:for="{{helpList}}">
+    <block wx:for="{{helpList}}" wx:key="index">
       <image src="{{item.img}}" class="helpItem" />
     </block>
   </view>
