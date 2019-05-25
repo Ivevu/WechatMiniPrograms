@@ -40,18 +40,18 @@ Page({
     ],
     // 我要投稿
     recruitmentList: [{
-        img: './assets/swiper2.png',
+        img: '/pages/index/assets/swiper2.png',
         header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
         date: '2019-05-21',
         number: 1999
       },
       {
-        img: './assets/swiper2.png',
+        img: '/pages/index/assets/swiper2.png',
         header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
         date: '2019-05-21',
         number: 1999
       }, {
-        img: './assets/swiper2.png',
+        img: '/pages/index/assets/swiper2.png',
         header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
         date: '2019-05-21',
         number: 1999

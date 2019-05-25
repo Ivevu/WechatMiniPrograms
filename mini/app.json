@@ -9,7 +9,8 @@
     "pages/recDetail/recDetail",
     "pages/offActDetail/offActDetail",
     "pages/signUp/signUp",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "components/recruitment-list/recruitment-list"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -25,14 +26,14 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "/assets/index.png",
+        "iconPath": "/assets/index_selected.png",
         "selectedIconPath": "/assets/index.png",
         "text": "首页"
       },
       {
         "pagePath": "pages/mine/mine",
         "iconPath": "/assets/mine.png",
-        "selectedIconPath": "/assets/mine.png",
+        "selectedIconPath": "/assets/mine_selected.png",
         "text": "我的"
       }
     ]

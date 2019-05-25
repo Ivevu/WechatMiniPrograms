@@ -30,13 +30,39 @@
 			"current": -1,
 			"list": []
 		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
 		"game": {
 			"currentL": -1,
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
-			"list": []
+			"current": 2,
+			"list": [
+				{
+					"id": -1,
+					"name": "线下活动",
+					"pathName": "pages/offlineActivity/offlineActivity",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "更多投稿",
+					"pathName": "pages/recruitment/recruitment",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的",
+					"pathName": "pages/mine/mine",
+					"query": "",
+					"scene": null
+				}
+			]
 		}
 	}
 }

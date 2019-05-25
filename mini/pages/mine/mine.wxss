@@ -1,1 +1,59 @@
-/* pages/mine/mine.wxss */
+.bg {
+  width: 100%;
+  height: 303rpx;
+  margin-bottom: 25rpx;
+}
+
+.avatar {
+  width: 165rpx;
+  height: 165rpx;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 30rpx);
+}
+
+.userName {
+  font-size: 45rpx;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 1);
+  line-height: 63rpx;
+  letter-spacing: 4rpx;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 210rpx);
+}
+
+.item {
+  padding: 25rpx 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: 58rpx;
+  height: 53rpx;
+  margin-right: 35rpx;
+}
+
+.value {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: rgba(21, 21, 21, 1);
+  letter-spacing: 1px;
+}
+
+.arrow {
+  width: 18rpx;
+  height: 30rpx;
+}

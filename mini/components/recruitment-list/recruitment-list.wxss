@@ -1,0 +1,6 @@
+@import '../activity-list/activity-list.wxss';
+
+.date.active {
+  display: flex;
+  justify-content: space-between;
+}

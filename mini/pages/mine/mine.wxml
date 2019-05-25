@@ -1,2 +1,18 @@
-<!--pages/mine/mine.wxml-->
-<text>pages/mine/mine.wxml</text>
+<view class='header'>
+  <image class="bg" src="./assets/bg.png"></image>
+  <image src='./assets/list.png' class='avatar'></image>
+  <text class='userName'>{{name}}</text>
+</view>
+
+<!-- 使用列表 -->
+<view class='list'>
+  <block wx:for="{{list}}" wx:key="index">
+    <view class='item' data-index='{{index}}' bindtap='clickIt'>
+      <view class='left'>
+        <image src='{{item.icon}}' class='icon'></image>
+        <view class='value'>{{item.value}}</view>
+      </view>
+      <image src='./assets/rightArrow.png' class='arrow'></image>
+    </view>
+  </block>
+</view>

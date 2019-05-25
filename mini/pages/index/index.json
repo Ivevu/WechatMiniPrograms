@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "activity-list": "/components/activity-list/activity-list",
+    "recruitment-list": "/components/recruitment-list/recruitment-list"
+  }
 }

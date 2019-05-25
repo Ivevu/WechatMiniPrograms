@@ -27,17 +27,7 @@
       <image class='icon' src='./assets/rightArrow.png'></image>
     </view>
   </view>
-  <view class='offlineActivity'>
-    <block wx:for="{{offlineActivityList}}" wx:key="index">
-      <view class='item' data-index="{{index}}" bindtap='tapOffAct'>
-        <image src="{{item.img}}" class="itemImg" />
-        <view class='content'>
-          <view class='header'>{{item.header}}</view>
-          <view class='date'>报名截止时间：{{item.date}}</view>
-        </view>
-      </view>
-    </block>
-  </view>
+  <activity-list list="{{offlineActivityList}}" />
 </block>
 
 <!-- 我要投稿 -->
@@ -49,20 +39,7 @@
       <image class='icon' src='./assets/rightArrow.png'></image>
     </view>
   </view>
-  <view class='offlineActivity'>
-    <block wx:for="{{recruitmentList}}" wx:key="index">
-      <view class='item'>
-        <image src="{{item.img}}" class="itemImg" />
-        <view class='content'>
-          <view class='header'>{{item.header}}</view>
-          <view class='date active'>
-            <text>{{item.date}}</text>
-            <text>已投 {{item.number}}</text>
-          </view>
-        </view>
-      </view>
-    </block>
-  </view>
+<recruitment-list list="{{recruitmentList}}" />
 </block>
 
 <!-- 我要投稿 -->

@@ -1,2 +1,1 @@
-<!--pages/recruitment/recruitment.wxml-->
-<text>pages/recruitment/recruitment.wxml</text>
+<recruitment-list list="{{recruitmentList}}" />
