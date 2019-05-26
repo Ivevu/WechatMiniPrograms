@@ -32,7 +32,7 @@ Component({
     tapOffAct(e) {
       const index = e.currentTarget.dataset.index;
       wx.navigateTo({
-        url: `/pages/offActDetail?id=${index}`,
+        url: `/pages/offActDetail/offActDetail?id=${index}`,
       })
     }
   }

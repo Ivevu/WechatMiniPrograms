@@ -1,2 +1,48 @@
-<!--pages/offActDetail/offActDetail.wxml-->
-<text>pages/offActDetail/offActDetail.wxml</text>
+<view class="main">
+  <!-- 封面 -->
+  <image class='cover' src='{{detail.cover}}'></image>
+  <!-- 文字信息 -->
+  <view class='content'>
+    <view class='title'>{{detail.title}}</view>
+    <view class='address'>
+      <text>活动地址：</text>
+      <text class='value'>{{detail.address}}</text>
+    </view>
+    <view class='host'>
+      <text>主办方：</text>
+      <text class='value'>{{detail.host}}</text>
+    </view>
+    <view class='time'>
+      <text>时间：</text>
+      <text class='value '>{{detail.time}}</text>
+    </view>
+    <view class='endTime '>
+      <text class='value'>{{detail.endTime}}</text>
+      <view class='likes'>
+        <block wx:for="{{detail.likes}}" wx:key="index">
+          <image class='icon' src="./assets/fire.png" />
+        </block>
+      </view>
+    </view>
+  </view>
+  <!-- 说明 -->
+  <image wx:if="{{showRule}}" class='intro' src='{{detail.rule}}'></image>
+  <!-- 报名 -->
+  <form wx:if="{{!showRule}}">
+    <view class="section">
+      <view class="inputArea" wx:for="{{form}}" wx:key="index">
+        <text>{{item.label}}</text>
+        <input placeholder="{{item.placeholder}}" focus="{{focus}}" />
+      </view>
+    </view>
+  </form>
+  <!-- 底部栏 -->
+  <view class='footer'>
+    <view class='common share'>
+      分享给好友
+    </view>
+    <view class='common signUp' bindtap='signUp'>
+      {{rightButton}}
+    </view>
+  </view>
+</view>

@@ -39,7 +39,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 3,
 			"list": [
 				{
 					"id": -1,
@@ -60,6 +60,12 @@
 					"name": "我的",
 					"pathName": "pages/mine/mine",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "报名详情页",
+					"pathName": "pages/offActDetail/offActDetail",
 					"scene": null
 				}
 			]
