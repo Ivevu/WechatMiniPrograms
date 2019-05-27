@@ -29,20 +29,22 @@
   <image wx:if="{{showRule}}" class='intro' src='{{detail.rule}}'></image>
   <!-- 报名 -->
   <form wx:if="{{!showRule}}">
-    <view class="section">
-      <view class="inputArea" wx:for="{{form}}" wx:key="index">
-        <text>{{item.label}}</text>
-        <input placeholder="{{item.placeholder}}" focus="{{focus}}" />
+    <view class="section" wx:for="{{formList}}" wx:for-item="form" wx:key="index">
+      <view class="inputArea {{item.isTextArea?'isTextArea':''}}" wx:for="{{form}}" wx:key="index">
+        <text class='label'>{{item.label}}</text>
+        <input wx:if="{{!item.isTextArea}}" placeholder="{{item.placeholder}}" placeholder-class="placeholder" focus="{{focus}}" />
+        <textarea wx:if="{{item.isTextArea}}"></textarea>
       </view>
     </view>
   </form>
+  <!-- 新增报名 -->
+  <view class="add" bindtap='add'>
+    <image class="addIcon" src="./assets/add.png"></image>
+    <view class="text">新增报名</view>
+  </view>
   <!-- 底部栏 -->
   <view class='footer'>
-    <view class='common share'>
-      分享给好友
-    </view>
-    <view class='common signUp' bindtap='signUp'>
-      {{rightButton}}
-    </view>
+    <button open-type='share' class='common share'>分享给好友</button>
+    <view class='common signUp' bindtap='signUp'>{{rightButton}}</view>
   </view>
 </view>

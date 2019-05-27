@@ -31,6 +31,8 @@
   width: 100%;
 }
 
+/* 底部 */
+
 .footer {
   position: fixed;
   bottom: 0;
@@ -38,6 +40,7 @@
   height: 90rpx;
   display: flex;
   width: 100%;
+  z-index: 1;
 }
 
 .common {
@@ -58,7 +61,70 @@
   color: #fff;
   background: #d02029;
 }
+
 /* 报名表单 */
+
 .inputArea {
   display: flex;
+  padding: 12.5rpx 0;
+  align-items: center;
+  border-bottom: 1px solid rgba(232, 232, 232, 1);
+}
+
+.inputArea:last-child {
+  border: none;
+}
+
+.inputArea.isTextArea {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+textarea {
+  width: 690rpx;
+  height: 165rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  border: 1px solid rgba(156, 156, 156, 1);
+  color: rgba(21, 21, 21, 1);
+}
+
+.label {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 1);
+  height: 1.4rem;
+  line-height: 1.4rem;
+}
+
+input {
+  margin-left: auto;
+  font-size: 24rpx;
+  text-align: right;
+}
+
+.placeholder {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: rgba(156, 156, 156, 1);
+  text-align: right;
+}
+
+/* 新增报名 */
+
+.add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: rgba(21, 21, 21, 1);
+  margin-bottom: 70rpx;
+}
+
+.addIcon {
+  width: 29rpx;
+  height: 29rpx;
+  margin-right: 30rpx;
 }
