@@ -96,7 +96,6 @@ Page({
     const length = -(this.data.hotActivityList.length - 2) * 75 + 750
     this.setData({
       rightMargin: length + 'rpx'
-    })
+    });
   },
-
 })

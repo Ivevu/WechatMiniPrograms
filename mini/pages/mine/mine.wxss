@@ -28,6 +28,23 @@
   transform: translate(-50%, 210rpx);
 }
 
+button {
+  background: transparent;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  border-radius: 0;
+}
+
+button::after {
+  border: none;
+}
+
+.button-hover {
+  /*点击后样式*/
+  background: transparent;
+}
+
 .item {
   padding: 25rpx 30rpx;
   display: flex;

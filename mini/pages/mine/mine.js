@@ -1,11 +1,13 @@
 // pages/mine/mine.js
-Page({
+const app = getApp()
 
+Page({
   /**
    * 页面的初始数据
    */
   data: {
-    name: '李文武',
+    name: '未登陆',
+    userInfo: {}, // 用户信息
     list: [{
         icon: './assets/voice.png',
         value: '线下活动',
@@ -38,12 +40,35 @@ Page({
     }
   },
   /**
+   * 判断用户是否授权
+   */
+  checkAuth() {
+    // 用户已授权
+    if (app.globalData.userInfo) {
+
+    }
+  },
+  /** 
+   * 获取用户信息
+   */
+  getUserInfo() {
+    wx.getUserInfo({
+      success: res => {
+        console.log(res.userInfo)
+        this.setData({
+          userInfo: res.userInfo
+        })
+      }
+    })
+  },
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+    this.setData({
+      userInfo: app.globalData.userInfo
+    })
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -54,9 +79,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
-
-  },
+  onShow: function() {},
 
   /**
    * 生命周期函数--监听页面隐藏

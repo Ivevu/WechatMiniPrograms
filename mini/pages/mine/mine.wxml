@@ -1,7 +1,9 @@
 <view class='header'>
   <image class="bg" src="./assets/bg.png"></image>
-  <image src='./assets/list.png' class='avatar'></image>
-  <text class='userName'>{{name}}</text>
+  <image src='{{userInfo.avatarUrl}}' class='avatar'></image>
+  <text wx:if="{{userInfo}}" class='userName' bindtap='getUserInfo'>{{userInfo.nickName}}</text>
+  <!-- 获取用户信息 -->
+  <button wx:if="{{!userInfo}}" class='userName' open-type="getUserInfo" bindtap='getUserInfo'>未登录</button>
 </view>
 
 <!-- 使用列表 -->

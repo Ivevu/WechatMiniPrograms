@@ -39,7 +39,7 @@
       <image class='icon' src='./assets/rightArrow.png'></image>
     </view>
   </view>
-<recruitment-list list="{{recruitmentList}}" />
+  <recruitment-list list="{{recruitmentList}}" />
 </block>
 
 <!-- 我要投稿 -->
