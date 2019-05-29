@@ -1,10 +1,10 @@
 <view class='offlineActivity'>
   <block wx:for="{{list}}" wx:key="index">
-    <view class='item' data-index="{{index}}" bindtap='tapOffAct'>
-      <image src="{{item.img}}" class="itemImg" />
+    <view class='item' data-index="{{index}}" bindtap='onTap'>
+      <image src="{{item.coverImg}}" class="itemImg" />
       <view class='content'>
-        <view class='header'>{{item.header}}</view>
-        <view class='date'>报名截止时间：{{item.date}}</view>
+        <view class='header'>{{item.title}}</view>
+        <view class='date'>报名截止时间：{{item.endTime}}</view>
       </view>
     </view>
   </block>

@@ -1,14 +1,15 @@
 //index.js
 //获取应用实例
-const app = getApp()
+import {
+  api
+} from '../../config/config.js';
+const util = require('../../utils/util.js')
+const app = getApp();
+
 
 Page({
   data: {
-    imgUrls: [
-      './assets/swiper.png',
-      './assets/swiper.png',
-      './assets/swiper.png',
-    ],
+    imgUrls: [],
     indicatorDots: true,
     indicatorColor: '#DCDCDC',
     indicatorActiveColor: '#FF646C',
@@ -16,10 +17,7 @@ Page({
     interval: 5000,
     duration: 1000,
     // 热门活动列表
-    hotActivityList: [
-      './assets/swiper1.png',
-      './assets/swiper2.png',
-    ],
+    hotActivityList: [],
     // 
     rightMargin: '750rpx',
     // 线下活动
@@ -82,7 +80,7 @@ Page({
   },
   tapOffAct(e) {
     const index = e.currentTarget.dataset.index;
-    console.log(index)
+    console.log(e.currentTarget.dataset)
   },
   /**
    * 更多投稿
@@ -92,10 +90,54 @@ Page({
       url: `../recruitment/recruitment`
     })
   },
+
+  // 获取首页轮播图
+  getHomeSlideshow() {
+    wx.request({
+      url: api.slideshow,
+      success: res => {
+        this.setData({
+          imgUrls: res.data.data
+        })
+      }
+    })
+  },
+
+  // 获取热门活动
+  getHotList() {
+    wx.request({
+      url: api.hot,
+      success: res => {
+        this.setData({
+          hotActivityList: res.data.data
+        })
+      }
+    });
+  },
+
+  // 获取线下活动列表
+  getActivityList(type) {
+    wx.request({
+      url: api.list,
+      data: {
+        type: type
+      },
+      success: res => {
+        this.setData({
+          offlineActivityList: res.data.data
+        })
+      }
+    });
+  },
+  // 页面加载
   onLoad: function() {
     const length = -(this.data.hotActivityList.length - 2) * 75 + 750
     this.setData({
       rightMargin: length + 'rpx'
     });
+
+    this.getHomeSlideshow();
+    this.getHotList();
+    this.getActivityList(1);
   },
 })

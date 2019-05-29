@@ -29,11 +29,13 @@ Component({
   },
 
   methods: {
-    tapOffAct(e) {
-      const index = e.currentTarget.dataset.index;
-      wx.navigateTo({
-        url: `/pages/offActDetail/offActDetail?id=${index}`,
-      })
+    onTap(e) {
+      console.log(e.target)
+      var myEventDetail = {
+        index: e.target.dataset.index
+      } // detail对象，提供给事件监听函数
+      var myEventOption = {} // 触发事件的选项
+      this.triggerEvent('myevent', myEventDetail, myEventOption)
     }
   }
 

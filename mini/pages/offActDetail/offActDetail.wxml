@@ -28,23 +28,50 @@
   <!-- 说明 -->
   <image wx:if="{{showRule}}" class='intro' src='{{detail.rule}}'></image>
   <!-- 报名 -->
-  <form wx:if="{{!showRule}}">
-    <view class="section" wx:for="{{formList}}" wx:for-item="form" wx:key="index">
-      <view class="inputArea {{item.isTextArea?'isTextArea':''}}" wx:for="{{form}}" wx:key="index">
-        <text class='label'>{{item.label}}</text>
-        <input wx:if="{{!item.isTextArea}}" placeholder="{{item.placeholder}}" placeholder-class="placeholder" focus="{{focus}}" />
-        <textarea wx:if="{{item.isTextArea}}"></textarea>
+  <form wx:if="{{!showRule}}" bindsubmit='formSubmit'>
+    <view class="section">
+      <view class="inputArea">
+        <text class='label'>姓名</text>
+        <input placeholder="请输入您的姓名" name='name' data-index='name' bindblur="keepForm" placeholder-class="placeholder" value='{{form.name}}' />
       </view>
+      <view class="inputArea">
+        <text class='label'>性别</text>
+        <picker value="{{form.gender}}" name='gender' data-index='gender' bindblur="keepForm" range="{{gender}}" bindchange="getGenderType">
+          <view class="placeholder  ">
+            {{genderPlaceHolder}}
+          </view>
+        </picker>
+      </view>
+      <view class="inputArea">
+        <text class='label'>单位</text>
+        <input placeholder="请输入您的单位名称" name='company' data-index='company' bindblur="keepForm" placeholder-class="placeholder" value='{{form.company}}' />
+      </view>
+      <view class="inputArea">
+        <text class='label'>职务</text>
+        <input placeholder="请输入您的职务名称" name='post' data-index='post' bindblur="keepForm" placeholder-class="placeholder" value='{{form.post}}' />
+      </view>
+      <view class="inputArea">
+        <text class='label'>电话</text>
+        <input placeholder="请输入您的电话号码" type='number' data-index='phone' bindblur="keepForm" name='phone' placeholder-class="placeholder" value='{{form.phone}}' />
+      </view>
+      <view class="inputArea">
+        <text class='label'>地址</text>
+        <input placeholder="请输入您的地址" name='address' data-index='address' bindblur="keepForm" placeholder-class="placeholder" value='{{form.address}}' />
+      </view>
+      <view class="inputArea isTextArea}}">
+        <text class='label'>备注</text>
+        <textarea name='remark' bindblur="keepForm" data-index='remark' value='{{form.remark}}'></textarea>
+      </view>
+    </view>
+    <!-- 底部栏 -->
+    <view class='footer'>
+      <button open-type='share' class='common share'>分享给好友</button>
+      <button class='common signUp' form-type="submit">{{rightButton}}</button>
     </view>
   </form>
   <!-- 新增报名 -->
   <view class="add" bindtap='add'>
     <image class="addIcon" src="./assets/add.png"></image>
     <view class="text">新增报名</view>
-  </view>
-  <!-- 底部栏 -->
-  <view class='footer'>
-    <button open-type='share' class='common share'>分享给好友</button>
-    <view class='common signUp' bindtap='signUp'>{{rightButton}}</view>
   </view>
 </view>

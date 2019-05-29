@@ -1,4 +1,6 @@
-// pages/mine/mine.js
+import {
+  api
+} from '../../config/config.js';
 const app = getApp()
 
 Page({
@@ -51,15 +53,33 @@ Page({
   /** 
    * 获取用户信息
    */
-  getUserInfo() {
+  getUserInfo(e) {
     wx.getUserInfo({
       success: res => {
-        console.log(res.userInfo)
         this.setData({
           userInfo: res.userInfo
-        })
+        });
+        wx.login({
+          success: result => {
+            wx.request({
+              url: api.login,
+              method: "POST",
+              data: {
+                code: result.code,
+                gender: res.userInfo.gender,
+                nickName: res.userInfo.nickName,
+                headImg: res.userInfo.avatarUrl
+              },
+              success: data=>{
+                console.log(data);
+              },
+            })
+          }
+        });
       }
-    })
+    });
+    // 登录
+
   },
   /**
    * 生命周期函数--监听页面加载

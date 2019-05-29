@@ -1,4 +1,8 @@
 // pages/offActDetail/offActDetail.js
+import {
+  api
+} from '../../config/config.js';
+
 Page({
   /**
    * 页面的初始数据
@@ -16,124 +20,83 @@ Page({
       likes: [1, 2, 3, 4, 5],
       rule: "./assets/rules.png"
     },
-    formList: [
-      [{
-          label: "姓名",
-          placeholder: "请输入您的姓名"
-        },
-        {
-          label: "性别",
-          placeholder: "请选择您的性别"
-        },
-        {
-          label: "单位",
-          placeholder: "请输入您的单位名称"
-        },
-        {
-          label: "职务",
-          placeholder: "请输入您的职务名称"
-        },
-        {
-          label: "电话",
-          placeholder: "请输入您的电话号码"
-        },
-        {
-          label: "地址",
-          placeholder: "请输入您的地址"
-        },
-        {
-          label: "备注",
-          isTextArea: true
-        }
-      ]
-    ]
+    form: {
+      name: '',
+      gender: '',
+      company: '',
+      post: '',
+      phone: '',
+      address: '',
+      remark: ''
+    },
+    gender: ['男', '女'],
+    genderPlaceHolder: '请选择您的性别'
   },
-  signUp() {
+  formSubmit(e) {
+    const params = e.detail.value;
+    let isError = true;
+    // 保存表单
     this.setData({
-      showRule: false,
-      rightButton: "提交"
+      form: params
     });
+    //校验表单
+    Object.keys(params).forEach(item => {
+      if (!params[item]) {
+        isError = true;
+      } else {
+        isError = false;
+      }
+    });
+    if (isError) {
+      this.showModal('请完善表单');
+    }
   },
   // 新增报名
   add() {
-    this.data.formList.push([{
-        label: "姓名",
-        placeholder: "请输入您的姓名"
-      },
-      {
-        label: "性别",
-        placeholder: "请选择您的性别"
-      },
-      {
-        label: "单位",
-        placeholder: "请输入您的单位名称"
-      },
-      {
-        label: "职务",
-        placeholder: "请输入您的职务名称"
-      },
-      {
-        label: "电话",
-        placeholder: "请输入您的电话号码"
-      },
-      {
-        label: "地址",
-        placeholder: "请输入您的地址"
-      },
-      {
-        label: "备注",
-        isTextArea: true
-      }
-    ])
+
+  },
+  // 保存表单
+  keepForm(e) {
+    const name = e.currentTarget.dataset.index;
+    let form = this.data.form;
+    form[name] = e.detail.value;
     this.setData({
-      formList: this.data.formList
+      form: form
     });
+  },
+  // 获取选择器性别类型
+  getGenderType(e) {
+    const index = e.detail.value;
+    let form = this.data.form;
+    form.gender = parseInt(e.detail.value) + 1;
+    this.setData({
+      form: form,
+      genderPlaceHolder: this.data.gender[index]
+    });
+  },
+  //报错 
+  showModal(error) {
+    wx.showModal({
+      content: error,
+      showCancel: false,
+    })
+  },
+  /**
+   * 获取活动详情
+   */
+  getActDetail(id) {
+    wx.request({
+      url: api.activityDetail,
+      // data:{
+      //   type: ,
+      //   id: ,
+      // }
+    })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
     const id = options.id;
-    console.log(id);
-    wx.showToast({
-      title: '成功',
-      icon: 'loading',
-      duration: 2000
-    })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {},
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {},
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {},
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {},
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {},
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {},
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {}
 });

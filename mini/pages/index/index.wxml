@@ -2,7 +2,7 @@
 <swiper class='topSwiper' indicator-dots="{{indicatorDots}}" indicator-color="{{indicatorColor}}" indicator-active-color="{{indicatorActiveColor}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
   <block wx:for="{{imgUrls}}" wx:key="index">
     <swiper-item>
-      <image src="{{item}}" class="slide-image" />
+      <image src="{{item.url}}" bindtap='clickSwiper' class="slide-image" />
     </swiper-item>
   </block>
 </swiper>
@@ -12,7 +12,7 @@
   <swiper class='hotActivity' autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
     <block wx:for="{{hotActivityList}}" wx:key="index">
       <swiper-item>
-        <image src="{{item}}" class="slide-image" />
+        <image src="{{item.url}}" class="slide-image" />
       </swiper-item>
     </block>
   </swiper>
@@ -27,7 +27,7 @@
       <image class='icon' src='./assets/rightArrow.png'></image>
     </view>
   </view>
-  <activity-list list="{{offlineActivityList}}" />
+  <activity-list bindmyevent="tapOffAct" list="{{offlineActivityList}}" />
 </block>
 
 <!-- 我要投稿 -->
