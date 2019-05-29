@@ -1,5 +1,5 @@
 .main {
-  padding: 0 30rpx 30rpx 30rpx;
+  padding: 0 30rpx 130rpx 30rpx;
 }
 
 .cover {
@@ -40,7 +40,7 @@
   height: 90rpx;
   display: flex;
   width: 100%;
-  z-index: 1;
+  z-index: 999;
 }
 
 .common {
@@ -52,10 +52,22 @@
   font-size: 36rpx;
 }
 
-.share {
+.common.share {
+  background: transparent;
+  border: none;
+  outline: none;
+  text-decoration: none;
   color: rgba(69, 69, 69, 1);
   background: #f5f5f5;
   border-radius: 0;
+}
+button::after {
+  border: none;
+}
+
+.button-hover {
+  /*点击后样式*/
+  background: transparent;
 }
 
 .signUp {
@@ -71,7 +83,7 @@ button {
 
 .inputArea {
   display: flex;
-  padding: 12.5rpx 0;
+  padding: 25rpx 0;
   align-items: center;
   border-bottom: 1px solid rgba(232, 232, 232, 1);
 }
@@ -115,8 +127,13 @@ input {
   text-align: right;
 }
 
+.placeholder.isActive {
+  color: #000;
+}
+
 picker {
   margin-left: auto;
+  min-width: 200rpx;
 }
 
 /* 新增报名 */
@@ -129,7 +146,6 @@ picker {
   font-size: 24rpx;
   font-weight: 600;
   color: rgba(21, 21, 21, 1);
-  margin-bottom: 70rpx;
 }
 
 .addIcon {

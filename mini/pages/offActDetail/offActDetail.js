@@ -1,44 +1,35 @@
-// pages/offActDetail/offActDetail.js
 import {
   api
 } from '../../config/config.js';
+const app = getApp();
 
 Page({
-  /**
-   * 页面的初始数据
-   */
   data: {
-    showRule: false,
+    activityId: '', // 活动id
+    hasSignUp: true, // false表示未参加报名
+    showRule: false, // true表示显示详情
     rightButton: "我要报名",
-    detail: {
-      cover: "./assets/title.png",
-      title: "广东省卫生健康系统“广东医生家国情”系列主题活动",
-      address: "广东省卫生健康所",
-      host: "广东省健康卫生局",
-      time: "2019年6至10月份",
-      endTime: "2019年6至10月份",
-      likes: [1, 2, 3, 4, 5],
-      rule: "./assets/rules.png"
-    },
-    form: {
+    detail: {},
+    formList: [{
       name: '',
       gender: '',
       company: '',
       post: '',
       phone: '',
       address: '',
-      remark: ''
-    },
+      remark: '',
+      genderPlaceHolder: '请选择您的性别',
+      isActive: false,
+    }],
     gender: ['男', '女'],
-    genderPlaceHolder: '请选择您的性别'
+    formId: 0, // 报名表单索引
   },
+
+  // 提交表单
   formSubmit(e) {
     const params = e.detail.value;
     let isError = true;
-    // 保存表单
-    this.setData({
-      form: params
-    });
+    let isErrPhone = true;
     //校验表单
     Object.keys(params).forEach(item => {
       if (!params[item]) {
@@ -47,31 +38,156 @@ Page({
         isError = false;
       }
     });
+
+    // 表单不完整
     if (isError) {
       this.showModal('请完善表单');
-    }
-  },
-  // 新增报名
-  add() {
+      return false;
+    };
 
-  },
-  // 保存表单
-  keepForm(e) {
-    const name = e.currentTarget.dataset.index;
-    let form = this.data.form;
-    form[name] = e.detail.value;
-    this.setData({
-      form: form
+    this.data.formList.forEach(item => {
+      const phoneRegxp = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+      if (!phoneRegxp.test(item.phone)) {
+
+        isErrPhone = true;
+      } else {
+        isErrPhone = false;
+      };
+    });
+    if (isErrPhone) {
+      wx.showToast({
+        title: '请输入正确的手机号码',
+        icon: 'none',
+        duration: 1000
+      });
+      return false;
+    }
+
+    // 表单正确，请求上传
+    wx.showLoading({
+      title: '数据上传中...',
+    });
+    wx.request({
+      url: api.signUp,
+      method: "post",
+      data: {
+        openId: app.globalData.openId,
+        activityId: this.data.activityId,
+        userOfflines: this.data.formList
+      },
+      success: res => {
+        wx.hideLoading();
+        if (res.data.code !== 0) {
+          // wx.showToast({
+          //   title: res.data.msg,
+          //   duration: 1000,
+          //   icon: "none"
+          // });
+          this.getSignUpList();
+        } else {
+          wx.showToast({
+            title: '上传成功',
+            duration: 1000,
+            icon: "success"
+          });
+        }
+      },
+      fail: error => {
+        wx.hideLoading();
+        wx.showToast({
+          title: '网络错误',
+          duration: 1000,
+          icon: "none"
+        });
+      }
     });
   },
+
+  // 获取报名信息
+  getSignUpList() {
+    wx.request({
+      url: api.signUpList,
+      data: {
+        openId: app.globalData.openId,
+        activityId: this.data.activityId || 8,
+      },
+      success: res => {
+        let formList = res.data.data;
+        formList.forEach(item=>{
+          item.isActive = true;
+          if (parseInt(item.gender) === 1){
+            item.genderPlaceHolder = '男';
+          }else {
+            item.genderPlaceHolder = '女';
+          }
+        });
+        this.setData({
+          formList: formList,
+          hasSignUp: false,
+        })
+      }
+    });
+  },
+
+  // 我要报名
+  singUp() {
+    this.setData({
+      showRule: false,
+    });
+  },
+
+  // 新增报名
+  add() {
+    const form = {
+      name: '',
+      gender: '',
+      company: '',
+      post: '',
+      phone: '',
+      address: '',
+      remark: '',
+      genderPlaceHolder: '请选择您的性别',
+      isActive: false,
+    };
+    let newList = this.data.formList;
+    newList.push(form);
+    this.setData({
+      formList: newList
+    });
+  },
+
+  // 获取报名表单索引
+  getFormId(e) {
+    this.setData({
+      formId: e.currentTarget.dataset.formid
+    });
+  },
+
+  // 保存表单
+  keepForm(e) {
+    const formId = this.data.formId;
+    const name = e.currentTarget.dataset.index.replace(/[0-9]/g, ''); // 清除数字
+
+    let formList = this.data.formList;
+    formList[formId][name] = e.detail.value;
+
+    this.setData({
+      formList: formList
+    });
+  },
+
   // 获取选择器性别类型
   getGenderType(e) {
+    const formId = this.data.formId;
     const index = e.detail.value;
-    let form = this.data.form;
-    form.gender = parseInt(e.detail.value) + 1;
+
+    let formList = this.data.formList;
+    formList[formId].gender = (parseInt(e.detail.value) + 1) + '';
+    formList[formId].genderPlaceHolder = this.data.gender[index];
+    formList[formId].isActive = true;
+
     this.setData({
-      form: form,
-      genderPlaceHolder: this.data.gender[index]
+      formList: formList,
     });
   },
   //报错 
@@ -81,22 +197,33 @@ Page({
       showCancel: false,
     })
   },
+
   /**
    * 获取活动详情
    */
-  getActDetail(id) {
+
+  getActDetail(id, type) {
     wx.request({
       url: api.activityDetail,
-      // data:{
-      //   type: ,
-      //   id: ,
-      // }
+      data: {
+        type: 1,
+        id: 8,
+      },
+      success: res => {
+        this.setData({
+          detail: res.data.data
+        })
+      }
     })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    const id = options.id;
+    this.setData({
+      activityId: options.id
+    });
+    this.getActDetail(options.id, options.type);
+    this.getSignUpList();
   },
 });

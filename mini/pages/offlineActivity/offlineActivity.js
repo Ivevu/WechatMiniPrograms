@@ -1,90 +1,36 @@
-// pages/offlineActivity/offlineActivity.js
-Page({
+import {
+  api
+} from '../../config/config.js';
 
-  /**
-   * 页面的初始数据
-   */
+Page({
   data: {
     // 线下活动
-    offlineActivityList: [{
-        img: './assets/swiper2.png',
-        header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
-        date: '2019-05-21'
+    offlineActivityList: [],
+  },
+
+  // 前往活动详情
+  tapOffAct(e) {
+    const id = e.detail.id;
+    wx.navigateTo({
+      url: `../offActDetail/offActDetail?id=${id}&type=1`
+    });
+  },
+  
+  // 获取线下活动列表
+  getActivityList(type) {
+    wx.request({
+      url: api.list,
+      data: {
+        type: type
       },
-      {
-        img: './assets/swiper2.png',
-        header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
-        date: '2019-05-21'
-      }, {
-        img: './assets/swiper2.png',
-        header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
-        date: '2019-05-21'
-      },
-      {
-        img: './assets/swiper2.png',
-        header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
-        date: '2019-05-21'
-      }, {
-        img: './assets/swiper2.png',
-        header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
-        date: '2019-05-21'
+      success: res => {
+        this.setData({
+          offlineActivityList: res.data.data
+        });
       }
-    ],
+    });
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function(options) {
-
+    this.getActivityList(1);
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
-  }
 })

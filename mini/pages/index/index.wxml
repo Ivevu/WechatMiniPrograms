@@ -1,8 +1,8 @@
 <!-- 顶层轮播图 -->
 <swiper class='topSwiper' indicator-dots="{{indicatorDots}}" indicator-color="{{indicatorColor}}" indicator-active-color="{{indicatorActiveColor}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
   <block wx:for="{{imgUrls}}" wx:key="index">
-    <swiper-item>
-      <image src="{{item.url}}" bindtap='clickSwiper' class="slide-image" />
+    <swiper-item bindtap="toSwiper" data-index="{{index}}">
+      <image src="{{item.url}}" class="slide-image" />
     </swiper-item>
   </block>
 </swiper>
@@ -11,7 +11,7 @@
   <view class="h1">热门活动</view>
   <swiper class='hotActivity' autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
     <block wx:for="{{hotActivityList}}" wx:key="index">
-      <swiper-item>
+      <swiper-item bindtap="toHot" data-index="{{index}}">
         <image src="{{item.url}}" class="slide-image" />
       </swiper-item>
     </block>
@@ -31,7 +31,7 @@
 </block>
 
 <!-- 我要投稿 -->
-<block>
+<!-- <block>
   <view class='title'>
     <view class="h1">我要投稿</view>
     <view class="more" bindtap='toMoreRec'>
@@ -40,10 +40,10 @@
     </view>
   </view>
   <recruitment-list list="{{recruitmentList}}" />
-</block>
+</block> -->
 
 <!-- 我要投稿 -->
-<block>
+<!-- <block>
   <view class='title'>
     <view class="h1">我要助力</view>
   </view>
@@ -52,4 +52,4 @@
       <image src="{{item.img}}" class="helpItem" />
     </block>
   </view>
-</block>
+</block> -->

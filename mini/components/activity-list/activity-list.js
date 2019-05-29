@@ -30,13 +30,13 @@ Component({
 
   methods: {
     onTap(e) {
-      console.log(e.target)
+      const index = e.currentTarget.dataset.index;
+      const id = this.properties.list[index].id;
       var myEventDetail = {
-        index: e.target.dataset.index
+        id: id
       } // detail对象，提供给事件监听函数
       var myEventOption = {} // 触发事件的选项
       this.triggerEvent('myevent', myEventDetail, myEventOption)
     }
   }
-
 })

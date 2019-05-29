@@ -14,14 +14,14 @@ Page({
         icon: './assets/voice.png',
         value: '线下活动',
       },
-      {
-        icon: './assets/list.png',
-        value: '我的作品',
-      },
-      {
-        icon: './assets/chat.png',
-        value: '参与投票',
-      }
+      // {
+      //   icon: './assets/list.png',
+      //   value: '我的作品',
+      // },
+      // {
+      //   icon: './assets/chat.png',
+      //   value: '参与投票',
+      // }
     ]
   },
   clickIt(e) {
@@ -56,8 +56,12 @@ Page({
   getUserInfo(e) {
     wx.getUserInfo({
       success: res => {
+        let userInfo = res.userInfo;
+        if (userInfo.nickName.length > 6) {
+          userInfo.nickName = userInfo.nickName.substring(0, 6) + '...'
+        }
         this.setData({
-          userInfo: res.userInfo
+          userInfo: userInfo
         });
         wx.login({
           success: result => {
@@ -70,7 +74,7 @@ Page({
                 nickName: res.userInfo.nickName,
                 headImg: res.userInfo.avatarUrl
               },
-              success: data=>{
+              success: data => {
                 console.log(data);
               },
             })
@@ -79,12 +83,15 @@ Page({
       }
     });
     // 登录
-
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    let userInfo = app.globalData.userInfo;
+    if (userInfo.nickName.length > 6) {
+      userInfo.nickName = userInfo.nickName.substring(0, 6) + '...'
+    }
     this.setData({
       userInfo: app.globalData.userInfo
     })

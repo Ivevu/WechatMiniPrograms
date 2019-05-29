@@ -1,5 +1,3 @@
-//index.js
-//获取应用实例
 import {
   api
 } from '../../config/config.js';
@@ -13,9 +11,9 @@ Page({
     indicatorDots: true,
     indicatorColor: '#DCDCDC',
     indicatorActiveColor: '#FF646C',
-    autoplay: false,
+    autoplay: true,
     interval: 5000,
-    duration: 1000,
+    duration: 3000,
     // 热门活动列表
     hotActivityList: [],
     // 
@@ -76,19 +74,41 @@ Page({
   toMoreOffAct() {
     wx.navigateTo({
       url: `../offlineActivity/offlineActivity`
-    })
+    });
   },
   tapOffAct(e) {
-    const index = e.currentTarget.dataset.index;
-    console.log(e.currentTarget.dataset)
+    const id = e.detail.id;
+    wx.navigateTo({
+      url: `../offActDetail/offActDetail?id=${id}&type=1`
+    });
   },
+
+  // 前往热门活动
+  toHot(e) {
+    const index = e.currentTarget.dataset.index;
+    const id = this.data.hotActivityList[index].id;
+    wx.navigateTo({
+      url: `../offActDetail/offActDetail?id=${id}&type=1`
+    });
+  },
+
+  // 前往轮播图
+  toSwiper(e) {
+    const index = e.currentTarget.dataset.index;
+    const id = this.data.imgUrls[index].id;
+    wx.navigateTo({
+      url: `../offActDetail/offActDetail?id=${id}&type=1`
+    });
+  },
+
+
   /**
    * 更多投稿
    */
   toMoreRec() {
     wx.navigateTo({
       url: `../recruitment/recruitment`
-    })
+    });
   },
 
   // 获取首页轮播图
@@ -123,9 +143,16 @@ Page({
         type: type
       },
       success: res => {
+        let list = [];
+        res.data.data.forEach(item => {
+          // 首页优先显示的热门活动
+          if (parseInt(item.isPri) === 0) {
+            list.push(item);
+          }
+        });
         this.setData({
-          offlineActivityList: res.data.data
-        })
+          offlineActivityList: list
+        });
       }
     });
   },

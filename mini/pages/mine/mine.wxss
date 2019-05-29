@@ -16,7 +16,7 @@
 }
 
 .userName {
-  font-size: 45rpx;
+  font-size: 30rpx;
   font-weight: 600;
   color: rgba(255, 255, 255, 1);
   line-height: 63rpx;

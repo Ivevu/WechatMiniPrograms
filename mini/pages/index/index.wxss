@@ -33,6 +33,7 @@
   height: 178rpx;
   width: 270rpx;
   margin-left: 30rpx;
+  border-radius: 10rpx;
 }
 
 .title {

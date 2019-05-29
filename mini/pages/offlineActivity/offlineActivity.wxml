@@ -1,1 +1,1 @@
-<activity-list list="{{offlineActivityList}}"/>
+<activity-list bindmyevent="tapOffAct" list="{{offlineActivityList}}"/>
