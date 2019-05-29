@@ -53,7 +53,6 @@
 }
 
 .common.share {
-  background: transparent;
   border: none;
   outline: none;
   text-decoration: none;
@@ -67,7 +66,7 @@ button::after {
 
 .button-hover {
   /*点击后样式*/
-  background: transparent;
+  background: #F5F5F5;
 }
 
 .signUp {

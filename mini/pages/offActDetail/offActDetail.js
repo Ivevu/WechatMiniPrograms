@@ -7,7 +7,7 @@ Page({
   data: {
     activityId: '', // 活动id
     hasSignUp: true, // false表示未参加报名
-    showRule: false, // true表示显示详情
+    showRule: true, // true表示显示详情
     rightButton: "我要报名",
     detail: {},
     formList: [{
@@ -77,18 +77,22 @@ Page({
       },
       success: res => {
         wx.hideLoading();
-        if (res.data.code !== 0) {
-          // wx.showToast({
-          //   title: res.data.msg,
-          //   duration: 1000,
-          //   icon: "none"
-          // });
-          this.getSignUpList();
-        } else {
+        if (res.data.code === 200) {
           wx.showToast({
             title: '上传成功',
             duration: 1000,
             icon: "success"
+          });
+          // this.getSignUpList();
+          setTimeout(() => {
+            wx.navigateBack({
+            })
+          }, 1000)
+        } else {
+          wx.showToast({
+            title: res.data.msg,
+            duration: 1000,
+            icon: "none"
           });
         }
       },
@@ -113,11 +117,11 @@ Page({
       },
       success: res => {
         let formList = res.data.data;
-        formList.forEach(item=>{
+        formList.forEach(item => {
           item.isActive = true;
-          if (parseInt(item.gender) === 1){
+          if (parseInt(item.gender) === 1) {
             item.genderPlaceHolder = '男';
-          }else {
+          } else {
             item.genderPlaceHolder = '女';
           }
         });
@@ -225,5 +229,7 @@ Page({
     });
     this.getActDetail(options.id, options.type);
     this.getSignUpList();
+
+
   },
 });

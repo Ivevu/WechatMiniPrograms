@@ -68,6 +68,9 @@ Page({
             wx.request({
               url: api.login,
               method: "POST",
+              header: {
+                'content-type': 'application/x-www-form-urlencoded'
+              },
               data: {
                 code: result.code,
                 gender: res.userInfo.gender,
@@ -75,7 +78,8 @@ Page({
                 headImg: res.userInfo.avatarUrl
               },
               success: data => {
-                console.log(data);
+                app.globalData.userInfo = res.userInfo;
+                app.globalData.openId = data.data.data;
               },
             })
           }
@@ -89,7 +93,7 @@ Page({
    */
   onLoad: function(options) {
     let userInfo = app.globalData.userInfo;
-    if (userInfo.nickName.length > 6) {
+    if (userInfo && userInfo.nickName.length > 6) {
       userInfo.nickName = userInfo.nickName.substring(0, 6) + '...'
     }
     this.setData({

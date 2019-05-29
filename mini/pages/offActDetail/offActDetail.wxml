@@ -70,7 +70,7 @@
     <view class='footer'>
       <button open-type='share' class='common share'>分享给好友</button>
       <button class='common signUp' wx:if="{{hasSignUp}}" form-type="submit">提交</button>
-      <button class='common signUp' wx:if="{{!hasSignUp}}" disabled="true">已提交</button>
+      <button class='common signUp' wx:if="{{!hasSignUp}}" disabled="true">已报名</button>
     </view>
   </form>
   <!-- 新增报名 -->
