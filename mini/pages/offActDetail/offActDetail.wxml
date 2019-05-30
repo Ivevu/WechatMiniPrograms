@@ -30,7 +30,7 @@
   </view>
   <!-- 说明 -->
   <view class='bg'>
-    <image wx:if="{{showRule}}" mode='{{mode}}' class='intro' src='./assets/rules.png'></image>
+    <image wx:if="{{showRule}}" mode='{{mode}}' class='intro' src='{{detail.detailImg}}'></image>
   </view>
   <!-- 报名 -->
   <form wx:if="{{!showRule}}" bindsubmit='formSubmit'>
