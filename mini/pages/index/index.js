@@ -73,18 +73,22 @@ Page({
   toHot(e) {
     const index = e.currentTarget.dataset.index;
     const id = this.data.hotActivityList[index].activityId;
-    wx.navigateTo({
-      url: `../offActDetail/offActDetail?id=${id}&type=1`
-    });
+    if (parseInt(id) !== 0) {
+      wx.navigateTo({
+        url: `../offActDetail/offActDetail?id=${id}&type=1`
+      });
+    }
   },
 
   // 前往轮播图
   toSwiper(e) {
     const index = e.currentTarget.dataset.index;
     const id = this.data.imgUrls[index].activityId;
-    wx.navigateTo({
-      url: `../offActDetail/offActDetail?id=${id}&type=1`
-    });
+    if (parseInt(id) !== 0) {
+      wx.navigateTo({
+        url: `../offActDetail/offActDetail?id=${id}&type=1`
+      });
+    };
   },
 
 

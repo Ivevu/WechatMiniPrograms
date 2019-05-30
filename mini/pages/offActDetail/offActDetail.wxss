@@ -26,7 +26,9 @@
   height: 30rpx;
   margin-right: 10rpx;
 }
-
+.bg {
+  height: 100%;
+}
 .intro {
   width: 100%;
 }

@@ -33,7 +33,8 @@ Component({
       const index = e.currentTarget.dataset.index;
       const id = this.properties.list[index].id;
       var myEventDetail = {
-        id: id
+        id: id,
+        index: index
       } // detail对象，提供给事件监听函数
       var myEventOption = {} // 触发事件的选项
       this.triggerEvent('myevent', myEventDetail, myEventOption)

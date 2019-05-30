@@ -23,6 +23,8 @@ Page({
     }],
     gender: ['男', '女'],
     formId: 0, // 报名表单索引
+    userInfo: '', // 用户信息
+    mode: 'widthFix'
   },
 
   // 提交表单
@@ -32,7 +34,7 @@ Page({
     let isErrPhone = true;
     //校验表单
     Object.keys(params).forEach(item => {
-      if (!params[item]) {
+      if (!params[item] && item.replace(/[0-9]/g,'') !== 'remark') {
         isError = true;
       } else {
         isError = false;
@@ -85,7 +87,9 @@ Page({
           });
           // this.getSignUpList();
           setTimeout(() => {
-            wx.navigateBack({})
+            wx.reLaunch({
+              url: '/pages/index/index'
+            })
           }, 1000)
         } else {
           wx.showToast({
@@ -135,7 +139,7 @@ Page({
   },
 
   // 我要报名
-  singUp() {
+  signUp() {
     this.setData({
       showRule: false,
     });
@@ -216,13 +220,49 @@ Page({
       },
       success: res => {
         let detail = res.data.data;
-        const length = detail.likeNum?parseInt(detail.likeNum):0;
+        const length = detail.likeNum ? parseInt(detail.likeNum) : 0;
         detail.likeNum = new Array(length);
         this.setData({
           detail: res.data.data
         });
       }
     })
+  },
+
+  /** 
+   * 获取用户信息
+   */
+  getUserInfo(e) {
+    wx.getUserInfo({
+      success: res => {
+        let userInfo = res.userInfo;
+        this.setData({
+          userInfo: userInfo
+        });
+        wx.login({
+          success: result => {
+            wx.request({
+              url: api.login,
+              method: "POST",
+              header: {
+                'content-type': 'application/x-www-form-urlencoded'
+              },
+              data: {
+                code: result.code,
+                gender: res.userInfo.gender,
+                nickName: res.userInfo.nickName,
+                headImg: res.userInfo.avatarUrl
+              },
+              success: data => {
+                app.globalData.userInfo = res.userInfo;
+                app.globalData.openId = data.data.data;
+                this.signUp();
+              },
+            })
+          }
+        });
+      }
+    });
   },
   /**
    * 生命周期函数--监听页面加载
@@ -231,6 +271,11 @@ Page({
     this.setData({
       activityId: options.id
     });
+    if(app.globalData.userInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo
+      });
+    }
     this.getActDetail(options.id, options.type);
     this.getSignUpList();
   },

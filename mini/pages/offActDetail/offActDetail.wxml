@@ -23,13 +23,15 @@
       </view>
       <view class='likes'>
         <block wx:for="{{detail.likeNum}}" wx:key="index">
-          <image class='icon' src="./assets/fire.png" />
+          <image mode="{{mode}}" class='icon' src="./assets/fire.png" />
         </block>
       </view>
     </view>
   </view>
   <!-- 说明 -->
-  <image wx:if="{{showRule}}" class='intro' src='{{detail.detailImg}}'></image>
+  <view class='bg'>
+    <image wx:if="{{showRule}}" mode='{{mode}}' class='intro' src='./assets/rules.png'></image>
+  </view>
   <!-- 报名 -->
   <form wx:if="{{!showRule}}" bindsubmit='formSubmit'>
     <view class="section" wx:for="{{formList}}" wx:key="index" data-formId='{{index}}' wx:for-item="form" bindtap='getFormId'>
@@ -82,6 +84,7 @@
   <!-- 底部栏 -->
   <view wx:if="{{showRule}}" class='footer'>
     <button open-type='share' class='common share'>分享给好友</button>
-    <button class='common signUp' bindtap='singUp'>我要报名</button>
+    <button class='common signUp' wx:if="{{userInfo}}" bindtap='signUp'>我要报名</button>
+    <button class='common signUp' wx:if="{{!userInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击登陆报名</button>
   </view>
 </view>

@@ -1,1 +1,6 @@
-<activity-list bindmyevent="tapOffAct" list="{{offlineActivityList}}"/>
+<view class='header'>
+  <view class="title {{item.isActive?'isActive':''}}" wx:for="{{nav}}" data-index='{{index}}' wx:key="index" bindtap='ontap'>
+    <view class="inner {{item.isActive?'isActive':''}}">{{item.title}}</view>
+  </view>
+</view>
+<activity-list bindmyevent="tapOffAct" list="{{offlineActivityList}}" />

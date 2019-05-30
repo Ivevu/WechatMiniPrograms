@@ -1,40 +1,36 @@
-.offlineActivity {
-  padding: 0 35rpx;
-}
-
-.offlineActivity .item {
+.header {
   display: flex;
+  width: 100%;
+  height: 100rpx;
   align-items: center;
+  border-bottom: 1px solid rgba(216, 216, 216, 1);
   margin-bottom: 35rpx;
 }
 
-.offlineActivity .item:last-child {
-  margin-bottom: 0;
-}
-
-.offlineActivity .itemImg {
-  width: 234rpx;
-  height: 120rpx;
-}
-
-.offlineActivity .content {
-  padding-left: 30rpx;
-  width: 420rpx;
-}
-
-.offlineActivity .header {
-  font-size: 24rpx;
+.title {
+  text-align: center;
+  font-size: 30rpx;
   font-weight: 500;
-  color: rgba(0, 0, 0, 1);
-  letter-spacing: 2rpx;
-  line-height: 33rpx;
+  letter-spacing: 1rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 50%;
 }
 
-.offlineActivity .date {
-  font-size: 20rpx;
-  font-weight: 500;
-  color: rgba(156, 156, 156, 1);
-  line-height: 28rpx;
-  text-align: right;
-  padding-top: 20rpx;
+.title.isActive {
+  color: rgba(208, 32, 41, 1);
+}
+
+.inner {
+  width: 160rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inner.isActive {
+  border-bottom: 6rpx solid #d02029;
 }
