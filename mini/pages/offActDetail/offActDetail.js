@@ -85,8 +85,7 @@ Page({
           });
           // this.getSignUpList();
           setTimeout(() => {
-            wx.navigateBack({
-            })
+            wx.navigateBack({})
           }, 1000)
         } else {
           wx.showToast({
@@ -113,22 +112,24 @@ Page({
       url: api.signUpList,
       data: {
         openId: app.globalData.openId,
-        activityId: this.data.activityId || 8,
+        activityId: this.data.activityId,
       },
       success: res => {
-        let formList = res.data.data;
-        formList.forEach(item => {
-          item.isActive = true;
-          if (parseInt(item.gender) === 1) {
-            item.genderPlaceHolder = '男';
-          } else {
-            item.genderPlaceHolder = '女';
-          }
-        });
-        this.setData({
-          formList: formList,
-          hasSignUp: false,
-        })
+        if (!!res.data.data) {
+          let formList = res.data.data;
+          formList.forEach(item => {
+            item.isActive = true;
+            if (parseInt(item.gender) === 1) {
+              item.genderPlaceHolder = '男';
+            } else {
+              item.genderPlaceHolder = '女';
+            }
+          });
+          this.setData({
+            formList: formList,
+            hasSignUp: false,
+          });
+        }
       }
     });
   },
@@ -210,13 +211,16 @@ Page({
     wx.request({
       url: api.activityDetail,
       data: {
-        type: 1,
-        id: 8,
+        type: type,
+        id: id,
       },
       success: res => {
+        let detail = res.data.data;
+        const length = detail.likeNum?parseInt(detail.likeNum):0;
+        detail.likeNum = new Array(length);
         this.setData({
           detail: res.data.data
-        })
+        });
       }
     })
   },
@@ -229,7 +233,5 @@ Page({
     });
     this.getActDetail(options.id, options.type);
     this.getSignUpList();
-
-
   },
 });

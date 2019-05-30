@@ -1,5 +1,5 @@
 <!-- 顶层轮播图 -->
-<swiper class='topSwiper' indicator-dots="{{indicatorDots}}" indicator-color="{{indicatorColor}}" indicator-active-color="{{indicatorActiveColor}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+<swiper class='topSwiper' indicator-dots="{{indicatorDots}}" indicator-color="{{indicatorColor}}" indicator-active-color="{{indicatorActiveColor}}" autoplay="true" interval="3000" duration="1000">
   <block wx:for="{{imgUrls}}" wx:key="index">
     <swiper-item bindtap="toSwiper" data-index="{{index}}">
       <image src="{{item.url}}" class="slide-image" />
@@ -9,7 +9,7 @@
 <!-- 热门活动 -->
 <block>
   <view class="h1">热门活动</view>
-  <swiper class='hotActivity' autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+  <swiper class='hotActivity' autoplay="{{autoplay}}" interval="2000" duration="1000">
     <block wx:for="{{hotActivityList}}" wx:key="index">
       <swiper-item bindtap="toHot" data-index="{{index}}">
         <image src="{{item.url}}" class="slide-image" />

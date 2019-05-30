@@ -11,7 +11,7 @@ Page({
     indicatorDots: true,
     indicatorColor: '#DCDCDC',
     indicatorActiveColor: '#FF646C',
-    autoplay: true,
+    autoplay: false,
     interval: 5000,
     duration: 3000,
     // 热门活动列表
@@ -19,21 +19,7 @@ Page({
     // 
     rightMargin: '750rpx',
     // 线下活动
-    offlineActivityList: [{
-        img: './assets/swiper2.png',
-        header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
-        date: '2019-05-21'
-      },
-      {
-        img: './assets/swiper2.png',
-        header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
-        date: '2019-05-21'
-      }, {
-        img: './assets/swiper2.png',
-        header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
-        date: '2019-05-21'
-      }
-    ],
+    offlineActivityList: [],
     // 我要投稿
     recruitmentList: [{
         img: '/pages/index/assets/swiper2.png',
@@ -86,7 +72,7 @@ Page({
   // 前往热门活动
   toHot(e) {
     const index = e.currentTarget.dataset.index;
-    const id = this.data.hotActivityList[index].id;
+    const id = this.data.hotActivityList[index].activityId;
     wx.navigateTo({
       url: `../offActDetail/offActDetail?id=${id}&type=1`
     });
@@ -95,7 +81,7 @@ Page({
   // 前往轮播图
   toSwiper(e) {
     const index = e.currentTarget.dataset.index;
-    const id = this.data.imgUrls[index].id;
+    const id = this.data.imgUrls[index].activityId;
     wx.navigateTo({
       url: `../offActDetail/offActDetail?id=${id}&type=1`
     });

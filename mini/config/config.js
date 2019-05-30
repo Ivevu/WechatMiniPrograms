@@ -1,3 +1,4 @@
+// const domain = 'https://wzhbg.gzmidai.com';
 const domain = 'http://www.ivevu.cn:8080';
 
 export const api = {
