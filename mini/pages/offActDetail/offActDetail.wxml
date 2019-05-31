@@ -85,6 +85,6 @@
   <view wx:if="{{showRule}}" class='footer'>
     <button open-type='share' class='common share'>分享给好友</button>
     <button class='common signUp' wx:if="{{userInfo}}" bindtap='signUp'>我要报名</button>
-    <button class='common signUp' wx:if="{{!userInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击登陆报名</button>
+    <button class='common signUp' wx:if="{{!userInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击报名</button>
   </view>
 </view>

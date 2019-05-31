@@ -44,6 +44,7 @@ Page({
         let on = [];
         let out = [];
         list.forEach(item => {
+          item.endTime = item.endTime.substring(0, 10);
           if (item.activityState == 1) {
             on.push(item);
           } else {

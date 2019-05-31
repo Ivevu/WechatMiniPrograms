@@ -221,6 +221,8 @@ Page({
       success: res => {
         let detail = res.data.data;
         const length = detail.likeNum ? parseInt(detail.likeNum) : 0;
+        detail.endTime = detail.endTime.substring(0,10);
+        detail.startTime = detail.startTime.substring(0, 10);
         detail.likeNum = new Array(length);
         this.setData({
           detail: res.data.data
