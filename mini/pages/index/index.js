@@ -138,7 +138,8 @@ Page({
           // 首页优先显示的热门活动
           if (parseInt(item.isPri) === 0) {
             list.push(item);
-          }
+          };
+          item.endTime = item.endTime.substring(0,10);
         });
         this.setData({
           offlineActivityList: list
