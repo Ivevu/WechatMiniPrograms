@@ -14,25 +14,37 @@ Page({
         icon: './assets/voice.png',
         value: '线下活动',
       },
-      // {
-      //   icon: './assets/list.png',
-      //   value: '我的作品',
-      // },
-      // {
-      //   icon: './assets/chat.png',
-      //   value: '参与投票',
-      // }
+      {
+        icon: './assets/list.png',
+        value: '我的作品',
+      },
+      {
+        icon: './assets/chat.png',
+        value: '参与投票',
+      }
     ]
   },
   clickIt(e) {
     const index = e.currentTarget.dataset.index;
     switch (index) {
       case 1:
+        wx.showModal({
+          title: '',
+          content: '功能暂未开放',
+          showCancel: false,
+          confirmText: '好的'
+        })
         break;
       case 2:
-        wx.navigateTo({
-          url: `../recruitment/recruitment`
+        wx.showModal({
+          title: '',
+          content: '功能暂未开放',
+          showCancel: false,
+          confirmText: '好的'
         })
+        // wx.navigateTo({
+        //   url: `../recruitment/recruitment`
+        // })
         break;
       default:
         wx.navigateTo({
