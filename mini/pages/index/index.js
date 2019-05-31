@@ -59,7 +59,7 @@ Page({
    */
   toMoreOffAct() {
     wx.navigateTo({
-      url: `../offlineActivity/offlineActivity`
+      url: `../moreAct/moreAct`
     });
   },
   tapOffAct(e) {
