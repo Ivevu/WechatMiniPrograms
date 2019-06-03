@@ -27,6 +27,7 @@ Page({
     mode: 'widthFix',
     hasEnroll: 0,
     overstayed: false, // 活动已过期
+    openId: ''
   },
 
   // 提交表单
@@ -88,9 +89,9 @@ Page({
             icon: "success"
           });
           setTimeout(() => {
-            wx.reLaunch({
-              url: '/pages/index/index'
-            })
+            wx.navigateTo({
+              url: '/pages/offlineActivity/offlineActivity',
+            });
           }, 1000)
         } else {
           wx.showToast({
@@ -139,11 +140,36 @@ Page({
       }
     });
   },
-
   // 我要报名
   signUp() {
-    this.setData({
-      showRule: false,
+    wx.request({
+      url: api.signUpList,
+      data: {
+        openId: app.globalData.openId,
+        activityId: this.data.activityId,
+      },
+      success: res => {
+        if (!!res.data.data) {
+          let formList = res.data.data;
+          formList.forEach(item => {
+            item.isActive = true;
+            if (parseInt(item.gender) === 1) {
+              item.genderPlaceHolder = '男';
+            } else {
+              item.genderPlaceHolder = '女';
+            }
+          });
+          this.setData({
+            formList: formList,
+            hasSignUp: false,
+            showRule: false
+          });
+        }else {
+          this.setData({
+            showRule: false
+          });
+        }
+      }
     });
   },
 
@@ -277,7 +303,9 @@ Page({
               },
               success: data => {
                 app.globalData.openId = data.data.data;
-                this.signUp();
+                this.setData({
+                  openId: data.data.data
+                });
               },
             })
           }
