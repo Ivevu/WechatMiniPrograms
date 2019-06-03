@@ -59,7 +59,17 @@ Page({
   checkAuth() {
     // 用户已授权
     if (app.globalData.userInfo) {
-
+      let userInfo = app.globalData.userInfo;
+      if (userInfo && userInfo.nickName.length > 6) {
+        userInfo.nickName = userInfo.nickName.substring(0, 6) + '...'
+      }
+      this.setData({
+        userInfo: userInfo
+      });
+    } else {
+      this.setData({
+        userInfo: null
+      });
     }
   },
   /** 
@@ -104,25 +114,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    let userInfo = app.globalData.userInfo;
-    if (userInfo && userInfo.nickName.length > 6) {
-      userInfo.nickName = userInfo.nickName.substring(0, 6) + '...'
-    }
-    this.setData({
-      userInfo: app.globalData.userInfo
-    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {},
+  onShow: function() {
+    this.checkAuth();
+  },
 
   /**
    * 生命周期函数--监听页面隐藏

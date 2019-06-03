@@ -241,6 +241,7 @@ Page({
         this.setData({
           userInfo: userInfo
         });
+        app.globalData.userInfo = userInfo;
         wx.login({
           success: result => {
             wx.request({
@@ -256,7 +257,6 @@ Page({
                 headImg: res.userInfo.avatarUrl
               },
               success: data => {
-                app.globalData.userInfo = res.userInfo;
                 app.globalData.openId = data.data.data;
                 this.signUp();
               },
