@@ -47,7 +47,7 @@ Page({
         console.log(list)
         list.forEach(item => {
           if(item.endTime) {
-            item.endTime = item.endTime.substring(0, 10);
+            item.deadline = item.deadline.substring(0, 10);
           }
           if (item.activityState == 1) {
             on.push(item);

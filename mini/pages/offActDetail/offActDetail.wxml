@@ -12,9 +12,9 @@
       <text>主办方：</text>
       <text class='value'>{{detail.organizer}}</text>
     </view>
-    <view class='time' wx:if="{{detail.startTime}}">
+    <view class='time' wx:if="{{detail.startTime && detail.endTime}}">
       <text>时间：</text>
-      <text class='value'>{{detail.startTime}} 至 {{detail.endTime}}</text>
+      <text class='value'>{{detail.startTime}} {{detail.startTime && detail.endTime?'至':''}} {{detail.endTime}}</text>
     </view>
     <view class='endTime' wx:if="{{detail.deadline}}">
       <view>
@@ -76,7 +76,7 @@
       </view>
       <view class="inputArea">
         <text class='label'>地址</text>
-        <input placeholder="请输入您的地址" disabled='{{!hasSignUp}}' name='address{{index}}' data-index='address{{index}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.address}}' />
+        <input placeholder="{{!hasSignUp?'无':'请输入您的地址'}}" disabled='{{!hasSignUp}}' name='address{{index}}' data-index='address{{index}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.address}}' />
       </view>
       <view class="inputArea isTextArea}}">
         <text class='label'>备注</text>
