@@ -44,8 +44,11 @@ Page({
         let list = res.data.data;
         let on = [];
         let out = [];
+        console.log(list)
         list.forEach(item => {
-          item.endTime = item.endTime.substring(0, 10);
+          if(item.endTime) {
+            item.endTime = item.endTime.substring(0, 10);
+          }
           if (item.activityState == 1) {
             on.push(item);
           } else {

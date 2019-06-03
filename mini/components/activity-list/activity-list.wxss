@@ -8,9 +8,9 @@
   margin-bottom: 35rpx;
 }
 
-.offlineActivity .item:last-child {
+/* .offlineActivity .item:last-child {
   margin-bottom: 0;
-}
+} */
 
 .offlineActivity .itemImg {
   width: 234rpx;

@@ -222,11 +222,11 @@ Page({
       success: res => {
         let detail = res.data.data;
         const length = detail.likeNum ? parseInt(detail.likeNum) : 0;
-        detail.deadline = detail.deadline.substring(0, 10);
-        detail.endTime = detail.endTime.substring(0, 10);
-        detail.startTime = detail.startTime.substring(0, 10);
+        detail.deadline = detail.deadline ? detail.deadline.substring(0, 10) : '';
+        detail.endTime = detail.endTime ? detail.endTime.substring(0, 10) : '';
+        detail.startTime = detail.startTime ? detail.startTime.substring(0, 10) : '';
         detail.likeNum = new Array(length);
-        if (this.data.hasEnroll == 1) {
+        if (this.data.hasEnroll && this.data.hasEnroll == 1) {
           this.setData({
             showRule: false
           })
@@ -279,7 +279,7 @@ Page({
   onLoad: function(options) {
     this.setData({
       activityId: options.id,
-      hasEnroll: options.hasEnroll
+      hasEnroll: options.hasEnroll ? options.hasEnroll : null
     });
     if (app.globalData.userInfo) {
       this.setData({
