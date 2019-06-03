@@ -222,6 +222,7 @@ Page({
       },
       success: res => {
         let detail = res.data.data;
+        if (!detail) return;
         const length = detail.likeNum ? parseInt(detail.likeNum) : 0;
         detail.deadline = detail.deadline ? detail.deadline.substring(0, 10) : '';
         detail.endTime = detail.endTime ? detail.endTime.substring(0, 10) : '';
@@ -237,7 +238,7 @@ Page({
             overstayed: true,
             showRule: true
           });
-        }else {
+        } else {
           this.setData({
             overstayed: false
           });
