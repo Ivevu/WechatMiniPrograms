@@ -36,11 +36,17 @@
   <form wx:if="{{!showRule}}" bindsubmit='formSubmit'>
     <view class="section" wx:for="{{formList}}" wx:key="index" data-formId='{{index}}' wx:for-item="form" bindtap='getFormId'>
       <view class="inputArea">
-        <text class='label'>姓名</text>
+        <view class='label'>
+          <text>姓名</text>
+          <text style='color:red'> *</text>
+        </view>
         <input placeholder="请输入您的姓名" disabled='{{!hasSignUp}}' name='name{{index}}' data-index='name{{index}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.name}}' />
       </view>
       <view class="inputArea">
-        <text class='label'>性别</text>
+        <view class='label'>
+          <text>性别</text>
+          <text style='color:red'> *</text>
+        </view>
         <picker disabled='{{!hasSignUp}}' value="{{form.gender}}" name='gender{{index}}' data-index='gender{{index}}' bindblur="keepForm" range="{{gender}}" bindchange="getGenderType">
           <view class="placeholder {{form.isActive?'isActive':''}}">
             {{form.genderPlaceHolder}}
@@ -48,15 +54,24 @@
         </picker>
       </view>
       <view class="inputArea">
-        <text class='label'>单位</text>
+        <view class='label'>
+          <text>单位</text>
+          <text style='color:red'> *</text>
+        </view>
         <input placeholder="请输入您的单位名称" disabled='{{!hasSignUp}}' name='company{{index}}' data-index='company{{index}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.company}}' />
       </view>
       <view class="inputArea">
-        <text class='label'>职务</text>
+        <view class='label'>
+          <text>职务</text>
+          <text style='color:red'> *</text>
+        </view>
         <input placeholder="请输入您的职务名称" disabled='{{!hasSignUp}}' name='post{{index}}' data-index='post{{index}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.post}}' />
       </view>
       <view class="inputArea">
-        <text class='label'>电话</text>
+        <view class='label'>
+          <text>电话</text>
+          <text style='color:red'> *</text>
+        </view>
         <input placeholder="请输入您的电话号码" disabled='{{!hasSignUp}}' type='number' data-index='phone{{index}}' bindblur="keepForm" name='phone' maxlength='11' placeholder-class="placeholder" value='{{form.phone}}' />
       </view>
       <view class="inputArea">

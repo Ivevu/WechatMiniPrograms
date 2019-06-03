@@ -24,7 +24,8 @@ Page({
     gender: ['男', '女'],
     formId: 0, // 报名表单索引
     userInfo: '', // 用户信息
-    mode: 'widthFix'
+    mode: 'widthFix',
+    hasEnroll: 0
   },
 
   // 提交表单
@@ -34,7 +35,7 @@ Page({
     let isErrPhone = true;
     //校验表单
     Object.keys(params).forEach(item => {
-      if (!params[item] && item.replace(/[0-9]/g,'') !== 'remark') {
+      if (!params[item] && item.replace(/[0-9]/g, '') !== 'remark' && item.replace(/[0-9]/g, '') !== 'address') {
         isError = true;
       } else {
         isError = false;
@@ -221,9 +222,14 @@ Page({
       success: res => {
         let detail = res.data.data;
         const length = detail.likeNum ? parseInt(detail.likeNum) : 0;
-        detail.endTime = detail.endTime.substring(0,10);
+        detail.endTime = detail.endTime.substring(0, 10);
         detail.startTime = detail.startTime.substring(0, 10);
         detail.likeNum = new Array(length);
+        if (this.data.hasEnroll == 1) {
+          this.setData({
+            showRule: false
+          })
+        }
         this.setData({
           detail: res.data.data
         });
@@ -271,9 +277,10 @@ Page({
    */
   onLoad: function(options) {
     this.setData({
-      activityId: options.id
+      activityId: options.id,
+      hasEnroll: options.hasEnroll
     });
-    if(app.globalData.userInfo) {
+    if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo
       });

@@ -1,6 +1,7 @@
 import {
   api
 } from '../../config/config.js';
+const app = getApp()
 
 Page({
   data: {
@@ -24,22 +25,23 @@ Page({
   tapOffAct(e) {
     const id = e.detail.id;
     const index = e.detail.index;
-    if (!this.data.isOff) { // 未过期
+    // if (!this.data.isOff) { // 未过期
       wx.navigateTo({
-        url: `../offActDetail/offActDetail?id=${id}&type=1`
+        url: `../offActDetail/offActDetail?id=${id}&type=1&hasEnroll=1`
       });
-    }
+    // }
 
   },
 
   // 获取线下活动列表
   getActivityList(type) {
     wx.request({
-      url: api.list,
+      url: api.enrolment,
       data: {
-        type: type
+        openId: app.globalData.openId
       },
       success: res => {
+        if (!res.data.data) return;
         let list = res.data.data;
         let on = [];
         let out = [];

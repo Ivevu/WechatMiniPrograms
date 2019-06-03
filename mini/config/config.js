@@ -12,4 +12,5 @@ export const api = {
   
   signUp: `${domain}/api/participant`, //报名接口
   signUpList: `${domain}/api/participant/list`, //报名接口
+  enrolment: `${domain}/api/activity/list/enrolment`,
 }
