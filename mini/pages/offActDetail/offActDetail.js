@@ -222,6 +222,7 @@ Page({
       success: res => {
         let detail = res.data.data;
         const length = detail.likeNum ? parseInt(detail.likeNum) : 0;
+        detail.deadline = detail.deadline.substring(0, 10);
         detail.endTime = detail.endTime.substring(0, 10);
         detail.startTime = detail.startTime.substring(0, 10);
         detail.likeNum = new Array(length);

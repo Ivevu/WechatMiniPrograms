@@ -139,7 +139,7 @@ Page({
           if (parseInt(item.isPri) === 0 && item.activityState == 1) {
             list.push(item);
           };
-          item.endTime = item.endTime.substring(0,10);
+          item.deadline = item.deadline.substring(0,10);
         });
         this.setData({
           offlineActivityList: list

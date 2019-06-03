@@ -3,23 +3,23 @@
   <image class='cover' src='{{detail.coverImg}}'></image>
   <!-- 文字信息 -->
   <view class='content'>
-    <view class='title'>{{detail.title}}</view>
-    <view class='address'>
+    <view class='title' wx:if="{{detail.title}}">{{detail.title}}</view>
+    <view class='address' wx:if="{{detail.address}}">
       <text>活动地址：</text>
       <text class='value'>{{detail.address}}</text>
     </view>
-    <view class='host'>
+    <view class='host' wx:if="{{detail.organizer}}">
       <text>主办方：</text>
       <text class='value'>{{detail.organizer}}</text>
     </view>
-    <view class='time'>
+    <view class='time' wx:if="{{detail.startTime}}">
       <text>时间：</text>
-      <text class='value '>{{detail.startTime}}</text>
+      <text class='value'>{{detail.startTime}} 至 {{detail.endTime}}</text>
     </view>
-    <view class='endTime '>
+    <view class='endTime' wx:if="{{detail.deadline}}">
       <view>
         <text>截至报名时间：</text>
-        <text class='value'>{{detail.endTime}}</text>
+        <text class='value'>{{detail.deadline}}</text>
       </view>
       <view class='likes'>
         <block wx:for="{{detail.likeNum}}" wx:key="index">
