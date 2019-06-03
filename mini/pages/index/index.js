@@ -136,7 +136,7 @@ Page({
         let list = [];
         res.data.data.forEach(item => {
           // 首页优先显示的热门活动
-          if (parseInt(item.isPri) === 0) {
+          if (parseInt(item.isPri) === 0 && item.activityState == 1) {
             list.push(item);
           };
           item.endTime = item.endTime.substring(0,10);

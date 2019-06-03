@@ -40,6 +40,7 @@ Page({
         type: type
       },
       success: res => {
+        if (!res.data.data) return;
         let list = res.data.data;
         let on = [];
         let out = [];
