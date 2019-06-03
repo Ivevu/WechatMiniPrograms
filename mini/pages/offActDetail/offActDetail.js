@@ -25,7 +25,8 @@ Page({
     formId: 0, // 报名表单索引
     userInfo: '', // 用户信息
     mode: 'widthFix',
-    hasEnroll: 0
+    hasEnroll: 0,
+    overstayed: false, // 活动已过期
   },
 
   // 提交表单
@@ -86,7 +87,6 @@ Page({
             duration: 1000,
             icon: "success"
           });
-          // this.getSignUpList();
           setTimeout(() => {
             wx.reLaunch({
               url: '/pages/index/index'
@@ -133,6 +133,7 @@ Page({
           this.setData({
             formList: formList,
             hasSignUp: false,
+            showRule: false
           });
         }
       }
@@ -226,11 +227,21 @@ Page({
         detail.endTime = detail.endTime ? detail.endTime.substring(0, 10) : '';
         detail.startTime = detail.startTime ? detail.startTime.substring(0, 10) : '';
         detail.likeNum = new Array(length);
-        if (this.data.hasEnroll && this.data.hasEnroll == 1) {
+        if (this.data.hasEnroll && this.data.hasEnroll == 1) { // 已报名
           this.setData({
             showRule: false
-          })
-        }
+          });
+        };
+        if (detail.activityState == 2) { // 活动已过期
+          this.setData({
+            overstayed: true,
+            showRule: true
+          });
+        }else {
+          this.setData({
+            overstayed: false
+          });
+        };
         this.setData({
           detail: res.data.data
         });
