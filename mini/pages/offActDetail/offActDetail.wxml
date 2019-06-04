@@ -78,7 +78,7 @@
         <text class='label'>地址</text>
         <input placeholder="{{!hasSignUp?'无':'请输入您的地址'}}" disabled='{{!hasSignUp}}' name='address{{index}}' data-index='address{{index}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.address}}' />
       </view>
-      <view class="inputArea isTextArea}}">
+      <view wx:if="{{type==1}}" class="inputArea isTextArea}}">
         <text class='label'>备注</text>
         <textarea name='remark{{index}}' disabled='{{!hasSignUp}}' bindblur="keepForm" data-index='remark{{index}}' value='{{form.remark}}'></textarea>
       </view>
@@ -91,16 +91,25 @@
     </view>
   </form>
   <!-- 新增报名 -->
-  <view wx:if="{{!showRule && hasSignUp}}" class="add" bindtap='add'>
+  <view wx:if="{{!showRule && hasSignUp && type==1}}" class="add" bindtap='add'>
     <image class="addIcon" src="./assets/add.png"></image>
     <view class="text">新增报名</view>
   </view>
 
+  <!-- 上传PDF -->
+  <view wx:if="{{!showRule && hasSignUp && type==2}}" class="add" bindtap='uploadPDF'>
+    <image class="addIcon" src="./assets/add.png"></image>
+    <view class="text">上传文件（可上传PDF文档/PNG图片）</view>
+  </view>
+
   <!-- 底部栏 -->
-  <view wx:if="{{showRule}}" class='footer'>
+  <view wx:if="{{showRule && type==1}}" class='footer'>
     <button open-type='share' class='common share'>分享给好友</button>
-    <button class='common signUp' wx:if="{{userInfo && !overstayed}}" bindtap='signUp'>我要报名</button>
+    <button class='common signUp' wx:if="{{userInfo && !overstayed }}" bindtap='signUp'>我要报名</button>
     <button class='common signUp' wx:if="{{!userInfo && hasSignUp && !overstayed}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击报名</button>
     <button class='common signUp' wx:if="{{overstayed}}" disabled="true">活动已过期</button>
+  </view>
+  <view wx:if="{{type==2}}" class='footer'>
+    <button class='common signUp' wx:if="{{userInfo && !overstayed && type==2}}" bindtap='toContribute'>我要投稿</button>
   </view>
 </view>

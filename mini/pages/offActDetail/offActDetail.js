@@ -27,7 +27,8 @@ Page({
     mode: 'widthFix',
     hasEnroll: 0,
     overstayed: false, // 活动已过期
-    openId: ''
+    openId: '',
+    type: 1, // 1 表示线下活动 2表示征稿活动
   },
 
   // 提交表单
@@ -190,7 +191,12 @@ Page({
       }
     });
   },
-
+  // 我要投稿
+  toContribute() {
+    this.setData({
+      showRule: false
+    });
+  },
   // 新增报名
   add() {
     const form = {
@@ -209,6 +215,18 @@ Page({
     this.setData({
       formList: newList
     });
+  },
+
+  // 上传PDF
+  uploadPDF() {
+    wx.chooseMessageFile({
+      count: 10,
+      type: 'image',
+      success(res) {
+        // tempFilePath可以作为img标签的src属性显示图片
+        const tempFilePaths = res.tempFilePaths
+      }
+    })
   },
 
   // 获取报名表单索引
@@ -258,40 +276,90 @@ Page({
    */
 
   getActDetail(id, type) {
+    this.setData({
+      type: parseInt(type)
+    });
     wx.request({
       url: api.activityDetail,
       data: {
-        type: type,
-        id: id,
+        type: 1,
+        id: 14,
       },
       success: res => {
         let detail = res.data.data;
         if (!detail) return;
-        const length = detail.likeNum ? parseInt(detail.likeNum) : 0;
-        detail.deadline = detail.deadline ? detail.deadline.substring(0, 10) : '';
-        detail.endTime = detail.endTime ? detail.endTime.substring(0, 10) : '';
-        detail.startTime = detail.startTime ? detail.startTime.substring(0, 10) : '';
-        detail.likeNum = new Array(length);
-        if (this.data.hasEnroll && this.data.hasEnroll == 1) { // 已报名
-          this.setData({
-            showRule: false
-          });
-        };
-        if (detail.activityState == 2) { // 活动已过期
-          this.setData({
-            overstayed: true,
-            showRule: true
-          });
-        } else {
-          this.setData({
-            overstayed: false
-          });
-        };
-        this.setData({
-          detail: res.data.data
-        });
+        this.checkType(detail, type, res);
       }
     })
+  },
+
+  /**
+   * 判断是线下活动 还是 征稿
+   */
+  checkType(detail, type, res) {
+    switch (parseInt(type)) {
+      case 1:
+        this.setOffActivity(detail, res);
+        break;
+      case 2:
+        this.setOffActivity(detail, res);
+        break
+    }
+  },
+
+  // 获取线下活动详情
+  setOffActivity(detail, res) {
+    const length = detail.likeNum ? parseInt(detail.likeNum) : 0;
+    detail.deadline = detail.deadline ? detail.deadline.substring(0, 10) : '';
+    detail.endTime = detail.endTime ? detail.endTime.substring(0, 10) : '';
+    detail.startTime = detail.startTime ? detail.startTime.substring(0, 10) : '';
+    detail.likeNum = new Array(length);
+    if (this.data.hasEnroll && this.data.hasEnroll == 1) { // 已报名
+      this.setData({
+        showRule: false
+      });
+    };
+    if (detail.activityState == 2) { // 活动已过期
+      this.setData({
+        overstayed: true,
+        showRule: true
+      });
+    } else {
+      this.setData({
+        overstayed: false
+      });
+    };
+    this.setData({
+      detail: res.data.data
+    });
+  },
+
+
+  // 获取征稿活动详情
+  setRecActivity(detail, res) {
+    const length = detail.likeNum ? parseInt(detail.likeNum) : 0;
+    detail.deadline = detail.deadline ? detail.deadline.substring(0, 10) : '';
+    detail.endTime = detail.endTime ? detail.endTime.substring(0, 10) : '';
+    detail.startTime = detail.startTime ? detail.startTime.substring(0, 10) : '';
+    detail.likeNum = new Array(length);
+    if (this.data.hasEnroll && this.data.hasEnroll == 1) { // 已报名
+      this.setData({
+        showRule: false
+      });
+    };
+    if (detail.activityState == 2) { // 活动已过期
+      this.setData({
+        overstayed: true,
+        showRule: true
+      });
+    } else {
+      this.setData({
+        overstayed: false
+      });
+    };
+    this.setData({
+      detail: res.data.data
+    });
   },
 
   /** 

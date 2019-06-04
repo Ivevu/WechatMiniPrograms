@@ -31,7 +31,7 @@
 </block>
 
 <!-- 我要投稿 -->
-<!-- <block>
+<block>
   <view class='title'>
     <view class="h1">我要投稿</view>
     <view class="more" bindtap='toMoreRec'>
@@ -39,8 +39,8 @@
       <image class='icon' src='./assets/rightArrow.png'></image>
     </view>
   </view>
-  <recruitment-list list="{{recruitmentList}}" />
-</block> -->
+  <recruitment-list bindmyevent="tapRec" list="{{recruitmentList}}" />
+</block>
 
 <!-- 我要投稿 -->
 <!-- <block>

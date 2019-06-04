@@ -1,6 +1,6 @@
 <view class='offlineActivity'>
   <block wx:for="{{list}}" wx:key="index">
-    <view class='item'>
+    <view class='item' bindtap='onTap'>
       <image src="{{item.img}}" class="itemImg" />
       <view class='content'>
         <view class='header'>{{item.header}}</view>

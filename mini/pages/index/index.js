@@ -63,10 +63,20 @@ Page({
       url: `../moreAct/moreAct`
     });
   },
+
+  
   tapOffAct(e) {
     const id = e.detail.id;
     wx.navigateTo({
       url: `../offActDetail/offActDetail?id=${id}&type=1`
+    });
+  },
+
+  tapRec(e) {
+    // const id = e.detail.id;
+    const id =0;
+    wx.navigateTo({
+      url: `../offActDetail/offActDetail?id=${id}&type=2`
     });
   },
 
@@ -134,31 +144,44 @@ Page({
         type: type
       },
       success: res => {
-        let list = [];
+        this.setList(res, type);
+      }
+    });
+  },
+  // 根据类型获取列表
+  setList(res, type) {
+    let list = [];
+    switch (type) {
+      case 1: // 线下活动
+        if (!res.data.data) return false;
         res.data.data.forEach(item => {
           // 首页优先显示的热门活动
           if (parseInt(item.isPri) === 0 && item.activityState == 1) {
             list.push(item);
           };
-          item.deadline = item.deadline.substring(0,10);
+          item.deadline = item.deadline.substring(0, 10);
         });
         this.setData({
           offlineActivityList: list
         });
-      }
-    });
+        break;
+      case 2: // 我要投稿
+
+        break;
+      default: // 我要助力
+        break;
+    }
   },
   // 页面加载
   onLoad: function() {
-    const length = -(this.data.hotActivityList.length - 2) * 75 + 750
-    this.setData({
-      rightMargin: length + 'rpx'
-    });
+    // const length = -(this.data.hotActivityList.length - 2) * 75 + 750
+    // this.setData({
+    //   rightMargin: length + 'rpx'
+    // });
 
     this.getHomeSlideshow();
     this.getHotList();
     this.getActivityList(1);
-
-    console.log(new Http()._get(api.slideshow))
+    this.getActivityList(2);
   },
 })
