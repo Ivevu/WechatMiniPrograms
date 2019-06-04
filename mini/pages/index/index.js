@@ -1,6 +1,7 @@
 import {
   api
 } from '../../config/config.js';
+import Http from '../../utils/http.js'
 const util = require('../../utils/util.js')
 const app = getApp();
 
@@ -157,5 +158,7 @@ Page({
     this.getHomeSlideshow();
     this.getHotList();
     this.getActivityList(1);
+
+    console.log(new Http()._get(api.slideshow))
   },
 })
