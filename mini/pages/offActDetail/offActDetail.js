@@ -103,7 +103,7 @@ Page({
         wx.hideLoading();
         if (res.data.code === 200) {
           wx.showToast({
-            title: '上传成功',
+            title: '报名成功',
             duration: 1000,
             icon: "success"
           });
