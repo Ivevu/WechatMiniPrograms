@@ -12,7 +12,7 @@ Page({
     userInfo: {}, // 用户信息
     list: [{
         icon: './assets/voice.png',
-        value: '线下活动',
+        value: '我的活动',
       },
       {
         icon: './assets/list.png',

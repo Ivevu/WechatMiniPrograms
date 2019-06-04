@@ -68,10 +68,29 @@ Page({
       return false;
     }
 
-    // 表单正确，请求上传
-    wx.showLoading({
-      title: '数据上传中...',
-    });
+    this.checkAgain();
+  },
+  // 二次确认
+  checkAgain() {
+    wx.showModal({
+      title: '请确认报名信息内容',
+      content: '提交后不可更改',
+      cancelText: '再次确认',
+      confirmText: '提交',
+      confirmColor: '#F44336',
+      success: (res) => {
+        if (res.confirm) {
+          // 表单正确，请求上传
+          wx.showLoading({
+            title: '数据上传中...',
+          });
+          this.postForm();
+        }
+      }
+    })
+  },
+  // 报名接口
+  postForm() {
     wx.request({
       url: api.signUp,
       method: "post",
@@ -111,7 +130,6 @@ Page({
       }
     });
   },
-
   // 获取报名信息
   getSignUpList() {
     wx.request({
@@ -164,7 +182,7 @@ Page({
             hasSignUp: false,
             showRule: false
           });
-        }else {
+        } else {
           this.setData({
             showRule: false
           });
