@@ -90,17 +90,42 @@
       <button class='common signUp' wx:if="{{!hasSignUp}}" disabled="true">已报名</button>
     </view>
   </form>
+
+  <!--  上传文件列表 -->
+  <view class="section uploadList">
+    <!-- word和PDF -->
+    <view class="inputArea" wx:for="{{uploadFileList}}" wx:key="index" wx:for-item="file" wx:if="{{file.filename && index !== 2}}">
+      <view class='label'>
+        <text>{{file.fileType}}：{{file.filename}}</text>
+      </view>
+      <button class='reupload' data-type='{{file.type}}' bindtap='reupload'>重新上传</button>
+    </view>
+    <!-- 图片预览 -->
+    <view class="inputArea img">
+      <view class='imgArea'>
+        <view class='imgItem' wx:for="{{uploadFileList[2].tempFiles}}" wx:key="index" wx:for-item="tempFile" wx:if="{{tempFile.path}}" >
+          <image mode='widthFix' class='preImg' src='{{tempFile.path}}' data-index='{{index}}' bindtap='previewImg'></image>
+          <image class='close' src='../../assets/del.png' data-index='{{index}}' bindtap='delImg'></image>
+        </view>
+        <!-- <text>{{path}}</text> -->
+      </view>
+      <button wx:if="{{uploadFileList[2].tempFiles && uploadFileList[2].tempFiles.length<9 && uploadFileList[2].tempFiles.length > 0}}" class='reupload' bindtap='reloadImg'>继续选择</button>
+    </view>
+  </view>
+
   <!-- 新增报名 -->
   <view wx:if="{{!showRule && hasSignUp && type==1}}" class="add" bindtap='add'>
     <image class="addIcon" src="./assets/add.png"></image>
     <view class="text">新增报名</view>
   </view>
 
-  <!-- 上传PDF -->
-  <view wx:if="{{!showRule && hasSignUp && type==2}}" class="add" bindtap='uploadPDF'>
-    <image class="addIcon" src="./assets/add.png"></image>
-    <view class="text">上传文件（可上传PDF文档/PNG图片）</view>
-  </view>
+  <!-- 上传文件 -->
+  <block wx:if="{{!showRule && hasSignUp && type==2}}">
+    <view wx:if="{{!item.isUpload}}" wx:for="{{uploadFileList}}" wx:key="index" class="add" data-index='{{index}}' bindtap='uploadFile'>
+      <image class="addIcon" src="./assets/add.png"></image>
+      <view class="text">{{item.desc}}</view>
+    </view>
+  </block>
 
   <!-- 底部栏 -->
   <view wx:if="{{showRule && type==1}}" class='footer'>

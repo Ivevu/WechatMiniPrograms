@@ -14,6 +14,7 @@
   color: rgba(0, 0, 0, 1);
   line-height: 50rpx;
 }
+
 .content .title {
   font-weight: 600;
 }
@@ -29,9 +30,11 @@
   height: 30rpx;
   margin-right: 10rpx;
 }
+
 .bg {
   height: 100%;
 }
+
 .intro {
   width: 100%;
 }
@@ -65,13 +68,14 @@
   background: #f5f5f5;
   border-radius: 0;
 }
+
 button::after {
   border: none;
 }
 
 .button-hover {
   /*点击后样式*/
-  background: #F5F5F5;
+  background: #f5f5f5;
 }
 
 .signUp {
@@ -90,6 +94,11 @@ button {
   padding: 25rpx 0;
   align-items: center;
   border-bottom: 1px solid rgba(232, 232, 232, 1);
+  justify-content: space-between;
+}
+
+.inputArea.img {
+  flex-direction: column;
 }
 
 .inputArea:last-child {
@@ -99,6 +108,23 @@ button {
 .inputArea.isTextArea {
   flex-direction: column;
   align-items: flex-start;
+}
+
+/* 上传文件 */
+
+.uploadList .inputArea:first-child {
+  border-top: 1px solid rgba(232, 232, 232, 1);
+}
+
+.reupload {
+  width: 120rpx;
+  background: rgba(208, 32, 41, 1);
+  font-size: 24rpx;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 1);
+  margin: 0;
+  padding: 0;
+  margin-left: 15rpx;
 }
 
 textarea {
@@ -114,8 +140,34 @@ textarea {
   font-size: 24rpx;
   font-weight: 500;
   color: rgba(0, 0, 0, 1);
-  height: 1.4rem;
+  /* height: 1.4rem; */
   line-height: 1.4rem;
+  word-break: break-all;
+  max-width: 560rpx;
+}
+
+.imgArea {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.imgArea .preImg {
+  width: 100rpx;
+  margin: 20rpx;
+}
+
+.imgItem {
+  position: relative;
+}
+
+.imgArea .close {
+  width: 40rpx;
+  height: 40rpx;
+  position: absolute;
+  top: 5rpx;
+  right: 20rpx;
 }
 
 input {
