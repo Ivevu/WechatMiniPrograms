@@ -1,2 +1,3 @@
-<!--pages/vote/vote.wxml-->
-<text>pages/vote/vote.wxml</text>
+<view class='list'>
+  <image class='img' src='../offActDetail/assets/title.png' bindtap='toWeb'></image>
+</view>

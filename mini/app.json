@@ -11,6 +11,7 @@
     "pages/offActDetail/offActDetail",
     "pages/signUp/signUp",
     "pages/logs/logs",
+    "pages/link/link",
     "components/recruitment-list/recruitment-list"
   ],
   "window": {

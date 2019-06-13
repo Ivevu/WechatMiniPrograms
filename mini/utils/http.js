@@ -20,9 +20,7 @@ class Http {
       wx.request({
         url: url,
         method: 'GET',
-        data: {
-          params
-        },
+        data: params,
         success: (result) => {
           if (result.statusCode == 200) {
             resolve(result);
@@ -48,6 +46,9 @@ class Http {
         url: url,
         method: 'POST',
         data: params,
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
         success: (result) => {
           if (result.statusCode == 200) {
             resolve(result);

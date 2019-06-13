@@ -16,5 +16,6 @@ export const api = {
 
   upload: `${domain}/api/we/upload`, // 文件上传接口
   userContribute: `${domain}/api/userContribute`, // 提交征稿 
-
+  userContributeList: `${domain}/api/userContribute/list`, // 提交征稿 
+  like: `${domain}/api/activity/like`, // 点赞 取消点赞接口
 }

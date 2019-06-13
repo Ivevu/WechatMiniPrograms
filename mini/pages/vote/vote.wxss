@@ -1,1 +1,8 @@
-/* pages/vote/vote.wxss */
+.img{
+  height: 345rpx;
+  width: 690rpx;
+  border-radius:20rpx;
+}
+.list {
+  padding: 30rpx;
+}

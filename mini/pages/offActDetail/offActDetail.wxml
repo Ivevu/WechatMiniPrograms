@@ -21,7 +21,11 @@
         <text>截至报名时间：</text>
         <text class='value'>{{detail.deadline}}</text>
       </view>
-      <view class='likes'>
+      <view class='likes' bindtap='doLike' wx:if="{{type==2}}">
+        <image mode="{{mode}}" class='icon' src="{{likeStatus}}" />
+        <text>{{detail.baseLikeNum + detail.realLikeNum}}</text>
+      </view>
+      <view class='likes' wx:if="{{type==1}}">
         <block wx:for="{{detail.likeNum}}" wx:key="index">
           <image mode="{{mode}}" class='icon' src="./assets/fire.png" />
         </block>
@@ -31,6 +35,22 @@
   <!-- 说明 -->
   <view class='bg'>
     <image wx:if="{{showRule}}" mode='{{mode}}' class='intro' src='{{detail.detailImg}}'></image>
+  </view>
+
+  <!-- 征稿信息 -->
+  <view class='recInfo' wx:if="{{type==2}}">
+    <view class='recDetailTile'>投稿详情</view>
+    <view class="section">
+      <scroll-view scroll-y bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+        <view class='item' wx:for="{{recList}}" wx:key="index">
+          <view class='left'>
+            <image class='avatar' src='{{item.headImg}}'></image>
+            <text class='nickName'>{{item.nickName}}</text>
+          </view>
+          <view class='time'>{{item.time}}投出自己的作品</view>
+        </view>
+      </scroll-view>
+    </view>
   </view>
   <!-- 报名 -->
   <form wx:if="{{!showRule}}" bindsubmit='formSubmit'>
@@ -145,7 +165,7 @@
 
   <view wx:if="{{type==2 && showRule}}" class='footer'>
     <button open-type='share' class='common share'>分享给好友</button>
-    <button class='common signUp' wx:if="{{userInfo && !overstayed && type==2}}" bindtap='toContribute'>我要投稿</button>
+    <button class="common signUp {{hasSignUp?'':'disabled'}}" wx:if="{{userInfo && !overstayed && type==2}}" bindtap='toContribute'>{{hasSignUp?"我要投稿":"已投稿"}}</button>
   </view>
 
 

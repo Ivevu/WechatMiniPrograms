@@ -28,11 +28,8 @@ Page({
     const index = e.currentTarget.dataset.index;
     switch (index) {
       case 1:
-        wx.showModal({
-          title: '',
-          content: '功能暂未开放',
-          showCancel: false,
-          confirmText: '好的'
+        wx.navigateTo({
+          url: `../recruitment/recruitment?path="my"`
         })
         break;
       case 2:
@@ -43,7 +40,7 @@ Page({
           confirmText: '好的'
         })
         // wx.navigateTo({
-        //   url: `../recruitment/recruitment`
+        //   url: `../vote/vote`
         // })
         break;
       default:
@@ -113,13 +110,11 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
-  },
+  onLoad: function(options) {},
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
-  },
+  onReady: function() {},
 
   /**
    * 生命周期函数--监听页面显示

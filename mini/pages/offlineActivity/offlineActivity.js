@@ -38,7 +38,8 @@ Page({
     wx.request({
       url: api.enrolment,
       data: {
-        openId: app.globalData.openId
+        openId: app.globalData.openId,
+        type: 1
       },
       success: res => {
         if (!res.data.data) return;

@@ -1,6 +1,7 @@
 import {
   api
 } from '../../config/config.js';
+const app = getApp();
 
 Page({
   data: {
@@ -14,11 +15,12 @@ Page({
     });
   },
   // 获取线下活动列表
-  getActivityList(type) {
+  getActivityList(type, openId) {
     wx.request({
       url: api.list,
       data: {
-        type: type
+        type: type,
+        openId
       },
       success: res => {
         if (!res.data.data) return;
@@ -42,6 +44,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    this.getActivityList(2);
+    if (options.path) {
+      this.getActivityList(2, app.globalData.openId)
+    } else {
+      this.getActivityList(2);
+    }
   },
 })

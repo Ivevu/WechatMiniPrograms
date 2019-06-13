@@ -50,6 +50,9 @@ Page({
     timer: 0,
     isPost: false,
     hasUploadImg: false, //true已经表示上传图片
+    recList: [],
+    currentPage: 1,
+    likeStatus: './assets/like.png'
   },
 
   // 提交表单
@@ -175,14 +178,7 @@ Page({
       success: res => {
         if (!!res.data.data) {
           let formList = res.data.data;
-          formList.forEach(item => {
-            item.isActive = true;
-            if (parseInt(item.gender) === 1) {
-              item.genderPlaceHolder = '男';
-            } else {
-              item.genderPlaceHolder = '女';
-            }
-          });
+          formList = this.tranlateGenderType(formList);
           this.setData({
             formList: formList,
             hasSignUp: false,
@@ -191,6 +187,18 @@ Page({
         }
       }
     });
+  },
+  tranlateGenderType(formList) {
+    formList.forEach(item => {
+      item.isActive = true;
+      if (parseInt(item.gender) === 1) {
+        item.genderPlaceHolder = '男';
+      } else {
+        item.genderPlaceHolder = '女';
+      }
+    });
+
+    return formList;
   },
   // 我要报名
   signUp() {
@@ -203,14 +211,7 @@ Page({
       success: res => {
         if (!!res.data.data) {
           let formList = res.data.data;
-          formList.forEach(item => {
-            item.isActive = true;
-            if (parseInt(item.gender) === 1) {
-              item.genderPlaceHolder = '男';
-            } else {
-              item.genderPlaceHolder = '女';
-            }
-          });
+          formList = this.tranlateGenderType(formList);
           this.setData({
             formList: formList,
             hasSignUp: false,
@@ -226,12 +227,10 @@ Page({
   },
   // 我要投稿
   toContribute() {
-    if (this.data.showRule) {
+    if (this.data.showRule && this.data.hasSignUp) {
       this.setData({
         showRule: false
       });
-    } else { // 提交表单
-
     }
   },
   /**
@@ -672,6 +671,71 @@ Page({
     });
   },
 
+  /**
+   * @description 判断用户是否报名征稿活动
+   */
+  getConStatus() {
+    const params = {
+      openId: app.globalData.openId,
+      activityId: this.data.activityId
+    }
+    return new Promise((resolve, reject) => {
+      http
+        ._get(api.userContribute, params)
+        .then(res => {
+          const data = res.data.data;
+          if (data) { // 已报名
+            this.setData({
+              hasSignUp: false,
+            });
+            resolve(data);
+          }
+        });
+    });
+  },
+  /** 
+   * @description 点赞或取消点赞
+   */
+  doLike() {
+    const params = {
+      openId: app.globalData.openId,
+      activityId: parseInt(this.data.activityId),
+      type: this.data.likeStatus == './assets/like-active.png' ? 2 : 1
+    }
+    http
+      ._post(api.like, params)
+      .then(res => {
+        console.log(res.data.data, res.data.msg)
+        if (res.data.code == 200) {
+          if (res.data.data == 2) { // 取消点赞成功
+            this.setData({
+              likeStatus: './assets/like.png'
+            });
+          } else if (res.data.data == 1) {
+            this.setData({
+              likeStatus: './assets/like-active.png'
+            });
+          }
+          this.getActDetail(this.data.activityId, this.data.type);
+        };
+      });
+  },
+  /** 
+   * @description 当前点赞状态
+   */
+  getLikeStatus() {
+    return new Promise((resolve, reject) => {
+      const params = {
+        openId: app.globalData.openId,
+        activityId: parseInt(this.data.activityId),
+      }
+      http
+        ._get(api.like, params)
+        .then(res => {
+          resolve(res);
+        });
+    });
+  },
   /** 
    * 获取用户信息
    */
@@ -723,6 +787,36 @@ Page({
       });
     }
     this.getActDetail(options.id, options.type);
-    this.getSignUpList();
+    if (options.type == 1) {
+      this.getSignUpList();
+    } else {
+      this.getConStatus().then(res => {
+        const params = {
+          activityId: this.data.activityId,
+          pageSize: 10,
+          pageNum: this.data.currentPage
+        }
+        http
+          ._get(api.userContributeList, params)
+          .then(res => {
+            let data = res.data.data.list;
+            data.forEach(item => {
+              const temp = item.contributeTime.substring(0, 10).split('-');
+              if (item.nickName.length > 6) {
+                item.nickName = item.nickName.substring(0, 6) + '...'
+              }
+              item.time = temp[0] + '年' + temp[1] + '月' + temp[2] + '号';
+            })
+            this.setData({
+              recList: data
+            })
+          })
+      });
+      this.getLikeStatus().then(res => {
+        this.setData({
+          likeStatus: res.data.data == 2 ? './assets/like.png' : './assets/like-active.png'
+        });
+      })
+    }
   },
 });

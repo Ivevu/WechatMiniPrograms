@@ -83,6 +83,10 @@ button::after {
   background: #d02029;
 }
 
+.signUp.disabled {
+  background: #bfbfbf;
+}
+
 .ensure {
   width: 216rpx;
   height: 60rpx;
@@ -255,8 +259,9 @@ picker {
 .pop .text {
   padding: 50rpx 0;
 }
+
 .pop .text.isActive {
-  padding: 40rpx 0rpx 20rpx 0;
+  padding: 30rpx 0rpx 10rpx 0;
 }
 
 .pop .progress {
@@ -267,4 +272,53 @@ picker {
   font-size: 24rpx;
   font-weight: 500;
   padding-bottom: 10rpx;
+}
+
+/* 投稿详情列表 */
+
+.recInfo {
+  padding: 50rpx 0 10rpx 0;
+}
+
+.recDetailTile {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1);
+  line-height: 42rpx;
+  letter-spacing: 1rpx;
+}
+
+.section .avatar {
+  width: 55rpx;
+  height: 55rpx;
+  border-radius: 50%;
+}
+
+.section .item {
+  display: flex;
+  padding: 12.5rpx 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section .left {
+  display: flex;
+  align-items: center;
+}
+
+.section .nickName {
+  padding-left: 30rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: rgba(208, 32, 41, 1);
+  line-height: 33rpx;
+  letter-spacing: 3rpx;
+}
+
+.section .time {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: rgba(156, 156, 156, 1);
+  line-height: 33rpx;
+  letter-spacing: 3rpx;
 }
