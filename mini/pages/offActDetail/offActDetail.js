@@ -1,7 +1,10 @@
 import {
   api
 } from '../../config/config.js';
+import Http from '../../utils/http.js';
+
 const app = getApp();
+const http = new Http();
 
 Page({
   data: {
@@ -40,19 +43,39 @@ Page({
     overstayed: false, // 活动已过期
     openId: '',
     type: 1, // 1 表示线下活动 2表示征稿活动
+    fileTempPaths: [],
+    uploading: false,
+    uploadPercent: 0,
+    uploadDone: false,
+    timer: 0,
+    isPost: false,
+    hasUploadImg: false, //true已经表示上传图片
   },
 
   // 提交表单
   formSubmit(e) {
+    if (!this.vertifyForm(e)) {
+      return false;
+    } else {
+      this.data.type == 1 ? this.checkAgain() : this.postRecForm();
+    }
+  },
+
+  /**
+   * 检验表单
+   */
+  vertifyForm(e) {
     const params = e.detail.value;
     let isError = true;
     let isErrPhone = true;
     //校验表单
     Object.keys(params).forEach(item => {
-      if (!params[item] && item.replace(/[0-9]/g, '') !== 'remark' && item.replace(/[0-9]/g, '') !== 'address') {
-        isError = true;
-      } else {
-        isError = false;
+      if (item.replace(/[0-9]/g, '') !== 'remark' && item.replace(/[0-9]/g, '') !== 'address') { // 不为 备注  地址
+        if (!params[item]) {
+          isError = true;
+        } else {
+          isError = false;
+        }
       }
     });
 
@@ -61,7 +84,6 @@ Page({
       this.showModal('请完善表单');
       return false;
     };
-
     this.data.formList.forEach(item => {
       const phoneRegxp = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
       if (!phoneRegxp.test(item.phone)) {
@@ -79,9 +101,9 @@ Page({
       });
       return false;
     }
-
-    this.checkAgain();
+    return true;
   },
+
   // 二次确认
   checkAgain() {
     wx.showModal({
@@ -204,10 +226,72 @@ Page({
   },
   // 我要投稿
   toContribute() {
-    this.setData({
-      showRule: false
-    });
+    if (this.data.showRule) {
+      this.setData({
+        showRule: false
+      });
+    } else { // 提交表单
+
+    }
   },
+  /**
+   * 提交征稿表单
+   */
+  postRecForm(e) {
+    if (!this.data.hasUploadImg) {
+      this.showModal('请先确认上传图片');
+      return false;
+    }
+    let list = this.data.uploadFileList;
+    let orDocumentList = [];
+    list.forEach((item, index) => {
+      if (index !== 2) {
+        if (!item.finalName) return;
+        orDocumentList.push({
+          filename: item.finalName,
+          path: item.finalPath,
+        });
+      } else {
+        if (!list[2].hasOwnProperty('tempFiles') || !list[2].tempFiles[0]) return false
+        list[2].tempFiles.forEach(file => {
+          if (file.finalName) {
+            orDocumentList.push({
+              filename: file.finalName,
+              path: file.finalPath
+            });
+          }
+        });
+      }
+    });
+    let form = this.data.formList[0];
+    form.orDocumentList = orDocumentList;
+    form.openId = app.globalData.openId,
+      form.activityId = this.data.activityId
+    http
+      ._post(api.userContribute, form)
+      .then(res => {
+        if (res.data.code == 200) {
+          this.setData({
+            uploading: true,
+            uploadDone: true,
+            isPost: true
+          })
+        } else {
+          wx.showToast({
+            title: '网络错误',
+            duration: 1000,
+            icon: "none"
+          });
+        }
+      }).catch(error => {
+        wx.showToast({
+          title: '网络错误',
+          duration: 1000,
+          icon: "none"
+        });
+      });
+  },
+
   // 新增报名
   add() {
     const form = {
@@ -225,6 +309,82 @@ Page({
     newList.push(form);
     this.setData({
       formList: newList
+    });
+  },
+
+  /**
+   * @description 隐藏弹窗
+   */
+  hidePop() {
+    this.setData({
+      uploading: false,
+      uploadDone: false
+    });
+  },
+
+  /**
+   * @description 上传文件到服务器
+   * @params {fileType} 1图片 2文档
+   * @params {fileName} 图片/文档名称
+   * @params {filePath} 图片/文档临时路径
+   * @params {type} 1 PDF 2 word
+   */
+  uploadToServer(fileType, fileName, filePath, type) {
+    // 显示弹窗
+    this.setData({
+      uploading: true,
+      uploadDone: false
+    });
+    // 上传
+    wx.uploadFile({
+      url: api.upload,
+      filePath: filePath,
+      name: "file",
+      header: {
+        "Content-Type": "multipart/form-data"
+      },
+      formData: {
+        file: 'file',
+        fileType: fileType,
+        fileName: fileName
+      },
+      success: (res) => {
+        const data = JSON.parse(res.data);
+        console.log(data);
+        if (data.code == 200) { //文件上传成功
+          let list = this.data.uploadFileList;
+          if (fileType == 1) {
+            let imgList = list[2].tempFiles;
+            imgList.forEach(item => {
+              item.finalName = data.data.name;
+              item.finalPath = data.data.path;
+            });
+            this.setData({
+              uploadFileList: list,
+            });
+          } else { //pdf word
+            if (type == 0 || type == 1) {
+              list[type].finalName = data.data.name;
+              list[type].finalPath = data.data.path;
+            }
+          }
+          this.setData({
+            uploadPercent: 100
+          });
+
+          if (this.data.timer) {
+            clearTimeout(this.data.timer)
+          }
+          let timer = setTimeout(() => {
+            this.setData({
+              uploadDone: true
+            });
+          }, 500);
+          this.setData({
+            timer: timer
+          });
+        }
+      }
     });
   },
 
@@ -250,15 +410,19 @@ Page({
       success: (res) => {
         const filename = res.tempFiles[0].name;
         const filesize = res.tempFiles[0].size;
+        const path = res.tempFiles[0].path;
+
         if (filesize >= 1024 * 5 * 1024) {
           this.showModal('请上传不超过5M的文件');
           return false;
         }
+        this.uploadToServer(2, filename, path, type);
         if (type == 1) {
           Object.assign(uploadFileList[1], {
             filename: filename,
             fileType: '征稿材料(PDF)',
             type: 'pdf',
+            path: path,
             isUpload: true
           })
         } else {
@@ -266,6 +430,7 @@ Page({
             filename: filename,
             fileType: '征稿材料(Word)',
             type: 'word',
+            path: path,
             isUpload: true
           })
         }
@@ -295,6 +460,12 @@ Page({
   // 重新上传照片
   reloadImg() {
     let uploadFileList = this.data.uploadFileList;
+    // if (this.data.hasUploadImg) { // 清空
+    //   uploadFileList[2].tempFiles = [];
+    //   this.setData({
+    //     uploadFileList: uploadFileList
+    //   });
+    // }
     let length = uploadFileList[2].tempFiles ? uploadFileList[2].tempFiles.length : 0;
 
     wx.chooseImage({
@@ -319,6 +490,20 @@ Page({
         });
       }
     })
+  },
+
+  /**
+   * @description 确认上传图片
+   */
+  doUploadImg() {
+    const imgList = this.data.uploadFileList[2].tempFiles;
+    imgList.forEach((imgInfo, index) => {
+      const fileType = `.${imgInfo.path.split('.').pop()}`;
+      this.uploadToServer(1, `${index}${fileType}`, imgInfo.path);
+    });
+    this.setData({
+      hasUploadImg: true
+    });
   },
   // 预览某个图片
   previewImg(e) {
@@ -407,8 +592,8 @@ Page({
     wx.request({
       url: api.activityDetail,
       data: {
-        type: 1,
-        id: 14,
+        type: type,
+        id: id,
       },
       success: res => {
         let detail = res.data.data;

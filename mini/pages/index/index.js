@@ -22,24 +22,7 @@ Page({
     // 线下活动
     offlineActivityList: [],
     // 我要投稿
-    recruitmentList: [{
-        img: '/pages/index/assets/swiper2.png',
-        header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
-        date: '2019-05-21',
-        number: 1999
-      },
-      {
-        img: '/pages/index/assets/swiper2.png',
-        header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
-        date: '2019-05-21',
-        number: 1999
-      }, {
-        img: '/pages/index/assets/swiper2.png',
-        header: '这里是标题这里是标题这里是标题这里是标题这里是标题这里是标题',
-        date: '2019-05-21',
-        number: 1999
-      }
-    ],
+    recruitmentList: [],
     // 我要助力
     helpList: [{
         img: './assets/swiper2.png',
@@ -64,7 +47,7 @@ Page({
     });
   },
 
-  
+
   tapOffAct(e) {
     const id = e.detail.id;
     wx.navigateTo({
@@ -73,8 +56,7 @@ Page({
   },
 
   tapRec(e) {
-    // const id = e.detail.id;
-    const id =0;
+    const id = e.detail.id;
     wx.navigateTo({
       url: `../offActDetail/offActDetail?id=${id}&type=2`
     });
@@ -166,7 +148,17 @@ Page({
         });
         break;
       case 2: // 我要投稿
-
+        if (!res.data.data) return false;
+        res.data.data.forEach(item => {
+          // 首页优先显示的热门活动
+          if (parseInt(item.isPri) === 0 && item.activityState == 1) {
+            list.push(item);
+          };
+          item.deadline = item.deadline.substring(0, 10);
+        });
+        this.setData({
+          recruitmentList: list
+        });
         break;
       default: // 我要助力
         break;

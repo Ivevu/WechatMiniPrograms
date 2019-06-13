@@ -1,5 +1,5 @@
-const domain = 'https://wzhbg.gzmidai.com';
-// const domain = 'http://www.ivevu.cn:8080';
+// const domain = 'https://wzhbg.gzmidai.com';
+const domain = 'http://www.ivevu.cn:8080';
 
 export const api = {
   domain: domain,
@@ -13,4 +13,8 @@ export const api = {
   signUp: `${domain}/api/participant`, //报名接口
   signUpList: `${domain}/api/participant/list`, //报名接口
   enrolment: `${domain}/api/activity/list/enrolment`,
+
+  upload: `${domain}/api/we/upload`, // 文件上传接口
+  userContribute: `${domain}/api/userContribute`, // 提交征稿 
+
 }

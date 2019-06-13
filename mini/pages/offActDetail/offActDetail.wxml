@@ -84,15 +84,19 @@
       </view>
     </view>
     <!-- 底部栏 -->
-    <view class='footer'>
+    <view wx:if="{{type==1}}" class='footer'>
       <button open-type='share' class='common share'>分享给好友</button>
       <button class='common signUp' wx:if="{{hasSignUp}}" form-type="submit">提交</button>
       <button class='common signUp' wx:if="{{!hasSignUp}}" disabled="true">已报名</button>
     </view>
+    <!-- 我要投稿 -->
+    <view wx:if="{{type==2}}" class='footer'>
+      <button class='common signUp' wx:if="{{userInfo && !overstayed && type==2}}" form-type="submit">我要投稿</button>
+    </view>
   </form>
 
   <!--  上传文件列表 -->
-  <view class="section uploadList">
+  <view class="section uploadList" wx:if="{{!showRule}}">
     <!-- word和PDF -->
     <view class="inputArea" wx:for="{{uploadFileList}}" wx:key="index" wx:for-item="file" wx:if="{{file.filename && index !== 2}}">
       <view class='label'>
@@ -103,13 +107,16 @@
     <!-- 图片预览 -->
     <view class="inputArea img">
       <view class='imgArea'>
-        <view class='imgItem' wx:for="{{uploadFileList[2].tempFiles}}" wx:key="index" wx:for-item="tempFile" wx:if="{{tempFile.path}}" >
+        <view class='imgItem' wx:for="{{uploadFileList[2].tempFiles}}" wx:key="index" wx:for-item="tempFile" wx:if="{{tempFile.path}}">
           <image mode='widthFix' class='preImg' src='{{tempFile.path}}' data-index='{{index}}' bindtap='previewImg'></image>
-          <image class='close' src='../../assets/del.png' data-index='{{index}}' bindtap='delImg'></image>
+          <image wx:if="{{!hasUploadImg}}" class='close' src='../../assets/del.png' data-index='{{index}}' bindtap='delImg'></image>
         </view>
         <!-- <text>{{path}}</text> -->
       </view>
-      <button wx:if="{{uploadFileList[2].tempFiles && uploadFileList[2].tempFiles.length<9 && uploadFileList[2].tempFiles.length > 0}}" class='reupload' bindtap='reloadImg'>继续选择</button>
+      <view class='buttonArea'>
+        <button wx:if="{{uploadFileList[2].tempFiles && uploadFileList[2].tempFiles.length<9 && uploadFileList[2].tempFiles.length > 0 && !hasUploadImg}}" class='reupload' bindtap='reloadImg'>继续选择</button>
+        <button wx:if="{{uploadFileList[2].tempFiles && uploadFileList[2].tempFiles.length>0 && !hasUploadImg}}" class='reupload' bindtap='doUploadImg'>确认上传</button>
+      </view>
     </view>
   </view>
 
@@ -134,7 +141,22 @@
     <button class='common signUp' wx:if="{{!userInfo && hasSignUp && !overstayed}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击报名</button>
     <button class='common signUp' wx:if="{{overstayed}}" disabled="true">活动已过期</button>
   </view>
-  <view wx:if="{{type==2}}" class='footer'>
+
+
+  <view wx:if="{{type==2 && showRule}}" class='footer'>
+    <button open-type='share' class='common share'>分享给好友</button>
     <button class='common signUp' wx:if="{{userInfo && !overstayed && type==2}}" bindtap='toContribute'>我要投稿</button>
+  </view>
+
+
+  <!-- 弹窗 -->
+  <view class='pop' wx:if="{{uploading}}">
+    <view class='bg'></view>
+    <view class='box'>
+      <view class="text {{isPost?'isActive': ''}}">{{!uploadDone?"上传中...":isPost?'投稿成功':"上传成功"}}</view>
+      <view class='tip' wx:if="{{isPost}}">若有疑问欢迎致电020-21555</view>
+      <progress wx:if="{{!uploadDone}}" class='progress' border-radius="8rpx" percent='{{uploadPercent}}' stroke-width='15rpx' activeColor='#D02029'></progress>
+      <button wx:if="{{uploadDone}}" class='ensure' bindtap='hidePop'>确定</button>
+    </view>
   </view>
 </view>

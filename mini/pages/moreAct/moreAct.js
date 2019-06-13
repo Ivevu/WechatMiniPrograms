@@ -8,15 +8,6 @@ Page({
     offlineActivityList: [],
     listOn: [],
     listout: [],
-    nav: [{
-      title: '活动进行中',
-      isActive: true
-    },
-    {
-      title: '活动已结束',
-      isActive: false
-    }
-    ],
     isOff: false
   },
 
@@ -29,7 +20,6 @@ Page({
         url: `../offActDetail/offActDetail?id=${id}&type=1`
       });
     }
-
   },
 
   // 获取线下活动列表
@@ -66,27 +56,4 @@ Page({
   onLoad: function (options) {
     this.getActivityList(1);
   },
-  ontap(e) {
-    const index = e.currentTarget.dataset.index;
-    let nav = this.data.nav;
-    nav[index].isActive = true;
-    nav[1 - index].isActive = false;
-    this.setData({
-      nav: nav
-    });
-    switch (index) {
-      case 1:
-        this.setData({
-          offlineActivityList: this.data.listout,
-          isOff: true
-        });
-        break;
-      default:
-        this.setData({
-          offlineActivityList: this.data.listOn,
-          isOff: false
-        });
-        break;
-    }
-  }
 })

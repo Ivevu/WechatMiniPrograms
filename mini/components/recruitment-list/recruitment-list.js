@@ -30,11 +30,11 @@ Component({
 
   methods: {
     onTap(e) {
-      // const index = e.currentTarget.dataset.index;
-      // const id = this.properties.list[index].id;
+      const index = e.currentTarget.dataset.index;
+      const id = this.properties.list[index].id;
       var myEventDetail = {
-        // id: id,
-        // index: index
+        id: id,
+        index: index
       } // detail对象，提供给事件监听函数
       var myEventOption = {} // 触发事件的选项
       this.triggerEvent('myevent', myEventDetail, myEventOption)

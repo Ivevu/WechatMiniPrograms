@@ -1,1 +1,1 @@
-<recruitment-list list="{{recruitmentList}}" />
+<recruitment-list bindmyevent="tapRec" list="{{recruitmentList}}" />

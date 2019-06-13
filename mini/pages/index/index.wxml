@@ -19,7 +19,7 @@
 </block>
 
 <!-- 线下活动 -->
-<block>
+<!-- <block>
   <view class='title'>
     <view class="h1">线下活动</view>
     <view class="more" bindtap='toMoreOffAct'>
@@ -28,7 +28,7 @@
     </view>
   </view>
   <activity-list bindmyevent="tapOffAct" list="{{offlineActivityList}}" />
-</block>
+</block> -->
 
 <!-- 我要投稿 -->
 <block>

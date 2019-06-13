@@ -7,9 +7,9 @@ class Http {
     wx.showLoading({
       title: '网络异常',
     });
-    setTimeout(()=>{
+    setTimeout(() => {
       wx.hideLoading();
-    },1000);
+    }, 1000);
   }
   /**
    * @description 封装get请求
@@ -19,7 +19,7 @@ class Http {
     return new Promise((resolve, reject) => {
       wx.request({
         url: url,
-        data: 'GET',
+        method: 'GET',
         data: {
           params
         },
@@ -46,10 +46,8 @@ class Http {
     return new Promise((resolve, reject) => {
       wx.request({
         url: url,
-        data: 'POST',
-        data: {
-          params
-        },
+        method: 'POST',
+        data: params,
         success: (result) => {
           if (result.statusCode == 200) {
             resolve(result);
