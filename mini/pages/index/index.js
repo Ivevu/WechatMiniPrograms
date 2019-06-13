@@ -24,19 +24,7 @@ Page({
     // 我要投稿
     recruitmentList: [],
     // 我要助力
-    helpList: [{
-        img: './assets/swiper2.png',
-      },
-      {
-        img: './assets/swiper2.png',
-      },
-      {
-        img: './assets/swiper2.png',
-      },
-      {
-        img: './assets/swiper2.png',
-      },
-    ]
+    helpList: []
   },
   /**
    * 更多线下活动
@@ -161,8 +149,21 @@ Page({
         });
         break;
       default: // 我要助力
+        if (!res.data.data) return false;
+        this.setData({
+          helpList: res.data.data
+        })
         break;
     }
+  },
+  /**
+   * @description 跳往外链
+   */
+  toWeb(e) {
+    const index = e.currentTarget.dataset.index;
+    wx.navigateTo({
+      url: `/pages/link/link?link=${this.data.helpList[index].link}`,
+    })
   },
   // 页面加载
   onLoad: function() {
@@ -175,5 +176,6 @@ Page({
     this.getHotList();
     this.getActivityList(1);
     this.getActivityList(2);
+    this.getActivityList(3);
   },
 })

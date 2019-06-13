@@ -33,15 +33,15 @@ Page({
         })
         break;
       case 2:
-        wx.showModal({
-          title: '',
-          content: '功能暂未开放',
-          showCancel: false,
-          confirmText: '好的'
-        })
-        // wx.navigateTo({
-        //   url: `../vote/vote`
+        // wx.showModal({
+        //   title: '',
+        //   content: '功能暂未开放',
+        //   showCancel: false,
+        //   confirmText: '好的'
         // })
+        wx.navigateTo({
+          url: `../vote/vote`
+        })
         break;
       default:
         wx.navigateTo({

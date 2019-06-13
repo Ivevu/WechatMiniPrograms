@@ -43,13 +43,13 @@
 </block>
 
 <!-- 我要投稿 -->
-<!-- <block>
+<block>
   <view class='title'>
     <view class="h1">我要助力</view>
   </view>
   <view class='offlineActivity helpList'>
     <block wx:for="{{helpList}}" wx:key="index">
-      <image src="{{item.img}}" class="helpItem" />
+      <image src="{{item.coverImg}}" class="helpItem" data-index='{{index}}' bindtap='toWeb' />
     </block>
   </view>
-</block> -->
+</block>
