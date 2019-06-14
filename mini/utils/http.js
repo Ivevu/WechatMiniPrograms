@@ -40,15 +40,15 @@ class Http {
    * @description 封装get请求
    * @params 请求参数
    */
-  _post(url, params) {
+  _post(url, params, header = {
+    'content-type': 'application/x-www-form-urlencoded'
+  }) {
     return new Promise((resolve, reject) => {
       wx.request({
         url: url,
         method: 'POST',
         data: params,
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
+        header: header,
         success: (result) => {
           if (result.statusCode == 200) {
             resolve(result);

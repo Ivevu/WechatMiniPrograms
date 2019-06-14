@@ -60,7 +60,7 @@ Page({
     if (!this.vertifyForm(e)) {
       return false;
     } else {
-      this.data.type == 1 ? this.checkAgain() : this.postRecForm();
+      this.data.type == 1 ? this.checkAgain() : this.checkRecForm(e);
     }
   },
 
@@ -236,11 +236,7 @@ Page({
   /**
    * 提交征稿表单
    */
-  postRecForm(e) {
-    if (!this.data.hasUploadImg) {
-      this.showModal('请先确认上传图片');
-      return false;
-    }
+  checkRecForm(e) {
     let list = this.data.uploadFileList;
     let orDocumentList = [];
     list.forEach((item, index) => {
@@ -264,12 +260,66 @@ Page({
     });
     let form = this.data.formList[0];
     form.orDocumentList = orDocumentList;
-    form.openId = app.globalData.openId,
-      form.activityId = this.data.activityId
+    form.openId = app.globalData.openId;
+    form.activityId = this.data.activityId;
+
+    if (orDocumentList.length < 1) { // 没附件
+      wx.showModal({
+        title: '您未上传文件材料，是否上传？',
+        content: '提交后不可更改',
+        cancelText: '去上传',
+        confirmText: '提交',
+        confirmColor: '#F44336',
+        success: (res) => {
+          if (res.confirm) {
+            // 表单正确，请求上传
+            wx.showLoading({
+              title: '数据上传中...',
+            });
+            this.postRecForm(form);
+          }
+        }
+      });
+    } else if (this.data.uploadFileList[2].hasOwnProperty('tempFiles') && this.data.uploadFileList[2].tempFiles.length > 0) {
+      if (!this.data.hasUploadImg) {
+        this.showModal('请先确认上传图片');
+        return false;
+      }
+      this.checkRecAgain(form);
+    } else {
+      this.checkRecAgain(form);
+    }
+  },
+  checkRecAgain(form) {
+    wx.showModal({
+      title: '请确认征稿信息内容',
+      content: '提交后不可更改',
+      cancelText: '再次确认',
+      confirmText: '提交',
+      confirmColor: '#F44336',
+      success: (res) => {
+        if (res.confirm) {
+          // 表单正确，请求上传
+          wx.showLoading({
+            title: '数据上传中...',
+          });
+          this.postRecForm(form);
+        }
+      }
+    });
+  },
+  /**
+   * @description 提交征稿信息
+   */
+  postRecForm(form) {
+    const header = {
+      'content-type': 'application/json'
+    };
     http
-      ._post(api.userContribute, form)
+      ._post(api.userContribute, form, header)
       .then(res => {
         if (res.data.code == 200) {
+          wx.hideLoading();
           this.setData({
             uploading: true,
             uploadDone: true,
@@ -290,7 +340,6 @@ Page({
         });
       });
   },
-
   // 新增报名
   add() {
     const form = {
@@ -315,10 +364,17 @@ Page({
    * @description 隐藏弹窗
    */
   hidePop() {
-    this.setData({
-      uploading: false,
-      uploadDone: false
-    });
+    if (this.data.isPost) {
+      wx.navigateTo({
+        url: '/pages/recruitment/recruitment',
+      });
+    } else {
+      this.setData({
+        uploading: false,
+        uploadDone: false
+      });
+    }
+
   },
 
   /**
@@ -459,12 +515,6 @@ Page({
   // 重新上传照片
   reloadImg() {
     let uploadFileList = this.data.uploadFileList;
-    // if (this.data.hasUploadImg) { // 清空
-    //   uploadFileList[2].tempFiles = [];
-    //   this.setData({
-    //     uploadFileList: uploadFileList
-    //   });
-    // }
     let length = uploadFileList[2].tempFiles ? uploadFileList[2].tempFiles.length : 0;
 
     wx.chooseImage({
@@ -688,8 +738,8 @@ Page({
             this.setData({
               hasSignUp: false,
             });
-            resolve(data);
           }
+          resolve(data);
         });
     });
   },
@@ -802,7 +852,7 @@ Page({
             let data = res.data.data.list;
             data.forEach(item => {
               const temp = item.contributeTime.substring(0, 10).split('-');
-              if (item.nickName.length > 6) {
+              if (item.nickName && item.nickName.length > 6) {
                 item.nickName = item.nickName.substring(0, 6) + '...'
               }
               item.time = temp[0] + '年' + temp[1] + '月' + temp[2] + '号';

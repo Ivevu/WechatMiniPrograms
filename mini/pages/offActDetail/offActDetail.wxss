@@ -300,6 +300,12 @@ picker {
   align-items: center;
   justify-content: space-between;
 }
+.section .empty {
+  text-align: center;
+  font-size: 28rpx;
+  padding-top: 30rpx;
+  color: #333333;
+}
 
 .section .left {
   display: flex;

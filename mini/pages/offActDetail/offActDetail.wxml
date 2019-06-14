@@ -38,7 +38,7 @@
   </view>
 
   <!-- 征稿信息 -->
-  <view class='recInfo' wx:if="{{type==2}}">
+  <view class='recInfo' wx:if="{{type==2 && showRule}}">
     <view class='recDetailTile'>投稿详情</view>
     <view class="section">
       <scroll-view scroll-y bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
@@ -49,6 +49,7 @@
           </view>
           <view class='time'>{{item.time}}投出自己的作品</view>
         </view>
+        <view wx:if="{{recList.length<1}}" class='empty'>暂无投稿</view>
       </scroll-view>
     </view>
   </view>
@@ -166,6 +167,7 @@
   <view wx:if="{{type==2 && showRule}}" class='footer'>
     <button open-type='share' class='common share'>分享给好友</button>
     <button class="common signUp {{hasSignUp?'':'disabled'}}" wx:if="{{userInfo && !overstayed && type==2}}" bindtap='toContribute'>{{hasSignUp?"我要投稿":"已投稿"}}</button>
+    <button class='common signUp' wx:if="{{!userInfo && hasSignUp && !overstayed &&type==2}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击投稿</button>
   </view>
 
 
