@@ -4,13 +4,8 @@
   <!-- 文字信息 -->
   <view class='content'>
     <view class='title' wx:if="{{detail.title}}">{{detail.title}}</view>
-    <view class='address' wx:if="{{detail.address}}">
-      <text>活动地址：</text>
-      <text class='value'>{{detail.address}}</text>
-    </view>
-    <view class='host' wx:if="{{detail.organizer}}">
-      <text>主办方：</text>
-      <text class='value'>{{detail.organizer}}</text>
+    <view class='host' wx:if="{{detail.baseInfo}}">
+      <text class='value'>{{detail.baseInfo}}</text>
     </view>
     <view class='time' wx:if="{{detail.startTime && detail.endTime}}">
       <text>时间：</text>
@@ -23,7 +18,7 @@
       </view>
       <view class='likes' bindtap='doLike' wx:if="{{type==2}}">
         <image mode="{{mode}}" class='icon' src="{{likeStatus}}" />
-        <text>{{detail.baseLikeNum + detail.realLikeNum}}</text>
+        <text>{{detail.baseLikeNum?detail.baseLikeNum:0 + detail.realLikeNum}}</text>
       </view>
       <view class='likes' wx:if="{{type==1}}">
         <block wx:for="{{detail.likeNum}}" wx:key="index">
@@ -34,7 +29,8 @@
   </view>
   <!-- 说明 -->
   <view class='bg'>
-    <image wx:if="{{showRule}}" mode='{{mode}}' class='intro' src='{{detail.detailImg}}'></image>
+    <!-- <image wx:if="{{showRule}}" mode='{{mode}}' class='intro' src='{{detail.detailImg}}'></image> -->
+    <rich-text wx:if="{{showRule}}" class='intro' nodes="{{detail.detailImg}}"></rich-text>
   </view>
 
   <!-- 征稿信息 -->
@@ -55,20 +51,20 @@
   </view>
   <!-- 报名 -->
   <form wx:if="{{!showRule}}" bindsubmit='formSubmit'>
-    <view class="section" wx:for="{{formList}}" wx:key="index" data-formId='{{index}}' wx:for-item="form" bindtap='getFormId'>
+    <view class="section" wx:for="{{formList}}" wx:key="index" wx:for-index="formId" wx:for-item="form">
       <view class="inputArea">
         <view class='label'>
           <text>姓名</text>
           <text style='color:red'> *</text>
         </view>
-        <input placeholder="请输入您的姓名" disabled='{{!hasSignUp}}' name='name{{index}}' data-index='name{{index}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.name}}' />
+        <input placeholder="请输入您的姓名" disabled='{{!hasSignUp}}' name='name{{formId}}' data-formId='{{formId}}' data-index='name{{formId}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.name}}' />
       </view>
       <view class="inputArea">
         <view class='label'>
           <text>性别</text>
           <text style='color:red'> *</text>
         </view>
-        <picker disabled='{{!hasSignUp}}' value="{{form.gender}}" name='gender{{index}}' data-index='gender{{index}}' bindblur="keepForm" range="{{gender}}" bindchange="getGenderType">
+        <picker disabled='{{!hasSignUp}}' value="{{form.gender}}" name='gender{{formId}}' data-formId='{{formId}}' data-index='gender{{formId}}' bindblur="keepForm" range="{{gender}}" bindchange="getGenderType">
           <view class="placeholder {{form.isActive?'isActive':''}}">
             {{form.genderPlaceHolder}}
           </view>
@@ -79,29 +75,75 @@
           <text>单位</text>
           <text style='color:red'> *</text>
         </view>
-        <input placeholder="请输入您的单位名称" disabled='{{!hasSignUp}}' name='company{{index}}' data-index='company{{index}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.company}}' />
+        <input placeholder="请输入您的单位名称" disabled='{{!hasSignUp}}' name='company{{formId}}' data-formId='{{formId}}' data-index='company{{formId}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.company}}' />
       </view>
       <view class="inputArea">
         <view class='label'>
           <text>职务</text>
           <text style='color:red'> *</text>
         </view>
-        <input placeholder="请输入您的职务名称" disabled='{{!hasSignUp}}' name='post{{index}}' data-index='post{{index}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.post}}' />
+        <input placeholder="请输入您的职务名称" disabled='{{!hasSignUp}}' name='post{{formId}}' data-formId='{{formId}}' data-index='post{{formId}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.post}}' />
       </view>
       <view class="inputArea">
         <view class='label'>
           <text>电话</text>
           <text style='color:red'> *</text>
         </view>
-        <input placeholder="请输入您的电话号码" disabled='{{!hasSignUp}}' type='number' data-index='phone{{index}}' bindblur="keepForm" name='phone' maxlength='11' placeholder-class="placeholder" value='{{form.phone}}' />
+        <input placeholder="请输入您的电话号码" disabled='{{!hasSignUp}}' type='number' data-formId='{{formId}}' data-index='phone{{formId}}' bindblur="keepForm" name='phone{{formId}}' maxlength='11' placeholder-class="placeholder" value='{{form.phone}}' />
       </view>
       <view class="inputArea">
         <text class='label'>地址</text>
-        <input placeholder="{{!hasSignUp?'无':'请输入您的地址'}}" disabled='{{!hasSignUp}}' name='address{{index}}' data-index='address{{index}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.address}}' />
+        <input placeholder="{{!hasSignUp?'无':'请输入您的地址'}}" disabled='{{!hasSignUp}}' name='address{{formId}}' data-formId='{{formId}}' data-index='address{{formId}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.address}}' />
       </view>
       <view wx:if="{{type==1}}" class="inputArea isTextArea}}">
         <text class='label'>备注</text>
-        <textarea name='remark{{index}}' disabled='{{!hasSignUp}}' bindblur="keepForm" data-index='remark{{index}}' value='{{form.remark}}'></textarea>
+        <textarea name='remark{{index}}' disabled='{{!hasSignUp}}' bindblur="keepForm" data-formId='{{formId}}' data-index='remark{{formId}}' value='{{form.remark}}'></textarea>
+      </view>
+       <!--  已经上传的文件列表 -->
+      <view class="section uploadList" wx:if="{{!hasSignUp}}">
+        <!-- word和PDF -->
+        <view class="inputArea" wx:for="{{form.orDocumentList}}" wx:key="index" wx:for-item="file" wx:if="{{file.fileType !== 2}}">
+          <view class='label' style='max-width:none'>
+            <text>{{file.fileType==0?'Word材料':'PDF材料'}}：{{file.filename}}</text>
+          </view>
+        </view>
+        <!-- 图片预览 -->
+        <view class="inputArea img">
+          <view class='imgArea'>
+            <view class='imgItem' wx:for="{{form.orDocumentList}}" wx:key="index" wx:for-item="file" wx:if="{{file.fileType == 2}}">
+              <image mode='widthFix' class='preImg' src='{{file.path}}' data-index='{{index}}' data-formId='{{formId}}' data-online='online' bindtap='previewImg'></image>
+              <text>{{tempFile.path}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!--  上传文件列表 -->
+      <view class="section uploadList" wx:if="{{!showRule && hasSignUp}}">
+        <!-- word和PDF -->
+        <view class="inputArea" wx:for="{{form.uploadFileList}}" wx:key="index" wx:for-item="file" wx:if="{{file.filename && index !== 2}}">
+          <view class='label'>
+            <text>{{file.fileType}}：{{file.filename}}</text>
+          </view>
+          <button class='reupload' data-formId='{{formId}}' data-type='{{file.type}}' bindtap='reupload'>重新上传</button>
+        </view>
+        <!-- 图片预览 -->
+        <view class="inputArea img">
+          <view class='imgArea'>
+            <view class='imgItem' wx:for="{{form.uploadFileList[2].tempFiles}}" wx:key="index" wx:for-item="tempFile" wx:if="{{tempFile.path}}">
+              <image mode='widthFix' class='preImg' src='{{tempFile.path}}' data-index='{{index}}' data-formId='{{formId}}' bindtap='previewImg'></image>
+              <image wx:if="{{!form.uploadFileList[2].hasUploadImg}}" class='close' src='../../assets/del.png' data-formId='{{formId}}' data-index='{{index}}' bindtap='delImg'></image>
+            </view>
+          </view>
+          <view class='buttonArea'>
+            <button wx:if="{{form.uploadFileList[2].tempFiles.length<9 && form.uploadFileList[2].tempFiles.length > 0 && !form.uploadFileList[2].hasUploadImg}}" class='reupload' data-formId='{{formId}}' bindtap='uploadImg'>继续选择</button>
+            <button data-formId='{{formId}}' data-index='{{index}}' wx:if="{{form.uploadFileList[2].tempFiles.length>0 && !form.uploadFileList[2].hasUploadImg}}" class='reupload' bindtap='doUploadImg'>确认上传</button>
+          </view>
+        </view>
+      </view>
+      <!-- 上传文件 -->
+      <view wx:if="{{!item.isLocalUploaded}}" wx:for="{{form.uploadFileList}}" wx:key="index" wx:for-index="optionId" data-formId='{{formId}}' data-optionId='{{optionId}}' bindtap='uploadFile' class="add">
+        <image class="addIcon" src="./assets/add.png"></image>
+        <view class="text">{{item.desc}}</view>
       </view>
     </view>
     <!-- 底部栏 -->
@@ -116,44 +158,11 @@
     </view>
   </form>
 
-  <!--  上传文件列表 -->
-  <view class="section uploadList" wx:if="{{!showRule}}">
-    <!-- word和PDF -->
-    <view class="inputArea" wx:for="{{uploadFileList}}" wx:key="index" wx:for-item="file" wx:if="{{file.filename && index !== 2}}">
-      <view class='label'>
-        <text>{{file.fileType}}：{{file.filename}}</text>
-      </view>
-      <button class='reupload' data-type='{{file.type}}' bindtap='reupload'>重新上传</button>
-    </view>
-    <!-- 图片预览 -->
-    <view class="inputArea img">
-      <view class='imgArea'>
-        <view class='imgItem' wx:for="{{uploadFileList[2].tempFiles}}" wx:key="index" wx:for-item="tempFile" wx:if="{{tempFile.path}}">
-          <image mode='widthFix' class='preImg' src='{{tempFile.path}}' data-index='{{index}}' bindtap='previewImg'></image>
-          <image wx:if="{{!hasUploadImg}}" class='close' src='../../assets/del.png' data-index='{{index}}' bindtap='delImg'></image>
-        </view>
-        <!-- <text>{{path}}</text> -->
-      </view>
-      <view class='buttonArea'>
-        <button wx:if="{{uploadFileList[2].tempFiles && uploadFileList[2].tempFiles.length<9 && uploadFileList[2].tempFiles.length > 0 && !hasUploadImg}}" class='reupload' bindtap='reloadImg'>继续选择</button>
-        <button wx:if="{{uploadFileList[2].tempFiles && uploadFileList[2].tempFiles.length>0 && !hasUploadImg}}" class='reupload' bindtap='doUploadImg'>确认上传</button>
-      </view>
-    </view>
-  </view>
-
   <!-- 新增报名 -->
   <view wx:if="{{!showRule && hasSignUp && type==1}}" class="add" bindtap='add'>
     <image class="addIcon" src="./assets/add.png"></image>
     <view class="text">新增报名</view>
   </view>
-
-  <!-- 上传文件 -->
-  <block wx:if="{{!showRule && hasSignUp && type==2}}">
-    <view wx:if="{{!item.isUpload}}" wx:for="{{uploadFileList}}" wx:key="index" class="add" data-index='{{index}}' bindtap='uploadFile'>
-      <image class="addIcon" src="./assets/add.png"></image>
-      <view class="text">{{item.desc}}</view>
-    </view>
-  </block>
 
   <!-- 底部栏 -->
   <view wx:if="{{showRule && type==1}}" class='footer'>

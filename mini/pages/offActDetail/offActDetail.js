@@ -2,7 +2,6 @@ import {
   api
 } from '../../config/config.js';
 import Http from '../../utils/http.js';
-
 const app = getApp();
 const http = new Http();
 
@@ -13,43 +12,19 @@ Page({
     showRule: true, // true表示显示详情
     rightButton: "我要报名",
     detail: {},
-    formList: [{
-      name: '',
-      gender: '',
-      company: '',
-      post: '',
-      phone: '',
-      address: '',
-      remark: '',
-      genderPlaceHolder: '请选择您的性别',
-      isActive: false,
-    }],
-    uploadFileList: [ // 上传文件类型
-      {
-        desc: '征稿材料(Word版，不超过5M)',
-      },
-      {
-        desc: '征稿材料(PDF版，不超过5M)'
-      },
-      {
-        desc: '征稿材料(图片版)'
-      }
-    ],
+    formList: [],
     gender: ['男', '女'],
-    formId: 0, // 报名表单索引
     userInfo: '', // 用户信息
     mode: 'widthFix',
     hasEnroll: 0,
     overstayed: false, // 活动已过期
     openId: '',
     type: 1, // 1 表示线下活动 2表示征稿活动
-    fileTempPaths: [],
     uploading: false,
     uploadPercent: 0,
     uploadDone: false,
     timer: 0,
     isPost: false,
-    hasUploadImg: false, //true已经表示上传图片
     recList: [],
     currentPage: 1,
     likeStatus: './assets/like.png'
@@ -60,7 +35,7 @@ Page({
     if (!this.vertifyForm(e)) {
       return false;
     } else {
-      this.data.type == 1 ? this.checkAgain() : this.checkRecForm(e);
+      this.data.type == 1 ? this.beforePostOffForm() : this.checkRecForm(e);
     }
   },
 
@@ -107,8 +82,45 @@ Page({
     return true;
   },
 
-  // 二次确认
-  checkAgain() {
+  /**
+   * @description 提交报名信息前提示
+   */
+  beforePostOffForm() {
+    let formList = this.getFormList();
+    formList.forEach(form => {
+      form.openId = app.globalData.openId;
+      form.activityId = this.data.activityId;
+    });
+    this.checkOffForm(formList);
+    // formList.forEach(form=>{
+    //   if (form.orDocumentList.length < 1) { // 没附件
+    //     wx.showModal({
+    //       title: '您未上传文件材料，是否上传？',
+    //       content: '提交后不可更改',
+    //       cancelText: '去上传',
+    //       confirmText: '提交',
+    //       confirmColor: '#F44336',
+    //       success: (res) => {
+    //         if (res.confirm) {
+    //           this.checkOffForm(formList);
+    //         }
+    //       }
+    //     });
+    //   } else if (form.uploadFileList[2].tempFiles.length > 0) {
+    //     if (!form.uploadFileList[2].hasUploadImg) {
+    //       this.showModal('请先确认上传图片');
+    //       return false;
+    //     }
+    //     this.checkOffForm(formList);
+    //   } else {
+    //     this.checkOffForm(formList);
+    //   };
+    // });
+  },
+  /**
+   * @description 二次确认表单信息
+   */
+  checkOffForm(form) {
     wx.showModal({
       title: '请确认报名信息内容',
       content: '提交后不可更改',
@@ -121,21 +133,17 @@ Page({
           wx.showLoading({
             title: '数据上传中...',
           });
-          this.postForm();
+          this.postForm(form);
         }
       }
-    })
+    });
   },
   // 报名接口
-  postForm() {
+  postForm(form) {
     wx.request({
       url: api.signUp,
       method: "post",
-      data: {
-        openId: app.globalData.openId,
-        activityId: this.data.activityId,
-        userOfflines: this.data.formList
-      },
+      data: form,
       success: res => {
         wx.hideLoading();
         if (res.data.code === 200) {
@@ -234,36 +242,44 @@ Page({
     }
   },
   /**
-   * 提交征稿表单
+   * @description 提取表单信息
+   */
+  getFormList() {
+    let _formList = this.data.formList;
+    _formList.forEach(form => {
+      form.orDocumentList = [];
+      form.uploadFileList.forEach((item, index) => {
+        if (index !== 2) {
+          if (!item.finalName) return;
+          form.orDocumentList.push({
+            filename: item.finalName,
+            path: item.finalPath,
+            fileType: index,
+          });
+        } else {
+          form.uploadFileList[2].tempFiles.forEach(file => {
+            if (file.finalName) {
+              form.orDocumentList.push({
+                filename: file.finalName,
+                path: file.finalPath,
+                fileType: index,
+              });
+            }
+          });
+        }
+      });
+      console.log(_formList)
+    });
+    return _formList;
+  },
+  /**
+   * @description 提交征稿表单
    */
   checkRecForm(e) {
-    let list = this.data.uploadFileList;
-    let orDocumentList = [];
-    list.forEach((item, index) => {
-      if (index !== 2) {
-        if (!item.finalName) return;
-        orDocumentList.push({
-          filename: item.finalName,
-          path: item.finalPath,
-        });
-      } else {
-        if (!list[2].hasOwnProperty('tempFiles') || !list[2].tempFiles[0]) return false
-        list[2].tempFiles.forEach(file => {
-          if (file.finalName) {
-            orDocumentList.push({
-              filename: file.finalName,
-              path: file.finalPath
-            });
-          }
-        });
-      }
-    });
-    let form = this.data.formList[0];
-    form.orDocumentList = orDocumentList;
+    let form = this.getFormList()[0];
     form.openId = app.globalData.openId;
     form.activityId = this.data.activityId;
-
-    if (orDocumentList.length < 1) { // 没附件
+    if (form.orDocumentList.length < 1) { // 没附件
       wx.showModal({
         title: '您未上传文件材料，是否上传？',
         content: '提交后不可更改',
@@ -280,8 +296,8 @@ Page({
           }
         }
       });
-    } else if (this.data.uploadFileList[2].hasOwnProperty('tempFiles') && this.data.uploadFileList[2].tempFiles.length > 0) {
-      if (!this.data.hasUploadImg) {
+    } else if (form.uploadFileList[2].tempFiles.length > 0) {
+      if (!form.uploadFileList[2].hasUploadImg) {
         this.showModal('请先确认上传图片');
         return false;
       }
@@ -340,9 +356,12 @@ Page({
         });
       });
   },
-  // 新增报名
-  add() {
-    const form = {
+  /**
+   * @description 判断是征稿还是报名初始化formList类型
+   * @return [formList] 初始化formList
+   */
+  checkPageType(type) {
+    const common = {
       name: '',
       gender: '',
       company: '',
@@ -353,8 +372,40 @@ Page({
       genderPlaceHolder: '请选择您的性别',
       isActive: false,
     };
+    return type == 1 ? [Object.assign(common, {
+      uploadFileList: [{
+          desc: '报名材料(Word版，不超过5M)',
+        },
+        {
+          desc: '报名材料(PDF版，不超过5M)'
+        },
+        {
+          desc: '报名材料(图片版)',
+          tempFiles: []
+        }
+      ]
+    })] : [Object.assign(common, {
+      uploadFileList: [{
+          desc: '征稿材料(Word版，不超过5M)',
+        },
+        {
+          desc: '征稿材料(PDF版，不超过5M)'
+        },
+        {
+          desc: '征稿材料(图片版)',
+          tempFiles: []
+        }
+      ]
+    })];
+  },
+
+  /**
+   * @descripition 新增报名信息表格
+   */
+  add() {
+    let form = this.checkPageType(this.data.type);
     let newList = this.data.formList;
-    newList.push(form);
+    newList.push(form[0]);
     this.setData({
       formList: newList
     });
@@ -374,9 +425,28 @@ Page({
         uploadDone: false
       });
     }
-
   },
 
+  /**
+   * @description 显示弹窗
+   */
+  showPop() {
+    this.setData({
+      uploading: true,
+      uploadDone: false
+    });
+  },
+
+  /**
+   * @description 微信自带toast组件
+   */
+  showToast(title, icon = "none", duration = 1000) {
+    wx.showToast({
+      title: title,
+      duration: duration,
+      icon: icon,
+    });
+  },
   /**
    * @description 上传文件到服务器
    * @params {fileType} 1图片 2文档
@@ -384,80 +454,117 @@ Page({
    * @params {filePath} 图片/文档临时路径
    * @params {type} 1 PDF 2 word
    */
-  uploadToServer(fileType, fileName, filePath, type) {
-    // 显示弹窗
-    this.setData({
-      uploading: true,
-      uploadDone: false
-    });
-    // 上传
-    wx.uploadFile({
-      url: api.upload,
-      filePath: filePath,
-      name: "file",
-      header: {
-        "Content-Type": "multipart/form-data"
-      },
-      formData: {
-        file: 'file',
-        fileType: fileType,
-        fileName: fileName
-      },
-      success: (res) => {
-        const data = JSON.parse(res.data);
-        console.log(data);
-        if (data.code == 200) { //文件上传成功
-          let list = this.data.uploadFileList;
-          if (fileType == 1) {
-            let imgList = list[2].tempFiles;
-            imgList.forEach(item => {
-              item.finalName = data.data.name;
-              item.finalPath = data.data.path;
-            });
-            this.setData({
-              uploadFileList: list,
-            });
-          } else { //pdf word
-            if (type == 0 || type == 1) {
-              list[type].finalName = data.data.name;
-              list[type].finalPath = data.data.path;
-            }
-          }
-          this.setData({
-            uploadPercent: 100
-          });
+  uploadToServer(fileType, fileName, filePath, type, formId) {
+    this.showPop();
+    return new Promise((resolve, reject) => {
+      wx.uploadFile({
+        url: api.upload,
+        filePath: filePath,
+        name: "file",
+        header: {
+          "Content-Type": "multipart/form-data"
+        },
+        formData: {
+          file: 'file',
+          fileType: fileType,
+          fileName: fileName
+        },
+        success: (res) => {
+          const data = JSON.parse(res.data);
+          if (data.code == 200) { //文件上传成功
+            let _formList = this.data.formList;
+            let list = _formList[formId].uploadFileList;
 
-          if (this.data.timer) {
-            clearTimeout(this.data.timer)
-          }
-          let timer = setTimeout(() => {
+            if (fileType == 1) { // 上传的是图片
+
+            } else { //pdf word
+              if (type == 0 || type == 1) {
+                list[type].finalName = data.data.name;
+                list[type].finalPath = data.data.path;
+              }
+            }
             this.setData({
-              uploadDone: true
+              uploadPercent: 100
             });
-          }, 500);
-          this.setData({
-            timer: timer
-          });
+
+            if (this.data.timer) {
+              clearTimeout(this.data.timer)
+            }
+            let timer = setTimeout(() => {
+              this.setData({
+                uploadDone: true
+              });
+            }, 500);
+            this.setData({
+              timer: timer
+            });
+            resolve(data);
+          } else { // 文件上传失败
+            this.hidePop();
+            this.showToast('上传失败');
+            reject(data);
+          }
+        },
+        fail: error => {
+          this.hidePop();
+          this.showToast('网络异常');
+          reject(error);
         }
-      }
+      });
     });
   },
 
-  // 上传文件
+  /**
+   * @description 当图片上传完成后设置本地微信的预览
+   * params {type} 1表示pdf 0是显示word
+   */
+  setLocalFilePath(filename, path, type, formId) {
+    let _formList = this.data.formList;
+    let uploadFileList = _formList[formId].uploadFileList;
+    if (type == 1) {
+      Object.assign(uploadFileList[1], {
+        filename: filename,
+        fileType: '征稿材料(PDF)',
+        type: 'pdf',
+        path: path,
+        isLocalUploaded: true
+      })
+    } else {
+      Object.assign(uploadFileList[0], {
+        filename: filename,
+        fileType: '征稿材料(Word)',
+        type: 'word',
+        path: path,
+        isLocalUploaded: true
+      })
+    }
+    this.setData({
+      formList: _formList
+    });
+  },
+  /**
+   * @description 文件上传按钮
+   * pramas {e} 事件，由它获取当前点击事件类型索引，type0,1是上传文档，2是上传图片
+   */
   uploadFile(e) {
-    const type = e.currentTarget.dataset.index;
-    switch (type) {
-      case 2: // image
-        this.reloadImg();
+    const type = e.currentTarget.dataset.optionid;
+    let formId = e.currentTarget.dataset.formid;
+    switch (parseInt(type)) {
+      case 2: // 上传图片
+        this.uploadImg(e);
         break;
-      default:
-        this.uploadPdfOrWord(type);
+      default: // 上传pdf或word
+        this.uploadPdfOrWord(type, formId);
         break;
     }
-
   },
-  uploadPdfOrWord(type) {
-    let uploadFileList = this.data.uploadFileList;
+
+  /**
+   * @description Word、pdf文件上传
+   * pramas {type} 上传文档类型，0是word,1是PDF
+   * pramas {formId} 表单索引
+   */
+  uploadPdfOrWord(type, formId) {
     wx.chooseMessageFile({
       count: 1,
       type: 'file',
@@ -471,93 +578,97 @@ Page({
           this.showModal('请上传不超过5M的文件');
           return false;
         }
-        this.uploadToServer(2, filename, path, type);
-        if (type == 1) {
-          Object.assign(uploadFileList[1], {
-            filename: filename,
-            fileType: '征稿材料(PDF)',
-            type: 'pdf',
-            path: path,
-            isUpload: true
-          })
-        } else {
-          Object.assign(uploadFileList[0], {
-            filename: filename,
-            fileType: '征稿材料(Word)',
-            type: 'word',
-            path: path,
-            isUpload: true
-          })
-        }
-        this.setData({
-          uploadFileList: uploadFileList
-        });
+        this.uploadToServer(2, filename, path, type, formId)
+          .then(res => {
+            this.setLocalFilePath(filename, path, type, formId);
+          });
       },
-      fail: (error) => {
-        // 取消上传的时候会触发
-        // this.showModal('网络出错');
-      }
     });
   },
 
   // 重新上传文件
   reupload(e) {
     const type = e.currentTarget.dataset.type;
+    const formId = e.currentTarget.dataset.formid;
     switch (type) {
       case 'pdf':
-        this.uploadPdfOrWord(1);
+        this.uploadPdfOrWord(1, formId);
         break;
       default:
-        this.uploadPdfOrWord(0);
+        this.uploadPdfOrWord(0, formId);
     }
   },
 
-  // 重新上传照片
-  reloadImg() {
-    let uploadFileList = this.data.uploadFileList;
-    let length = uploadFileList[2].tempFiles ? uploadFileList[2].tempFiles.length : 0;
-
+  /**
+   * @description 上传图片
+   */
+  uploadImg(e) {
+    const formId = e.currentTarget.dataset.formid; // 多人报名表单 索引
+    let _formList = this.data.formList;
+    let uploadFileList = _formList[formId].uploadFileList;
+    let tempFiles = uploadFileList[2].tempFiles;
     wx.chooseImage({
-      count: 9 - (length ? length : 0),
+      count: 9 - tempFiles.length,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
-        if (uploadFileList[2].hasOwnProperty('tempFiles')) {
-          let temp = uploadFileList[2].tempFiles;
-          uploadFileList[2].tempFiles = uploadFileList[2].tempFiles.concat(res.tempFiles); // concat不会改变原有的数组
-        } else {
-          Object.assign(uploadFileList[2], {
-            tempFiles: res.tempFiles,
-            isUpload: true
-          });
+        let isBiggerList = []; // 超过5M的图片索引数组
+        let normalFiles = []; // 符合大小的图片数组
+        res.tempFiles.map((file, index) => {
+          if (file.size < 5 * 1024 * 1024) {
+            tempFiles.push(file);
+          } else {
+            isBiggerList.push(index);
+          }
+        });
+        if (isBiggerList.length > 0) {
+          this.showModal('您刚选择的第' + isBiggerList.join('、') + '张图片超过5M限制，请压缩后上传');
         }
-        if (uploadFileList[2].tempFiles && uploadFileList[2].tempFiles.length > 0) {
-          uploadFileList[2].isUpload = true;
+        uploadFileList[2].tempFiles = tempFiles.concat(normalFiles); // 新增图片
+        if (uploadFileList[2].tempFiles.length > 0) {
+          uploadFileList[2].isLocalUploaded = true;
         }
         this.setData({
-          uploadFileList: uploadFileList
+          formList: _formList
         });
       }
-    })
+    });
   },
 
   /**
    * @description 确认上传图片
    */
-  doUploadImg() {
-    const imgList = this.data.uploadFileList[2].tempFiles;
+  doUploadImg(e) {
+    const formId = e.currentTarget.dataset.formid;
+    let _formList = this.data.formList;
+    let imgList = _formList[formId].uploadFileList[2].tempFiles;
+    let _uploadFileList = _formList[formId].uploadFileList;
     imgList.forEach((imgInfo, index) => {
       const fileType = `.${imgInfo.path.split('.').pop()}`;
-      this.uploadToServer(1, `${index}${fileType}`, imgInfo.path);
-    });
-    this.setData({
-      hasUploadImg: true
+      this.uploadToServer(1, `${index}${fileType}`, imgInfo.path, 'image', formId)
+        .then(data => { // 成功上传图片后
+          let imgList = _formList[formId].uploadFileList[2].tempFiles;
+          imgList[index].finalName = data.data.name;
+          imgList[index].finalPath = data.data.path;
+          console.log(imgList);
+          this.setData({
+            formList: _formList,
+          });
+          _uploadFileList[2].hasUploadImg = true;
+        });
     });
   },
   // 预览某个图片
   previewImg(e) {
     const index = e.currentTarget.dataset.index;
-    const list = this.data.uploadFileList[2].tempFiles;
+    const formId = e.currentTarget.dataset.formid;
+    const online = e.currentTarget.dataset.online;
+    let list = [];
+    if (online == 'online') { // 已经上传了
+      list = this.data.formList[formId].orDocumentList;
+    } else {
+      list = this.data.formList[formId].uploadFileList[2].tempFiles;
+    }
     let pathList = list.map(item => {
       return item.path
     });
@@ -567,42 +678,36 @@ Page({
     })
   },
 
-  // 删除某个图片
+  /**
+   * @description 删除图片
+   */
   delImg(e) {
     const index = e.currentTarget.dataset.index;
+    const formId = e.currentTarget.dataset.formid;
     wx.showModal({
       content: '确认删除？',
       success: (res) => {
         if (res.confirm) {
-          let list = this.data.uploadFileList;
+          let _formList = this.data.formList;
+          let list = _formList[formId].uploadFileList;
           list[2].tempFiles.splice(index, 1);
           if (list[2].tempFiles.length == 0) {
-            list[2].isUpload = false;
+            list[2].isLocalUploaded = false;
           }
           this.setData({
-            uploadFileList: list
+            formList: _formList
           });
         }
       }
     });
   },
 
-
-  // 获取报名表单索引
-  getFormId(e) {
-    this.setData({
-      formId: e.currentTarget.dataset.formid
-    });
-  },
-
   // 保存表单
   keepForm(e) {
-    const formId = this.data.formId;
     const name = e.currentTarget.dataset.index.replace(/[0-9]/g, ''); // 清除数字
-
+    const formid = e.currentTarget.dataset.formid;
     let formList = this.data.formList;
-    formList[formId][name] = e.detail.value;
-
+    formList[formid][name] = e.detail.value;
     this.setData({
       formList: formList
     });
@@ -610,7 +715,7 @@ Page({
 
   // 获取选择器性别类型
   getGenderType(e) {
-    const formId = this.data.formId;
+    const formId = e.currentTarget.dataset.formid;
     const index = e.detail.value;
 
     let formList = this.data.formList;
@@ -635,8 +740,10 @@ Page({
    */
 
   getActDetail(id, type) {
+    let form = this.checkPageType(type);
     this.setData({
-      type: parseInt(type)
+      type: parseInt(type),
+      formList: form
     });
     wx.request({
       url: api.activityDetail,
@@ -755,7 +862,6 @@ Page({
     http
       ._post(api.like, params)
       .then(res => {
-        console.log(res.data.data, res.data.msg)
         if (res.data.code == 200) {
           if (res.data.data == 2) { // 取消点赞成功
             this.setData({
@@ -837,6 +943,7 @@ Page({
       });
     }
     this.getActDetail(options.id, options.type);
+
     if (options.type == 1) {
       this.getSignUpList();
     } else {
@@ -849,6 +956,7 @@ Page({
         http
           ._get(api.userContributeList, params)
           .then(res => {
+            if (res.data.code !== 200) return false;
             let data = res.data.data.list;
             data.forEach(item => {
               const temp = item.contributeTime.substring(0, 10).split('-');
@@ -856,10 +964,10 @@ Page({
                 item.nickName = item.nickName.substring(0, 6) + '...'
               }
               item.time = temp[0] + '年' + temp[1] + '月' + temp[2] + '号';
-            })
+            });
             this.setData({
               recList: data
-            })
+            });
           })
       });
       this.getLikeStatus().then(res => {
