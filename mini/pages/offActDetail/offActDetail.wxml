@@ -18,7 +18,7 @@
       </view>
       <view class='likes' bindtap='doLike' wx:if="{{type==2}}">
         <image mode="{{mode}}" class='icon' src="{{likeStatus}}" />
-        <text>{{detail.baseLikeNum?detail.baseLikeNum:0 + detail.realLikeNum}}</text>
+        <text>{{detail.baseLikeNum?detail.baseLikeNum + detail.realLikeNum:detail.realLikeNum}}</text>
       </view>
       <view class='likes' wx:if="{{type==1}}">
         <block wx:for="{{detail.likeNum}}" wx:key="index">
