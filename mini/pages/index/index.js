@@ -144,7 +144,7 @@ Page({
           if (parseInt(item.isPri) === 0 && item.activityState == 1) {
             list.push(item);
           };
-          item.deadline = item.deadline.substring(0, 10);
+          item.deadline = '征稿截止时间：' + item.deadline.substring(0, 10);
         });
         this.setData({
           recruitmentList: list
@@ -168,7 +168,7 @@ Page({
     })
   },
   // 页面加载
-  onLoad: function() {
+  onShow: function() {
     // const length = -(this.data.hotActivityList.length - 2) * 75 + 750
     // this.setData({
     //   rightMargin: length + 'rpx'

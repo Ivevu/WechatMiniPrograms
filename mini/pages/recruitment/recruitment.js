@@ -28,7 +28,7 @@ Page({
         let on = [];
         list.forEach(item => {
           if (item.deadline) {
-            item.deadline = '截止征稿时间：' + item.deadline.substring(0, 10);
+            item.deadline = '征稿截止时间：' + item.deadline.substring(0, 10);
           }
           if (item.activityState == 1) {
             on.push(item);

@@ -754,6 +754,7 @@ Page({
       success: res => {
         let detail = res.data.data;
         if (!detail) return;
+        detail.detailImg = detail.detailImg.replace(/\<img/gi, '<img style="max-width:100%;height:auto" ');
         this.checkType(detail, type, res);
       }
     })

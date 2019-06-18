@@ -5,8 +5,8 @@
       <view class='content'>
         <view class='header'>{{item.title}}</view>
         <view class='date active'>
-          <text>{{item.deadline}}</text>
           <text>已投 {{item.contributeNum}}</text>
+          <text>{{item.deadline}}</text>
         </view>
       </view>
     </view>

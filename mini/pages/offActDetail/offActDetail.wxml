@@ -13,7 +13,7 @@
     </view>
     <view class='endTime' wx:if="{{detail.deadline}}">
       <view>
-        <text>截止{{type==1?'报名':'征稿'}}时间：</text>
+        <text>{{type==1?'报名':'征稿'}}截止时间：</text>
         <text class='value'>{{detail.deadline}}</text>
       </view>
       <view class='likes' bindtap='doLike' wx:if="{{type==2}}">
