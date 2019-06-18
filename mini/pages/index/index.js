@@ -55,8 +55,9 @@ Page({
     const index = e.currentTarget.dataset.index;
     const id = this.data.hotActivityList[index].activityId;
     if (parseInt(id) !== 0) {
+      const activityType = this.data.hotActivityList[index].activityType;
       wx.navigateTo({
-        url: `../offActDetail/offActDetail?id=${id}&type=1`
+        url: `../offActDetail/offActDetail?id=${id}&type=${activityType}`
       });
     }
   },
@@ -66,8 +67,9 @@ Page({
     const index = e.currentTarget.dataset.index;
     const id = this.data.imgUrls[index].activityId;
     if (parseInt(id) !== 0) {
+      const activityType = this.data.imgUrls[index].activityType;
       wx.navigateTo({
-        url: `../offActDetail/offActDetail?id=${id}&type=1`
+        url: `../offActDetail/offActDetail?id=${id}&type=${activityType}`
       });
     };
   },
