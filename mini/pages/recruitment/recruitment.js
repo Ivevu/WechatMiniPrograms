@@ -27,8 +27,8 @@ Page({
         let list = res.data.data;
         let on = [];
         list.forEach(item => {
-          if (item.endTime) {
-            item.deadline = item.deadline.substring(0, 10);
+          if (item.deadline) {
+            item.deadline = '截止征稿时间：' + item.deadline.substring(0, 10);
           }
           if (item.activityState == 1) {
             on.push(item);

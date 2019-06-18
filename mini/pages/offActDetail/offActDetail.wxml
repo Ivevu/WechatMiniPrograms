@@ -13,7 +13,7 @@
     </view>
     <view class='endTime' wx:if="{{detail.deadline}}">
       <view>
-        <text>截至报名时间：</text>
+        <text>截止{{type==1?'报名':'征稿'}}时间：</text>
         <text class='value'>{{detail.deadline}}</text>
       </view>
       <view class='likes' bindtap='doLike' wx:if="{{type==2}}">
@@ -142,7 +142,7 @@
       </view>
       <!-- 上传文件 -->
       <view wx:if="{{!item.isLocalUploaded}}" wx:for="{{form.uploadFileList}}" wx:key="index" wx:for-index="optionId" data-formId='{{formId}}' data-optionId='{{optionId}}' bindtap='uploadFile' class="add">
-        <image class="addIcon" src="./assets/add.png"></image>
+        <image class="addIcon" src="./assets/upload.jpg"></image>
         <view class="text">{{item.desc}}</view>
       </view>
     </view>
