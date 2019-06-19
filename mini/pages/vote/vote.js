@@ -3,6 +3,7 @@ import {
   api
 } from '../../config/config.js';
 const http = new Http();
+const app = getApp();
 
 Page({
 
@@ -16,14 +17,15 @@ Page({
     const index = e.currentTarget.dataset.index;
     wx.navigateTo({
       url: `/pages/link/link?link=${this.data.voteList[index].link}`,
-    })
+    });
   },
   getList() {
     const param = {
-      type: 3
+      type: 3,
+      openId: app.globalData.openId,
     };
     http
-      ._get(api.list, param)
+      ._get(api.enrolment, param)
       .then(res => {
         this.setData({
           voteList: res.data.data

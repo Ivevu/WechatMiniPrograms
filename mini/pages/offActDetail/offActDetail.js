@@ -417,7 +417,7 @@ Page({
   hidePop() {
     if (this.data.isPost) {
       wx.navigateTo({
-        url: '/pages/recruitment/recruitment',
+        url: `/pages/recruitment/recruitment?path="my"`,
       });
     } else {
       this.setData({

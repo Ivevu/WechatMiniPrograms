@@ -43,7 +43,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onShow: function(options) {
     if (options.path) {
       this.getActivityList(2, app.globalData.openId)
     } else {

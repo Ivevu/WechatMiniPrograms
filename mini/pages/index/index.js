@@ -163,9 +163,17 @@ Page({
    */
   toWeb(e) {
     const index = e.currentTarget.dataset.index;
+    new Http()
+      ._get(api.vote, {
+        openId: app.globalData.openId,
+        activityId: this.data.helpList[index].id
+      }).then(res => {
+
+      });
     wx.navigateTo({
       url: `/pages/link/link?link=${this.data.helpList[index].link}`,
-    })
+    });
+    
   },
   // 页面加载
   onShow: function() {

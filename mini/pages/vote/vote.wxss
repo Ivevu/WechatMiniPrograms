@@ -6,3 +6,8 @@
 .list {
   padding: 30rpx;
 }
+.empty {
+  text-align: center;
+  color: #333333;
+  margin-top: 200rpx;
+}

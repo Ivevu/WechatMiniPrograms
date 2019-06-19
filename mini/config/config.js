@@ -18,4 +18,6 @@ export const api = {
   userContribute: `${domain}/api/userContribute`, // 提交征稿 
   userContributeList: `${domain}/api/userContribute/list`, // 提交征稿 
   like: `${domain}/api/activity/like`, // 点赞 取消点赞接口
+
+  vote: `${domain}/api/activity/vote`
 }

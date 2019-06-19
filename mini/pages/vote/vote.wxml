@@ -1,3 +1,4 @@
 <view class='list'>
   <image class='img' wx:for="{{voteList}}" wx:key="{{index}}" data-index='{{index}}' src='{{item.coverImg}}' bindtap='toWeb'></image>
 </view>
+  <view class='empty' wx:if="{{!voteList[0]}}">暂无数据</view>
