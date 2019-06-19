@@ -6,6 +6,7 @@ const app = getApp();
 Page({
   data: {
     recruitmentList: [],
+    path: ''
   },
   tapRec(e) {
     const id = e.detail.id;
@@ -40,11 +41,13 @@ Page({
       }
     });
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  onLoad(options) {
+    this.setData({
+      path: options.path
+    });
+  },
   onShow: function(options) {
-    if (options.path) {
+    if (this.data.path) {
       this.getActivityList(2, app.globalData.openId)
     } else {
       this.getActivityList(2);
