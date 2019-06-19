@@ -17,7 +17,7 @@ Page({
   // 获取线下活动列表
   getActivityList(type, openId) {
     wx.request({
-      url: api.list,
+      url: api.enrolment,
       data: {
         type: type,
         openId

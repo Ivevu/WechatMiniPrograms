@@ -11,4 +11,5 @@
       </view>
     </view>
   </block>
+  <view class='empty' wx:if="{{!list[0]}}">暂无数据</view>
 </view>

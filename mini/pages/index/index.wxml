@@ -25,6 +25,7 @@
     <view class="more" bindtap='toMoreOffAct'>
       <text>更多</text>
       <image class='icon' src='./assets/rightArrow.png'></image>
+      <image class='icon' src='./assets/rightArrow.png'></image>
     </view>
   </view>
   <activity-list bindmyevent="tapOffAct" list="{{offlineActivityList}}" />
@@ -36,6 +37,7 @@
     <view class="h1">我要投稿</view>
     <view class="more" bindtap='toMoreRec'>
       <text>更多</text>
+      <image class='icon' src='./assets/rightArrow.png'></image>
       <image class='icon' src='./assets/rightArrow.png'></image>
     </view>
   </view>
