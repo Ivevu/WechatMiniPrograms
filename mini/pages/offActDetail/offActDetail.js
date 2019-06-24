@@ -269,7 +269,9 @@ Page({
   getFormList() {
     let _formList = this.data.formList;
     _formList.forEach(form => {
-      if (form.hasOwnProperty('orDocumentList') && form.orDocumentList[0]) {} else {
+      if (form.hasOwnProperty('orDocumentList') && form.orDocumentList[0]) { // 修改
+
+      } else {
         form.orDocumentList = [];
       }
       form.uploadFileList.forEach((item, index) => {
@@ -623,13 +625,24 @@ Page({
     const formId = e.currentTarget.dataset.formid;
     switch (type) {
       case 'pdf':
+        this.delLocalFile(1);
         this.uploadPdfOrWord(1, formId);
         break;
       default:
+        this.delLocalFile(0);
         this.uploadPdfOrWord(0, formId);
     }
   },
-
+  delLocalFile(type) {
+    let _formList = this.data.formList;
+    _formList.map((form, id) => {
+      form.orDocumentList.map((file, fileId) => {
+        if (file.fileType == type) {
+          form.orDocumentList.splice(fileId, 1);
+        }
+      });
+    });
+  },
   /**
    * @description 上传图片
    */
