@@ -36,7 +36,7 @@ Page({
         let out = [];
         console.log(list)
         list.forEach(item => {
-          if(item.endTime) {
+          if (item.deadline) {
             item.deadline = item.deadline.substring(0, 10);
           }
           if (item.activityState == 1) {

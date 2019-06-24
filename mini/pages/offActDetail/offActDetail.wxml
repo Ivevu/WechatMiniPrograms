@@ -112,7 +112,6 @@
           <view class='imgArea'>
             <view class='imgItem' wx:for="{{form.orDocumentList}}" wx:key="index" wx:for-item="file" wx:if="{{file.fileType == 2}}">
               <image mode='widthFix' class='preImg' src='{{file.path}}' data-index='{{index}}' data-formId='{{formId}}' data-online='online' bindtap='previewImg'></image>
-              <text>{{tempFile.path}}</text>
             </view>
           </view>
         </view>
@@ -136,7 +135,7 @@
           </view>
           <view class='buttonArea'>
             <button wx:if="{{form.uploadFileList[2].tempFiles.length<9 && form.uploadFileList[2].tempFiles.length > 0 && !form.uploadFileList[2].hasUploadImg}}" class='reupload' data-formId='{{formId}}' bindtap='uploadImg'>继续选择</button>
-            <button data-formId='{{formId}}' data-index='{{index}}' wx:if="{{form.uploadFileList[2].tempFiles.length>0 && !form.uploadFileList[2].hasUploadImg}}" class='reupload' bindtap='doUploadImg'>确认上传</button>
+            <!-- <button data-formId='{{formId}}' data-index='{{index}}' wx:if="{{form.uploadFileList[2].tempFiles.length>0 && !form.uploadFileList[2].hasUploadImg && !form.uploadFileList[2].isEdit}}" class='reupload' bindtap='doUploadImg'>确认上传</button> -->
           </view>
         </view>
       </view>
@@ -150,7 +149,7 @@
     <view wx:if="{{type==1}}" class='footer'>
       <button open-type='share' class='common share'>分享给好友</button>
       <button class='common signUp' wx:if="{{hasSignUp}}" form-type="submit">提交</button>
-      <button class='common signUp' wx:if="{{!hasSignUp}}" disabled="true">已报名</button>
+      <button class='common signUp' wx:if="{{!hasSignUp}}" bindtap="edit">查看报名</button>
     </view>
     <!-- 我要投稿 -->
     <view wx:if="{{type==2}}" class='footer'>
@@ -175,7 +174,7 @@
 
   <view wx:if="{{type==2 && showRule}}" class='footer'>
     <button open-type='share' class='common share'>分享给好友</button>
-    <button class="common signUp {{hasSignUp?'':'disabled'}}" wx:if="{{userInfo && !overstayed && type==2}}" bindtap='toContribute'>{{hasSignUp?"我要投稿":"已投稿"}}</button>
+    <button class="common signUp {{hasSignUp?'':''}}" wx:if="{{userInfo && !overstayed && type==2}}" bindtap='toContribute'>{{hasSignUp?"我要投稿":"查看投稿"}}</button>
     <button class='common signUp' wx:if="{{!userInfo && hasSignUp && !overstayed &&type==2}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击投稿</button>
   </view>
 

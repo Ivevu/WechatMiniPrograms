@@ -66,7 +66,12 @@ Page({
   toSwiper(e) {
     const index = e.currentTarget.dataset.index;
     const id = this.data.imgUrls[index].activityId;
-    if (parseInt(id) !== 0) {
+    const link = this.data.imgUrls[index].link;
+    if (link) {
+      wx.navigateTo({
+        url: `/pages/link/link?link=${link}`,
+      });
+    } else if (parseInt(id) !== 0) {
       const activityType = this.data.imgUrls[index].activityType;
       wx.navigateTo({
         url: `../offActDetail/offActDetail?id=${id}&type=${activityType}`
@@ -173,7 +178,7 @@ Page({
     wx.navigateTo({
       url: `/pages/link/link?link=${this.data.helpList[index].link}`,
     });
-    
+
   },
   // 页面加载
   onShow: function() {
