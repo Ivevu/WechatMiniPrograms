@@ -207,7 +207,7 @@ Page({
           this.setData({
             formList: formList,
             hasSignUp: false,
-            showRule: false
+            showRule: true
           });
         }
       }

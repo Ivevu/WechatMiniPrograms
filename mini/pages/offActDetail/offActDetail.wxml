@@ -18,7 +18,7 @@
       </view>
       <view class='likes' bindtap='doLike' wx:if="{{type==2}}">
         <image mode="{{mode}}" class='icon' src="{{likeStatus}}" />
-        <text>{{detail.baseLikeNum?detail.baseLikeNum + detail.realLikeNum:detail.realLikeNum}}</text>
+        <text>{{detail.baseLikeNum?detail.baseLikeNum + (detail.realLikeNum?detail.realLikeNum:0):detail.realLikeNum}}</text>
       </view>
       <view class='likes' wx:if="{{type==1}}">
         <block wx:for="{{detail.likeNum}}" wx:key="index">
@@ -99,7 +99,7 @@
         <text class='label'>备注</text>
         <textarea name='remark{{index}}' disabled='{{!hasSignUp}}' bindblur="keepForm" data-formId='{{formId}}' data-index='remark{{formId}}' value='{{form.remark}}'></textarea>
       </view>
-       <!--  已经上传的文件列表 -->
+      <!--  已经上传的文件列表 -->
       <view class="section uploadList" wx:if="{{!hasSignUp}}">
         <!-- word和PDF -->
         <view class="inputArea" wx:for="{{form.orDocumentList}}" wx:key="index" wx:for-item="file" wx:if="{{file.fileType !== 2}}">
@@ -149,7 +149,7 @@
     <view wx:if="{{type==1}}" class='footer'>
       <button open-type='share' class='common share'>分享给好友</button>
       <button class='common signUp' wx:if="{{hasSignUp}}" form-type="submit">提交</button>
-      <button class='common signUp' wx:if="{{!hasSignUp}}" bindtap="edit">查看报名</button>
+      <button class='common signUp' wx:if="{{!hasSignUp}}" bindtap="edit">编辑报名</button>
     </view>
     <!-- 我要投稿 -->
     <view wx:if="{{type==2}}" class='footer'>
@@ -166,7 +166,7 @@
   <!-- 底部栏 -->
   <view wx:if="{{showRule && type==1}}" class='footer'>
     <button open-type='share' class='common share'>分享给好友</button>
-    <button class='common signUp' wx:if="{{userInfo && !overstayed }}" bindtap='signUp'>我要报名</button>
+    <button class='common signUp' wx:if="{{userInfo && !overstayed }}" bindtap='signUp'>{{!hasSignUp?'查看报名':'我要报名'}}</button>
     <button class='common signUp' wx:if="{{!userInfo && hasSignUp && !overstayed}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击报名</button>
     <button class='common signUp' wx:if="{{overstayed}}" disabled="true">活动已过期</button>
   </view>
