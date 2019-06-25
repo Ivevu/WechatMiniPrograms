@@ -184,7 +184,7 @@
     <view class='bg'></view>
     <view class='box'>
       <view class="text {{isPost?'isActive': ''}}">{{!uploadDone?"上传中...":isPost?'投稿成功':"上传成功"}}</view>
-      <view class='tip' wx:if="{{isPost}}">若有疑问欢迎致电020-21555</view>
+      <view class='tip' wx:if="{{isPost}}"> </view>
       <progress wx:if="{{!uploadDone}}" class='progress' border-radius="8rpx" percent='{{uploadPercent}}' stroke-width='15rpx' activeColor='#D02029'></progress>
       <button wx:if="{{uploadDone}}" class='ensure' bindtap='hidePop'>确定</button>
     </view>

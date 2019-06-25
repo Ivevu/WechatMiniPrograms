@@ -100,7 +100,7 @@ Page({
     console.log('提交表单', form)
     wx.showModal({
       title: '请确认报名信息内容',
-      content: '提交后不可更改',
+      content: '提交时请确认个人基本信息及附件内容',
       cancelText: '再次确认',
       confirmText: '提交',
       confirmColor: '#F44336',
@@ -307,7 +307,7 @@ Page({
     if (form.orDocumentList.length < 1) { // 没附件
       wx.showModal({
         title: '您未上传文件材料，是否上传？',
-        content: '提交后不可更改',
+        content: '提交时请确认个人基本信息及附件内容',
         cancelText: '去上传',
         confirmText: '提交',
         confirmColor: '#F44336',
@@ -336,7 +336,7 @@ Page({
   checkRecAgain(form) {
     wx.showModal({
       title: '请确认征稿信息内容',
-      content: '提交后不可更改',
+      content: '提交时请确认个人基本信息及附件内容',
       cancelText: '再次确认',
       confirmText: '提交',
       confirmColor: '#F44336',

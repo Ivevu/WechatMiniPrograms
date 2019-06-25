@@ -273,6 +273,7 @@ picker {
   font-size: 24rpx;
   font-weight: 500;
   padding-bottom: 10rpx;
+  height: 50rpx;
 }
 
 /* 投稿详情列表 */
