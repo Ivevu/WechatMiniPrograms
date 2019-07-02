@@ -6,6 +6,7 @@ const app = getApp();
 const http = new Http();
 
 Page({
+  preventTouchMove() {},
   data: {
     activityId: '', // 活动id
     hasSignUp: true, // false表示未参加报名
@@ -503,7 +504,9 @@ Page({
           fileName: fileName
         },
         success: (res) => {
-          const data = JSON.parse(res.data);
+          console.log(res.data)
+          console.log(typeof res.data)
+          const data = typeof res.data === 'string' ? JSON.parse(res.data) : res.data;
           if (data.code == 200) { //文件上传成功
             let _formList = this.data.formList;
             let list = _formList[formId].uploadFileList;
@@ -604,6 +607,7 @@ Page({
       extension: type == 1 ? ['pdf'] : ['doc', 'docx'],
       success: (res) => {
         const filename = res.tempFiles[0].name;
+        console.log(filename)
         const filesize = res.tempFiles[0].size;
         const path = res.tempFiles[0].path;
 
@@ -636,6 +640,7 @@ Page({
   delLocalFile(type) {
     let _formList = this.data.formList;
     _formList.map((form, id) => {
+      if (!form.orDocumentList) return;
       form.orDocumentList.map((file, fileId) => {
         if (file.fileType == type) {
           form.orDocumentList.splice(fileId, 1);
@@ -744,6 +749,11 @@ Page({
               }
             });
             _formList[formId].orDocumentList.splice(fileId, 1);
+            list[2].tempFiles.splice(index, 1);
+            if (list[2].tempFiles.length == 0) {
+              list[2].isLocalUploaded = false;
+            }
+          } else {
             list[2].tempFiles.splice(index, 1);
             if (list[2].tempFiles.length == 0) {
               list[2].isLocalUploaded = false;
@@ -1009,26 +1019,32 @@ Page({
       this.getSignUpList();
     } else {
       this.getConStatus().then(res => {
-        const params = {
+        let params = {
           activityId: this.data.activityId,
           pageSize: 10,
-          pageNum: this.data.currentPage
+          pageNum: 1
         }
         http
           ._get(api.userContributeList, params)
           .then(res => {
             if (res.data.code !== 200) return false;
-            let data = res.data.data.list;
-            data.forEach(item => {
-              const temp = item.contributeTime.substring(0, 10).split('-');
-              if (item.nickName && item.nickName.length > 6) {
-                item.nickName = item.nickName.substring(0, 6) + '...'
-              }
-              item.time = temp[0] + '年' + temp[1] + '月' + temp[2] + '号';
-            });
-            this.setData({
-              recList: data
-            });
+            return res.data.data.pages
+          })
+          .then((pages) => {
+            params.pageNum = pages;
+            http._get(api.userContributeList, params).then(res => {
+              let data = res.data.data.list;
+              data.forEach(item => {
+                const temp = item.contributeTime.substring(0, 10).split('-');
+                if (item.nickName && item.nickName.length > 6) {
+                  item.nickName = item.nickName.substring(0, 6) + '...'
+                }
+                item.time = temp[0] + '年' + temp[1] + '月' + temp[2] + '号';
+              });
+              this.setData({
+                recList: data
+              });
+            })
           })
       });
       this.getLikeStatus().then(res => {

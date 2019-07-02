@@ -123,6 +123,8 @@ button {
 .inputArea.isTextArea {
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
+  z-index: 1;
 }
 
 /* 上传文件 */
@@ -246,6 +248,7 @@ picker {
   position: absolute;
   top: 50%;
   left: 50%;
+  z-index: 998;
   transform: translate(-50%, -50%);
   width: 458rpx;
   height: 260rpx;

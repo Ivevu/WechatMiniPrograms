@@ -95,7 +95,7 @@
         <text class='label'>地址</text>
         <input placeholder="{{!hasSignUp?'无':'请输入您的地址'}}" disabled='{{!hasSignUp}}' name='address{{formId}}' data-formId='{{formId}}' data-index='address{{formId}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.address}}' />
       </view>
-      <view wx:if="{{type==1}}" class="inputArea isTextArea}}">
+      <view wx:if="{{type==1 && !uploading}}" class="inputArea isTextArea}}">
         <text class='label'>备注</text>
         <textarea name='remark{{index}}' disabled='{{!hasSignUp}}' bindblur="keepForm" data-formId='{{formId}}' data-index='remark{{formId}}' value='{{form.remark}}'></textarea>
       </view>
@@ -180,7 +180,7 @@
 
 
   <!-- 弹窗 -->
-  <view class='pop' wx:if="{{uploading}}">
+  <view class='pop' wx:if="{{uploading}}" bindtap="preventTouchMove" catchtouchmove="ture">
     <view class='bg'></view>
     <view class='box'>
       <view class="text {{isPost?'isActive': ''}}">{{!uploadDone?"上传中...":isPost?'投稿成功':"上传成功"}}</view>
