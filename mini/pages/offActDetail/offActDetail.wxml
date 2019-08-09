@@ -149,7 +149,7 @@
     <view wx:if="{{type==1}}" class='footer'>
       <button open-type='share' class='common share'>分享给好友</button>
       <button class='common signUp' wx:if="{{hasSignUp}}" form-type="submit">提交</button>
-      <button class='common signUp' wx:if="{{!hasSignUp}}" bindtap="edit">编辑报名</button>
+      <button class='common signUp' wx:if="{{!hasSignUp}}" bindtap="edit">重新上传</button>
     </view>
     <!-- 我要投稿 -->
     <view wx:if="{{type==2}}" class='footer'>
