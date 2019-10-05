@@ -39,11 +39,11 @@ Page({
           if (item.deadline) {
             item.deadline = item.deadline.substring(0, 10);
           }
-          if (item.activityState == 1) {
+          // if (item.activityState == 1) {
             on.push(item);
-          } else {
-            out.push(item);
-          }
+          // } else {
+          //   out.push(item);
+          // }
         })
         this.setData({
           listOn: on,

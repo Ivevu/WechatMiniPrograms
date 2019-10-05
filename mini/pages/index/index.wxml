@@ -47,7 +47,7 @@
 <!-- 我要投稿 -->
 <block>
   <view class='title'>
-    <view class="h1">我要助力</view>
+    <view class="h1">我要投票</view>
   </view>
   <view class='offlineActivity helpList'>
     <block wx:for="{{helpList}}" wx:key="index">
