@@ -28,7 +28,27 @@ Page({
     isPost: false,
     recList: [],
     currentPage: 1,
-    likeStatus: './assets/like.png'
+    likeStatus: './assets/like.png',
+    isStay: [{
+        name: 1,
+        value: '是'
+      },
+      {
+        name: 0,
+        value: '否',
+        checked: 'true'
+      },
+    ],
+    isEat: [{
+        name: 1,
+        value: '是'
+      },
+      {
+        name: 0,
+        value: '否',
+        checked: 'true'
+      },
+    ]
   },
 
   // 提交表单
@@ -49,7 +69,8 @@ Page({
     let isErrPhone = true;
     //校验表单
     Object.keys(params).forEach(item => {
-      if (item.replace(/[0-9]/g, '') !== 'remark' && item.replace(/[0-9]/g, '') !== 'address') { // 不为 备注  地址
+      let key = item.replace(/[0-9]/g, '')
+      if (key !== 'remark' && key !== 'address' && key !== 'isStay' && key !== 'isEat') { // 不为 备注  地址
         if (!params[item]) {
           isError = true;
         } else {
@@ -110,6 +131,9 @@ Page({
           // 表单正确，请求上传
           wx.showLoading({
             title: '数据上传中...',
+          });
+          form.forEach(item => {
+            item.address = item.region.join(' ') + ' ' + item.address;
           });
           this.postForm(form);
         }
@@ -221,6 +245,13 @@ Page({
         item.genderPlaceHolder = '男';
       } else {
         item.genderPlaceHolder = '女';
+      }
+      if (!!item.address) {
+        let area = item.address.split(' ');
+        let region1, region2, region3, addressList = [];
+        [region1, region2, region3, ...addressList] = area;
+        item.region = [region1, region2, region3];
+        item.address = addressList.join('');
       }
     });
 
@@ -359,7 +390,7 @@ Page({
     const header = {
       'content-type': 'application/json'
     };
-    console.log(form)
+    form.address = form.region.join(' ') + ' ' + form.address
     http
       ._post(api.userContribute, form, header)
       .then(res => {
@@ -400,6 +431,7 @@ Page({
       remark: '',
       genderPlaceHolder: '请选择您的性别',
       isActive: false,
+      region: ['广东省', '广州市', '荔湾区'],
     };
     return this.mixObj(type, common);
   },
@@ -407,6 +439,8 @@ Page({
   // 混合对象
   mixObj(type, common) {
     return type == 1 ? [Object.assign(common, {
+      isStay: 0,
+      isEat: 0,
       uploadFileList: [{
           desc: '报名材料(Word版，不超过5M)',
         },
@@ -1001,6 +1035,78 @@ Page({
     });
   },
   /**
+   * 地区选择器
+   */
+  bindRegionChange: function(e) {
+    const formid = e.currentTarget.dataset.formid;
+    const key = e.currentTarget.dataset.key;
+    const value = e.detail.value;
+
+    let formList = this.data.formList;
+    formList[formid][key] = value;
+
+    this.setData({
+      formList
+    })
+    console.log(formList)
+  },
+  // 是否住宿、就餐
+  radioChange(e) {
+    const formid = e.currentTarget.dataset.formid;
+    const value = e.detail.value;
+    const type = e.currentTarget.dataset.type;
+
+    let formList = this.data.formList;
+    formList[formid][type] = parseInt(value);
+
+    this.setData({
+      formList: formList,
+    });
+    console.log(formList)
+  },
+  // 下载文件
+  downloadFile() {
+    let {
+      annexPath,
+      annexName
+    } = this.data.detail;
+    wx.setClipboardData({
+      data: `${api.download}?filePath=${annexPath}&fileName=${annexName}`,
+      success(res) {
+        wx.getClipboardData({
+          success(res) {
+            wx.hideToast();
+            wx.showModal({
+              title: '复制成功',
+              content: '链接已复制，请用浏览器查看',
+              showCancel: false,
+              success(res) {
+                if (res.confirm) {
+                  console.log('用户点击确定')
+                } else if (res.cancel) {
+                  console.log('用户点击取消')
+                }
+              }
+            })
+          }
+        })
+      }
+    })
+    // wx.downloadFile({
+    //   url: `${api.download}?filePath=/upload/document/&fileName=投稿活动.pdf`, //仅为示例，非真实的接口地址
+    //   success(res) {
+    //     var filePath = res.tempFilePath
+    //     console.log(res)
+    //     wx.saveFile({
+    //       tempFilePath: filePath,
+    //       success(res) {
+    //         const savedFilePath = res.savedFilePath
+    //       }
+    //     })
+    //   }
+    // })
+  },
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
@@ -1027,11 +1133,18 @@ Page({
         http
           ._get(api.userContributeList, params)
           .then(res => {
-            if (res.data.code !== 200) return false;
-            return res.data.data.pages
+            if (res.data.code !== 200) {
+              return false
+            } else {
+              return res.data.data.pages
+            }
           })
           .then((pages) => {
-            params.pageNum = pages;
+            if (pages !== false) {
+              params.pageNum = pages;
+            } else {
+              params.pageNum = 1
+            }
             http._get(api.userContributeList, params).then(res => {
               let data = res.data.data.list;
               data.forEach(item => {

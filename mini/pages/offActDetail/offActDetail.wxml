@@ -26,6 +26,10 @@
         </block>
       </view>
     </view>
+    <view class='time' wx:if="{{detail.annexName}}">
+      <text>说明文件：</text>
+      <text class='value download' bindtap="downloadFile">{{detail.annexName}}</text>
+    </view>
   </view>
   <!-- 说明 -->
   <view class='bg'>
@@ -91,10 +95,43 @@
         </view>
         <input placeholder="请输入您的电话号码" disabled='{{!hasSignUp}}' type='number' data-formId='{{formId}}' data-index='phone{{formId}}' bindblur="keepForm" name='phone{{formId}}' maxlength='11' placeholder-class="placeholder" value='{{form.phone}}' />
       </view>
-      <view class="inputArea">
-        <text class='label'>地址</text>
-        <input placeholder="{{!hasSignUp?'无':'请输入您的地址'}}" disabled='{{!hasSignUp}}' name='address{{formId}}' data-formId='{{formId}}' data-index='address{{formId}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.address}}' />
+      <view class="inputArea isTextArea">
+        <view class="top">
+          <text class='label'>地址</text>
+          <view class="section" wx:if='{{!showRule && hasSignUp}}'>
+            <!-- <view class="section__title">点击切换</view> -->
+            <picker mode="region" bindchange="bindRegionChange" data-key="region" data-formId='{{formId}}' value="{{form.region}}" custom-item="{{customItem}}">
+              <view class="picker">
+                点击切换区域：{{form.region[0]}}{{form.region[1]}}{{form.region[2]}}
+              </view>
+            </picker>
+          </view>
+        </view>
+        <input class="address" placeholder="{{!hasSignUp?'无':'请输入您的详细地址'}}" disabled='{{!hasSignUp}}' name='address{{formId}}' data-formId='{{formId}}' data-index='address{{formId}}' bindblur="keepForm" placeholder-class="placeholder" value='{{form.address}}' />
       </view>
+
+      <view wx:if="{{type==1}}" class="inputArea">
+        <view class='label'>
+          <text>是否住宿</text>
+        </view>
+        <radio-group name='isStay{{formId}}' data-formId='{{formId}}' class="radio-group" data-type="isStay" bindchange="radioChange">
+          <radio disabled='{{!hasSignUp}}' class="radio" color="#ea4b4b" wx:for-items="{{isStay}}" wx:key="index" value="{{item.name}}" checked="{{form.isStay===1-index}}">
+            <text>{{item.value}}</text>
+          </radio>
+        </radio-group>
+      </view>
+
+      <view wx:if="{{type==1}}" class="inputArea">
+        <view class='label'>
+          <text>是否就餐</text>
+        </view>
+        <radio-group name='isEat{{formId}}' data-formId='{{formId}}' class="radio-group" data-type="isEat" bindchange="radioChange">
+          <radio disabled='{{!hasSignUp}}' class="radio" color="#ea4b4b" wx:for-items="{{isEat}}" wx:key="index" value="{{item.name}}" checked="{{form.isEat===1-index}}">
+            <text>{{item.value}}</text>
+          </radio>
+        </radio-group>
+      </view>
+
       <view wx:if="{{type==1 && !uploading}}" class="inputArea isTextArea}}">
         <text class='label'>备注</text>
         <textarea name='remark{{index}}' disabled='{{!hasSignUp}}' bindblur="keepForm" data-formId='{{formId}}' data-index='remark{{formId}}' value='{{form.remark}}'></textarea>

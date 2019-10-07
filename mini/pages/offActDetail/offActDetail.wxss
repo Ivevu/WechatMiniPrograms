@@ -25,6 +25,10 @@
   justify-content: space-between;
 }
 
+.download {
+  color: rgb(0, 0, 204);
+}
+
 .icon {
   width: 25rpx;
   height: 30rpx;
@@ -33,7 +37,7 @@
 
 .bg {
   height: 100%;
-  word-break:break-all;
+  word-break: break-all;
 }
 
 .intro {
@@ -127,6 +131,33 @@ button {
   z-index: 1;
 }
 
+.inputArea.isTextArea .top {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+
+.inputArea .section {
+  display: flex;
+}
+
+.inputArea .section__title {
+  font-size: 24rpx;
+  margin-left: 10rpx;
+}
+
+.inputArea .picker {
+  font-size: 24rpx;
+  color: red;
+  margin-left: 25rpx;
+}
+
+.inputArea .radio {
+  margin-left: 15px;
+}
+
 /* 上传文件 */
 
 .uploadList .inputArea:first-child {
@@ -161,6 +192,7 @@ textarea {
   line-height: 1.4rem;
   word-break: break-all;
   max-width: 560rpx;
+  min-width: 36rpx;
 }
 
 .imgArea {
@@ -195,6 +227,11 @@ input {
   margin-left: auto;
   font-size: 24rpx;
   text-align: right;
+}
+
+input.address {
+  width: 100%;
+  text-align: left;
 }
 
 .placeholder {
@@ -305,11 +342,12 @@ picker {
   align-items: center;
   justify-content: space-between;
 }
+
 .section .empty {
   text-align: center;
   font-size: 28rpx;
   padding-top: 30rpx;
-  color: #333333;
+  color: #333;
 }
 
 .section .left {
