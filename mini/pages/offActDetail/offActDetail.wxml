@@ -27,7 +27,7 @@
       </view>
     </view>
     <view class='time' wx:if="{{detail.annexName}}">
-      <text>说明文件：</text>
+      <text>相关文件：</text>
       <text class='value download' bindtap="downloadFile">{{detail.annexName}}</text>
     </view>
   </view>

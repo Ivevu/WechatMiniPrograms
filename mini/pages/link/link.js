@@ -12,10 +12,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    console.log(options.link)
-    this.setData({
-      link: options.link
-    })
+    let {
+      link
+    } = options
+    if (link.substring(0, 4) === 'flag') {
+      this.setData({
+        link: decodeURIComponent(link.substr(4))
+      })
+    } else {
+      this.setData({
+        link
+      })
+    }
+
   },
 
   /**

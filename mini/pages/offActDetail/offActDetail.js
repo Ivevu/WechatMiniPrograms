@@ -1070,41 +1070,31 @@ Page({
       annexPath,
       annexName
     } = this.data.detail;
-    wx.setClipboardData({
-      data: `${api.download}?filePath=${annexPath}&fileName=${annexName}`,
-      success(res) {
-        wx.getClipboardData({
-          success(res) {
-            wx.hideToast();
-            wx.showModal({
-              title: '复制成功',
-              content: '链接已复制，请用浏览器查看',
-              showCancel: false,
-              success(res) {
-                if (res.confirm) {
-                  console.log('用户点击确定')
-                } else if (res.cancel) {
-                  console.log('用户点击取消')
-                }
-              }
-            })
-          }
-        })
-      }
-    })
-    // wx.downloadFile({
-    //   url: `${api.download}?filePath=/upload/document/&fileName=投稿活动.pdf`, //仅为示例，非真实的接口地址
-    //   success(res) {
-    //     var filePath = res.tempFilePath
-    //     console.log(res)
-    //     wx.saveFile({
-    //       tempFilePath: filePath,
-    //       success(res) {
-    //         const savedFilePath = res.savedFilePath
-    //       }
-    //     })
-    //   }
-    // })
+    let link = encodeURIComponent(`flag${api.download}?filePath=${annexPath}&fileName=${annexName}`)
+    if (app.globalData.isIOS) {
+      wx.navigateTo({
+        url: `/pages/link/link?link=${link}`,
+      });
+    } else {
+      wx.downloadFile({
+        url: `${api.download}?filePath=${annexPath}&fileName=${annexName}`, //仅为示例，并非真实的资源
+        header: {
+          'Content-Type': 'application/msword'
+        },
+        fileType: 'docx',
+        success(res) {
+          const filePath = res.tempFilePath
+          console.log(filePath)
+          wx.saveFile({
+            tempFilePath: filePath,
+            success(res) {
+              const savedFilePath = res.savedFilePath
+            }
+          })
+        }
+      })
+
+    }
   },
   /**
    * 生命周期函数--监听页面加载

@@ -29,7 +29,7 @@ App({
                 url: api.login,
                 method: "POST",
                 header: {
-                  'content-type':'application/x-www-form-urlencoded'
+                  'content-type': 'application/x-www-form-urlencoded'
                 },
                 data: {
                   code: this.globalData.code,
@@ -38,7 +38,7 @@ App({
                   headImg: this.globalData.userInfo.avatarUrl
                 },
                 success: data => {
-                  if(data.data.code === 200) {
+                  if (data.data.code === 200) {
                     this.globalData.openId = data.data.data
                   }
                 },
@@ -53,10 +53,21 @@ App({
         }
       }
     })
+
+    // 获取设备型号
+    wx.getSystemInfo({
+      success: (res) => {
+        let {
+          system
+        } = res
+        this.globalData.isIOS = system.indexOf("iOS") > -1
+      }
+    })
   },
   globalData: {
     userInfo: null,
     code: null,
-    openId: null
+    openId: null,
+    isIOS: false
   }
 })

@@ -231,7 +231,6 @@ input {
 
 input.address {
   width: 100%;
-  text-align: left;
 }
 
 .placeholder {
