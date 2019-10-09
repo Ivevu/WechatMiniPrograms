@@ -20,5 +20,6 @@ export const api = {
   like: `${domain}/api/activity/like`, // 点赞 取消点赞接口
 
   vote: `${domain}/api/activity/vote`,
-  download: `${domain}/api/we/download`
+  download: `${domain}/api/we/download`,
+  document: `${domain}/document`
 }

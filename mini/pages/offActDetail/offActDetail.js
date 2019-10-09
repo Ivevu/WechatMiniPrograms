@@ -1076,24 +1076,37 @@ Page({
         url: `/pages/link/link?link=${link}`,
       });
     } else {
+      // wx.downloadFile({
+      //   url: `${api.download}?filePath=${annexPath}&fileName=${annexName}`, //仅为示例，并非真实的资源
+      //   header: {
+      //     'Content-Type': 'application/msword'
+      //   },
+      //   fileType: 'docx',
+      //   success(res) {
+      //     const filePath = res.tempFilePath
+      //     console.log(filePath)
+      //     wx.saveFile({
+      //       tempFilePath: filePath,
+      //       success(res) {
+      //         const savedFilePath = res.savedFilePath
+      //       }
+      //     })
+      //   }
+      // })
+      console.log(`${api.domain}${annexPath.replace('/upload', '')}`)
       wx.downloadFile({
-        url: `${api.download}?filePath=${annexPath}&fileName=${annexName}`, //仅为示例，并非真实的资源
-        header: {
-          'Content-Type': 'application/msword'
-        },
-        fileType: 'docx',
-        success(res) {
+        // 示例 url，并非真实存在
+        url: `${api.domain}${annexPath.replace('/upload', '')}`,
+        success: function (res) {
           const filePath = res.tempFilePath
-          console.log(filePath)
-          wx.saveFile({
-            tempFilePath: filePath,
-            success(res) {
-              const savedFilePath = res.savedFilePath
+          wx.openDocument({
+            filePath: filePath,
+            success: function (res) {
+              console.log('打开文档成功')
             }
           })
         }
       })
-
     }
   },
   /**
